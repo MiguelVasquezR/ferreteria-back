@@ -3,7 +3,6 @@ package resenas;
 import static spark.Spark.*;
 
 import com.google.gson.Gson;
-
 import resenas.conexion.SQLConnection;
 import resenas.services.AutenticationService;
 import resenas.utils.JwtUtils;
@@ -23,7 +22,7 @@ public class App {
             if (token == null) {
                 halt(401, "Usuario o contraseña incorrectos");
             } else {
-                res.header("Authorization", token.toString());
+                res.cookie("ACCESS_TOKEN", token);
                 halt(200, "Usuario autenticado");
             }
             return null;
@@ -47,25 +46,19 @@ public class App {
             if ("/login".equals(path)) {
                 return;
             }
-            String token = request.headers("Authorization");
+            String token = request.cookie("ACCESS_TOKEN");
+            System.out.println(token);
             if (token == null) {
                 halt(401, "Acceso no autorizado");
                 return;
             }
-            boolean isTokenValid = JwtUtils.verifyToken(token);
-            if (isTokenValid) {
+            String messageVerifiedToken = JwtUtils.verifyToken(token);
+            System.out.println(messageVerifiedToken);
+            if (messageVerifiedToken.equals("Token valido")) {
                 return;
-            } else {
-                if (JwtUtils.isTokenExpired(token)) {
-                    String newToken = JwtUtils.renewAccessToken(token);
-                    if (newToken != null) {
-                        response.header("Authorization", newToken);
-                    } else {
-                        halt(401, "Token expirado y no se pudo renovar");
-                    }
-                } else {
-                    halt(401, "Token inválido");
-                }
+            } else if (messageVerifiedToken.equals("Token invalido")) {
+                halt(401, "Acceso no autorizado");
+                return;
             }
         });
 
@@ -86,20 +79,20 @@ public class App {
 
 // Clase de usuario
 class User {
-    private String username;
+    private String user;
     private String password;
 
-    public User(String username, String password) {
-        this.username = username;
+    public User(String user, String password) {
+        this.user = user;
         this.password = password;
     }
 
     public String getUsername() {
-        return username;
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String user) {
+        this.user = user;
     }
 
     public String getPassword() {
@@ -112,6 +105,6 @@ class User {
 
     @Override
     public String toString() {
-        return "User [password=" + password + ", username=" + username + "]";
+        return "User [password=" + password + ", user=" + user + "]";
     }
 }

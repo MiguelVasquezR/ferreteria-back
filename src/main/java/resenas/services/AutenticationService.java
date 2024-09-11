@@ -3,9 +3,6 @@ package resenas.services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import com.google.gson.JsonObject;
-
 import resenas.conexion.SQLConnection;
 import resenas.utils.JwtUtils;
 

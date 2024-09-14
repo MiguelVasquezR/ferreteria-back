@@ -4,8 +4,10 @@ import static spark.Spark.*;
 
 import com.google.gson.Gson;
 import resenas.conexion.SQLConnection;
-import resenas.services.AutenticationService;
 import resenas.utils.JwtUtils;
+
+import resenas.controlador.ControladorUsuario;
+import resenas.modelo.Usuario;
 
 public class App {
 
@@ -17,13 +19,20 @@ public class App {
         port(getHerokuAssignedPort());
 
         post("/login", (req, res) -> {
-            User user = gson.fromJson(req.body(), User.class);
-            String token = AutenticationService.login(user.getUsername(), user.getPassword());
-            if (token == null) {
-                halt(401, "Usuario o contraseña incorrectos");
+            Usuario dataCliente = gson.fromJson(req.body(), Usuario.class);
+            Usuario usuario = ControladorUsuario.iniciarSesion(dataCliente.getUser(), dataCliente.getPassword());
+            if (usuario != null) {
+                String token = JwtUtils.generateToken(usuario.getRol(), usuario.getUser());
+                if (token != null || token != "") {
+                    res.cookie("ACCESS_TOKEN", token);
+                    res.status(200);
+                } else {
+                    res.body("No logramos autenticar al usuario");
+                    res.status(401);
+                }
             } else {
-                res.cookie("ACCESS_TOKEN", token);
-                halt(200, "Usuario autenticado");
+                res.status(401);
+                res.body("Usuario o contraseña incorrectos");
             }
             return null;
         });
@@ -40,7 +49,6 @@ public class App {
             return "OK";
         });
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
-
         before((request, response) -> {
             String path = request.pathInfo();
             if ("/login".equals(path)) {
@@ -74,37 +82,5 @@ public class App {
             return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
         return 4567;
-    }
-}
-
-// Clase de usuario
-class User {
-    private String user;
-    private String password;
-
-    public User(String user, String password) {
-        this.user = user;
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return user;
-    }
-
-    public void setUsername(String user) {
-        this.user = user;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "User [password=" + password + ", user=" + user + "]";
     }
 }

@@ -11,4 +11,8 @@ public class ControladorUsuario {
         return daoUsuario.validarCredenciales(usuario, contrasena);
     }
 
+    public static String cambiarContrasena(String correo, String nuevaContrasena) {
+        return daoUsuario.cambiarContrasena(correo, nuevaContrasena);
+    }
+
 }

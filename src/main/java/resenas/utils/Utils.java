@@ -15,6 +15,9 @@ public class Utils {
     public static final String MYSQL_HOST;
     public static final String PASSWORD_ENCRYPT;
     public static final String CIPHER_INSTAC;
+    public static final String PASSWORD_GOOGLE;
+    public static final String REMITENTE_GOOGLE;
+    public static final String NAME_FILE_BINARY_PATH;
 
     static {
         PASSWORD_TOKEN = dotenv.get("PASSWORD_TOKEN");
@@ -26,5 +29,8 @@ public class Utils {
         MYSQL_HOST = dotenv.get("MYSQL_HOST");
         PASSWORD_ENCRYPT = dotenv.get("PASSWORD_ENCRYPT");
         CIPHER_INSTAC = dotenv.get("CIPHER_INSTACE");
+        PASSWORD_GOOGLE = dotenv.get("PASSWORD_GOOGLE");
+        REMITENTE_GOOGLE = dotenv.get("REMITENTE_GOOGLE");
+        NAME_FILE_BINARY_PATH = dotenv.get("NAME_FILE_BINARY_PATH");
     }
 }

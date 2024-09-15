@@ -20,6 +20,23 @@ public class JwtUtils {
                 .sign(algorithm);
     }
 
+    public static String generateTokenPassword(String correo) {
+        Algorithm algorithm = Algorithm.HMAC256(Utils.PASSWORD_TOKEN);
+        return JWT.create()
+                .withIssuer("auth0")
+                .withClaim("Correo", correo)
+                .sign(algorithm);
+    }
+
+    public static String obtenerCorreo(String token) {
+        Algorithm algorithm = Algorithm.HMAC256(Utils.PASSWORD_TOKEN);
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer("auth0")
+                .build();
+        DecodedJWT jwt = verifier.verify(token);
+        return jwt.getClaim("Correo").asString();
+    }
+
     public static String verifyToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(Utils.PASSWORD_TOKEN);

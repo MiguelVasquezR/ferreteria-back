@@ -45,4 +45,33 @@ public class DAOUsuario {
         }
     }
 
+    public String cambiarContrasena(String correo, String nuevaContrasena) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("UPDATE usuario SET contrasena=? WHERE correo=?");
+            ps.setString(1, nuevaContrasena);
+            ps.setString(2, correo);
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return "Se ha actualizado la contraseña";
+            }
+            return "No se ha actualizado la contraseña";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "No se ha actualizado la contraseña";
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
 }

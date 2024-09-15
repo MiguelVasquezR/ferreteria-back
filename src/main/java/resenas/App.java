@@ -5,7 +5,6 @@ import static spark.Spark.*;
 import com.google.gson.Gson;
 import resenas.conexion.SQLConnection;
 import resenas.utils.JwtUtils;
-
 import resenas.controlador.ControladorUsuario;
 import resenas.modelo.Usuario;
 
@@ -18,59 +17,57 @@ public class App {
 
         port(getHerokuAssignedPort());
 
+        before((request, response) -> {
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Allow-Credentials", "true");
+            response.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            response.header("Access-Control-Allow-Headers", "Content-Type, Authorization, ACCESS_TOKEN");
+        });
+        options("/*", (request, response) -> {
+            return "OK";
+        });
+
         post("/login", (req, res) -> {
             Usuario dataCliente = gson.fromJson(req.body(), Usuario.class);
             Usuario usuario = ControladorUsuario.iniciarSesion(dataCliente.getUser(), dataCliente.getPassword());
             if (usuario != null) {
                 String token = JwtUtils.generateToken(usuario.getRol(), usuario.getUser());
-                if (token != null || token != "") {
-                    res.cookie("ACCESS_TOKEN", token);
-                    res.status(200);
+                if (token != null && !token.isEmpty()) {
+                    res.header("Access-Control-Expose-Headers", "ACCESS_TOKEN");
+                    res.header("Access-Control-Expose-Headers", "ROL");
+                    res.header("ACCESS_TOKEN", token);
+                    res.header("ROL", usuario.getRol());
+                    return "Usuario autenticado";
                 } else {
-                    res.body("No logramos autenticar al usuario");
-                    res.status(401);
+                    res.status(200);
+                    return "No logramos autenticar al usuario";
                 }
             } else {
-                res.status(401);
-                res.body("Usuario o contraseña incorrectos");
+                res.status(200);
+                return "Usuario o contraseña incorrectos";
             }
-            return null;
         });
 
-        options("/*", (request, response) -> {
-            String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
-            if (accessControlRequestHeaders != null) {
-                response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-            }
-            String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
-            if (accessControlRequestMethod != null) {
-                response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-            }
-            return "OK";
-        });
-        before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
-        before((request, response) -> {
-            String path = request.pathInfo();
+        before((req, res) -> {
+            String path = req.pathInfo();
             if ("/login".equals(path)) {
                 return;
             }
-            String token = request.cookie("ACCESS_TOKEN");
-            System.out.println(token);
-            if (token == null) {
+            String token = req.headers("Authorization");
+            if (token == null || token.isEmpty()) {
                 halt(401, "Acceso no autorizado");
                 return;
             }
-            String messageVerifiedToken = JwtUtils.verifyToken(token);
-            System.out.println(messageVerifiedToken);
+            String messageVerifiedToken = JwtUtils.verifyToken(token.replace("Bearer ", ""));
             if (messageVerifiedToken.equals("Token valido")) {
                 return;
-            } else if (messageVerifiedToken.equals("Token invalido")) {
+            } else {
                 halt(401, "Acceso no autorizado");
                 return;
             }
         });
 
-        // Ruta protegida por el middleware
+        // Rutas protegidas por el middleware
         get("/", (req, res) -> {
             return "Hola mundo";
         });

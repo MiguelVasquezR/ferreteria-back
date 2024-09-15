@@ -1,7 +1,5 @@
 package resenas.controlador;
 
-import com.google.gson.Gson;
-
 import resenas.dao.DAOUsuario;
 import resenas.modelo.Usuario;
 

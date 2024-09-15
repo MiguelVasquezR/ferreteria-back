@@ -9,16 +9,15 @@ import resenas.modelo.Usuario;
 
 public class DAOUsuario {
 
-    private SQLConnection sqlConnection;
+    private SQLConnection sqlConnection = new SQLConnection();
 
     public Usuario validarCredenciales(String usuario, String contrasena) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            sqlConnection = new SQLConnection();
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("SELECT * FROM usuario where usuario = ? and contrasena = ?");
+            ps = con.prepareStatement("SELECT * FROM usuario where usuario=? and contrasena=?");
             ps.setString(1, usuario);
             ps.setString(2, contrasena);
             rs = ps.executeQuery();

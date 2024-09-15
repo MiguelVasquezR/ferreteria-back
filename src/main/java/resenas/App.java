@@ -4,6 +4,7 @@ import static spark.Spark.*;
 
 import com.google.gson.Gson;
 import resenas.conexion.SQLConnection;
+import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorUsuario;
 import resenas.modelo.Usuario;

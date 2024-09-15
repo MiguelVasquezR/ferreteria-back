@@ -13,6 +13,8 @@ public class Utils {
     public static final String MYSQL_PASSWORD;
     public static final String MYSQL_DATABASE_NAME;
     public static final String MYSQL_HOST;
+    public static final String PASSWORD_ENCRYPT;
+    public static final String CIPHER_INSTAC;
 
     static {
         PASSWORD_TOKEN = dotenv.get("PASSWORD_TOKEN");
@@ -22,5 +24,7 @@ public class Utils {
         MYSQL_PASSWORD = dotenv.get("MYSQL_PASSWORD");
         MYSQL_DATABASE_NAME = dotenv.get("MYSQL_DATABASE_NAME");
         MYSQL_HOST = dotenv.get("MYSQL_HOST");
+        PASSWORD_ENCRYPT = dotenv.get("PASSWORD_ENCRYPT");
+        CIPHER_INSTAC = dotenv.get("CIPHER_INSTACE");
     }
 }

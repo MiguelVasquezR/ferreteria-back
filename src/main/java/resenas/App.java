@@ -11,6 +11,8 @@ import resenas.conexion.SQLConnection;
 import resenas.utils.Correo;
 import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
+import resenas.controlador.ControladorDireccion;
+import resenas.controlador.ControladorPersona;
 import resenas.controlador.ControladorUsuario;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
@@ -106,6 +108,15 @@ public class App {
             if ("/cambiar-contrasena".equals(path)) {
                 return;
             }
+            if ("/direccion/agregar-direccion".equals(path)) {
+                return;
+            }
+
+            if ("/persona/agregar-persona".equals(path)) {
+                return;
+            }
+
+
             String token = req.headers("Authorization");
             if (token == null || token.isEmpty()) {
                 halt(401, "Acceso no autorizado");
@@ -123,6 +134,14 @@ public class App {
         // Rutas protegidas por el middleware
         get("/", (req, res) -> {
             return "Hola mundo";
+        });
+
+        path("/direccion", ()->{
+           post("/agregar-direccion", ControladorDireccion::crearDireccion);
+        });
+
+        path("/persona", ()->{
+            post("/agregar-persona", ControladorPersona::crearPersona);
         });
 
     }

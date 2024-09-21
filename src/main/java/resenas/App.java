@@ -126,6 +126,7 @@ public class App {
 
         // Rutas protegidas por el middleware
         get("/", (req, res) -> {
+            System.out.println("Hola como estas");
             return "Hola mundo";
         });
 

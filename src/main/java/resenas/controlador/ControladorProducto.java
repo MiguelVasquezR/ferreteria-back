@@ -13,15 +13,17 @@ public class ControladorProducto {
     private static DAOProducto daoProducto = new DAOProducto();
     private static Gson gson = new Gson();
 
-    public static String crearProducto(Request req, Response res){
+    public static String crearProducto(Request req, Response res) {
         Producto producto = gson.fromJson(req.body(), Producto.class);
-        producto.setId("12345678");
+        producto.setId(UUID.randomUUID().toString());
+        producto.setCodigo(producto.getId().replace("-", ""));
+        System.out.println(producto.getCodigo());
         if (daoProducto.agregarProducto(producto)) {
             return "Producto agregado correctamente";
         } else {
             return "Error al agregar producto";
-            
+
         }
     }
-    
+
 }

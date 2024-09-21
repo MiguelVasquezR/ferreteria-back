@@ -15,14 +15,16 @@ public class DAOProducto {
     
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("INSERT INTO producto (id_producto, nombre, cantidad, stock_minimo, costo, precio_menudeo, precio_mayoreo) VALUES(?, ?, ?, ?, ?, ?, ?)");
+            ps = con.prepareStatement("INSERT INTO producto (id_producto, url_image, codigo, nombre, cantidad, stock_minimo, costo, precio_menudeo, precio_mayoreo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, producto.getId());
-            ps.setString(2, producto.getNombre());
-            ps.setFloat(3, producto.getCantidad());
-            ps.setFloat(4, producto.getStock_minimo());
-            ps.setFloat(5, producto.getCosto());
-            ps.setFloat(6, producto.getPrecio_menudeo());
-            ps.setFloat(7, producto.getPrecio_mayoreo());
+            ps.setString(2, producto.getUrl_image());
+            ps.setString(3, producto.getCodigo());
+            ps.setString(4, producto.getNombre());
+            ps.setFloat(5, producto.getCantidad());
+            ps.setFloat(6, producto.getStock_minimo());
+            ps.setFloat(7, producto.getCosto());
+            ps.setFloat(8, producto.getPrecio_menudeo());
+            ps.setFloat(9, producto.getPrecio_mayoreo());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

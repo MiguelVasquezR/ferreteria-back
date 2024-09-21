@@ -1,23 +1,30 @@
 package resenas.modelo;
 
 public class Producto {
-    private String id; 
+    private String id;
+    private String codigo;
     private String nombre;
     private float cantidad;
     private float stock_minimo;
     private float costo;
     private float precio_menudeo;
     private float precio_mayoreo;
+    private String url_image;
 
-    public Producto(String id, String nombre, float cantidad, float stock_minimo, float costo, float precio_menudeo,
-            float precio_mayoreo) {
+    public Producto(String id, String codigo, String nombre, float cantidad, float stock_minimo, float costo,
+            float precio_menudeo, float precio_mayoreo, String url_image) {
         this.id = id;
+        this.codigo = codigo;
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.stock_minimo = stock_minimo;
         this.costo = costo;
         this.precio_menudeo = precio_menudeo;
         this.precio_mayoreo = precio_mayoreo;
+        this.url_image = url_image;
+    }
+
+    public Producto() {
     }
 
     public String getId() {
@@ -60,10 +67,6 @@ public class Producto {
         this.costo = costo;
     }
 
-    public Producto() {
-
-    }
-
     public float getPrecio_menudeo() {
         return precio_menudeo;
     }
@@ -80,5 +83,20 @@ public class Producto {
         this.precio_mayoreo = precio_mayoreo;
     }
 
-}
+    public String getCodigo() {
+        return codigo;
+    }
 
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getUrl_image() {
+        return url_image;
+    }
+
+    public void setUrl_image(String url_image) {
+        this.url_image = url_image;
+    }
+
+}

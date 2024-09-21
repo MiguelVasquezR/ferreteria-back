@@ -3,7 +3,6 @@ package resenas.controlador;
 import java.util.UUID;
 
 import com.google.gson.Gson;
-
 import resenas.dao.DAOProducto;
 import resenas.modelo.Producto;
 import spark.Request;
@@ -22,7 +21,14 @@ public class ControladorProducto {
             return "Producto agregado correctamente";
         } else {
             return "Error al agregar producto";
+        }
+    }
 
+    public static String obtenerProductos(Request req, Response res) {
+        if (daoProducto.getProducts() != null) {
+            return gson.toJson(daoProducto.getProducts());
+        } else {
+            return "No has agregado productos";
         }
     }
 

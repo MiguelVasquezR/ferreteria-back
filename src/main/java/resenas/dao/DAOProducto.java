@@ -9,9 +9,10 @@ import resenas.conexion.SQLConnection;
 import resenas.modelo.Producto;
 
 public class DAOProducto {
-    private SQLConnection sqlConnection = new SQLConnection();
+    private SQLConnection sqlConnection;
 
     public boolean agregarProducto(Producto producto) {
+        sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
 
@@ -53,6 +54,7 @@ public class DAOProducto {
     }
 
     public ArrayList<Producto> getProducts() {
+        sqlConnection = new SQLConnection();
         ArrayList<Producto> productos = new ArrayList<Producto>();
         Connection con = null;
         PreparedStatement ps = null;

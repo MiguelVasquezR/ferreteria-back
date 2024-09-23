@@ -7,7 +7,6 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import resenas.conexion.SQLConnection;
 import resenas.utils.Correo;
 import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
@@ -19,7 +18,6 @@ import resenas.utils.FileBinario;
 public class App {
 
     private static Gson gson = new Gson();
-    static SQLConnection sqlConnection = new SQLConnection();
     private static Map<String, String> tokensPassword = new HashMap<String, String>();
     private static FileBinario fileBinario = new FileBinario();
 
@@ -133,7 +131,7 @@ public class App {
             return "Hola mundo";
         });
 
-        path("/producto", ()->{
+        path("/producto", () -> {
             post("/agregar-producto", ControladorProducto::crearProducto);
             get("/obtener-productos", ControladorProducto::obtenerProductos);
         });

@@ -19,7 +19,7 @@ public class DAOProducto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO producto (id_producto, url_image, codigo, nombre, cantidad, stock_minimo, costo, precio_menudeo, precio_mayoreo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO producto (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioayoreo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, producto.getId());
             ps.setString(2, producto.getUrl_image());
             ps.setString(3, producto.getCodigo());
@@ -65,15 +65,15 @@ public class DAOProducto {
             rs = ps.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();
-                producto.setId(rs.getString("id_producto"));
-                producto.setUrl_image(rs.getString("url_image"));
+                producto.setId(rs.getString("idProducto"));
+                producto.setUrl_image(rs.getString("urlImage"));
                 producto.setCodigo(rs.getString("codigo"));
                 producto.setNombre(rs.getString("nombre"));
                 producto.setCantidad(rs.getFloat("cantidad"));
-                producto.setStock_minimo(rs.getFloat("stock_minimo"));
+                producto.setStock_minimo(rs.getFloat("stockMinimo"));
                 producto.setCosto(rs.getFloat("costo"));
-                producto.setPrecio_menudeo(rs.getFloat("precio_menudeo"));
-                producto.setPrecio_mayoreo(rs.getFloat("precio_mayoreo"));
+                producto.setPrecio_menudeo(rs.getFloat("precioMenudeo"));
+                producto.setPrecio_mayoreo(rs.getFloat("precioMayoreo"));
                 productos.add(producto);
             }
             return productos;

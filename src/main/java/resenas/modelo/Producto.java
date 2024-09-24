@@ -5,23 +5,23 @@ public class Producto {
     private String codigo;
     private String nombre;
     private float cantidad;
-    private float stock_minimo;
+    private float stockMinimo;
     private float costo;
-    private float precio_menudeo;
-    private float precio_mayoreo;
-    private String url_image;
+    private float precioMenudeo;
+    private float precioMayoreo;
+    private String urlImage;
 
-    public Producto(String id, String codigo, String nombre, float cantidad, float stock_minimo, float costo,
-            float precio_menudeo, float precio_mayoreo, String url_image) {
+    public Producto(String id, String codigo, String nombre, float cantidad, float stockMinimo, float costo,
+            float precioMenudeo, float precioMayoreo, String urlImage) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
         this.cantidad = cantidad;
-        this.stock_minimo = stock_minimo;
+        this.stockMinimo = stockMinimo;
         this.costo = costo;
-        this.precio_menudeo = precio_menudeo;
-        this.precio_mayoreo = precio_mayoreo;
-        this.url_image = url_image;
+        this.precioMenudeo = precioMenudeo;
+        this.precioMayoreo = precioMayoreo;
+        this.urlImage = urlImage;
     }
 
     public Producto() {
@@ -51,12 +51,12 @@ public class Producto {
         this.cantidad = cantidad;
     }
 
-    public float getStock_minimo() {
-        return stock_minimo;
+    public float getStockMinimo() {
+        return stockMinimo;
     }
 
-    public void setStock_minimo(float stock_minimo) {
-        this.stock_minimo = stock_minimo;
+    public void setStockMinimo(float stockMinimo) {
+        this.stockMinimo = stockMinimo;
     }
 
     public float getCosto() {
@@ -67,20 +67,20 @@ public class Producto {
         this.costo = costo;
     }
 
-    public float getPrecio_menudeo() {
-        return precio_menudeo;
+    public float getPrecioMenudeo() {
+        return precioMenudeo;
     }
 
-    public void setPrecio_menudeo(float precio_menudeo) {
-        this.precio_menudeo = precio_menudeo;
+    public void setPrecioMenudeo(float precioMenudeo) {
+        this.precioMenudeo = precioMenudeo;
     }
 
-    public float getPrecio_mayoreo() {
-        return precio_mayoreo;
+    public float getPrecioMayoreo() {
+        return precioMayoreo;
     }
 
-    public void setPrecio_mayoreo(float precio_mayoreo) {
-        this.precio_mayoreo = precio_mayoreo;
+    public void setPrecioMayoreo(float precioMayoreo) {
+        this.precioMayoreo = precioMayoreo;
     }
 
     public String getCodigo() {
@@ -91,12 +91,12 @@ public class Producto {
         this.codigo = codigo;
     }
 
-    public String getUrl_image() {
-        return url_image;
+    public String getUrlImage() {
+        return urlImage;
     }
 
-    public void setUrl_image(String url_image) {
-        this.url_image = url_image;
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 
 }

@@ -19,16 +19,16 @@ public class DAOProducto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO producto (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioayoreo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO producto (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, producto.getId());
-            ps.setString(2, producto.getUrl_image());
+            ps.setString(2, producto.getUrlImage());
             ps.setString(3, producto.getCodigo());
             ps.setString(4, producto.getNombre());
             ps.setFloat(5, producto.getCantidad());
-            ps.setFloat(6, producto.getStock_minimo());
+            ps.setFloat(6, producto.getStockMinimo());
             ps.setFloat(7, producto.getCosto());
-            ps.setFloat(8, producto.getPrecio_menudeo());
-            ps.setFloat(9, producto.getPrecio_mayoreo());
+            ps.setFloat(8, producto.getPrecioMenudeo());
+            ps.setFloat(9, producto.getPrecioMayoreo());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;
@@ -66,14 +66,14 @@ public class DAOProducto {
             while (rs.next()) {
                 Producto producto = new Producto();
                 producto.setId(rs.getString("idProducto"));
-                producto.setUrl_image(rs.getString("urlImage"));
+                producto.setUrlImage(rs.getString("urlImage"));
                 producto.setCodigo(rs.getString("codigo"));
                 producto.setNombre(rs.getString("nombre"));
                 producto.setCantidad(rs.getFloat("cantidad"));
-                producto.setStock_minimo(rs.getFloat("stockMinimo"));
+                producto.setStockMinimo(rs.getFloat("stockMinimo"));
                 producto.setCosto(rs.getFloat("costo"));
-                producto.setPrecio_menudeo(rs.getFloat("precioMenudeo"));
-                producto.setPrecio_mayoreo(rs.getFloat("precioMayoreo"));
+                producto.setPrecioMenudeo(rs.getFloat("precioMenudeo"));
+                producto.setPrecioMayoreo(rs.getFloat("precioMayoreo"));
                 productos.add(producto);
             }
             return productos;
@@ -91,6 +91,39 @@ public class DAOProducto {
             }
         }
 
+    }
+
+    public boolean eliminarProducto(String idProducto){
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        try {
+            con = sqlConnection.getConnection();
+            
+            ps = con.prepareStatement(
+                    "DELETE FROM producto WHERE idProducto = ? ");
+            ps.setString(1, idProducto);
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return true;
+                
+            } else {
+                return false;                
+            }         
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false; 
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

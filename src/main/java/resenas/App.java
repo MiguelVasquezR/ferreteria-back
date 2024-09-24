@@ -10,6 +10,8 @@ import com.google.gson.JsonObject;
 import resenas.utils.Correo;
 import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
+import resenas.controlador.ControladorDireccion;
+import resenas.controlador.ControladorPersona;
 import resenas.controlador.ControladorProducto;
 import resenas.controlador.ControladorUsuario;
 import resenas.modelo.Usuario;
@@ -105,6 +107,15 @@ public class App {
             if ("/cambiar-contrasena".equals(path)) {
                 return;
             }
+            if ("/direccion/agregar-direccion".equals(path)) {
+                return;
+            }
+
+            if ("/persona/agregar-persona".equals(path)) {
+                return;
+            }
+
+
             if ("/producto/agregar-producto".equals(path)) {
                 return;
             }
@@ -134,9 +145,12 @@ public class App {
             return "Hola mundo";
         });
 
-        path("/producto", () -> {
-            post("/agregar-producto", ControladorProducto::crearProducto);
-            get("/obtener-productos", ControladorProducto::obtenerProductos);
+        path("/direccion", ()->{
+           post("/agregar-direccion", ControladorDireccion::crearDireccion);
+        });
+
+        path("/persona", ()->{
+            post("/agregar-persona", ControladorPersona::crearPersona);
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);
         });
 

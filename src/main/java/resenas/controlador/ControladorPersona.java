@@ -14,7 +14,7 @@ public class ControladorPersona {
 
     public static String crearPersona(Request req, Response res){
         Persona persona = gson.fromJson(req.body(), Persona.class);
-        persona.setId("12345");
+        persona.setId(UUID.randomUUID().toString());
         if (daoPersona.agregarPersona(persona)) {
             return "Persona agregada correctamente";
         } else {

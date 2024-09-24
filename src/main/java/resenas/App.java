@@ -7,12 +7,12 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import resenas.conexion.SQLConnection;
 import resenas.utils.Correo;
 import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
 import resenas.controlador.ControladorPersona;
+import resenas.controlador.ControladorProducto;
 import resenas.controlador.ControladorUsuario;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
@@ -20,7 +20,6 @@ import resenas.utils.FileBinario;
 public class App {
 
     private static Gson gson = new Gson();
-    static SQLConnection sqlConnection = new SQLConnection();
     private static Map<String, String> tokensPassword = new HashMap<String, String>();
     private static FileBinario fileBinario = new FileBinario();
 
@@ -117,6 +116,12 @@ public class App {
             }
 
 
+            if ("/producto/agregar-producto".equals(path)) {
+                return;
+            }
+            if ("/producto/obtener-productos".equals(path)) {
+                return;
+            }
             String token = req.headers("Authorization");
             if (token == null || token.isEmpty()) {
                 halt(401, "Acceso no autorizado");
@@ -133,6 +138,7 @@ public class App {
 
         // Rutas protegidas por el middleware
         get("/", (req, res) -> {
+            System.out.println("Hola como estas");
             return "Hola mundo";
         });
 

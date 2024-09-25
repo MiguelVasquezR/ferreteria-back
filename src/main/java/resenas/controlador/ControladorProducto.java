@@ -32,4 +32,16 @@ public class ControladorProducto {
         }
     }
 
+    public static String eliminarProducto(Request req, Response res){
+        String idProducto = req.queryParams("id");
+        
+        if (daoProducto.eliminarProducto(idProducto)) {
+            return "Producto eliminado exitosamente";
+            
+        } else {
+            return "Producto no existente";
+            
+        }
+    }
+
 }

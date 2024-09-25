@@ -14,8 +14,8 @@ public class ControladorProducto {
 
     public static String crearProducto(Request req, Response res) {
         Producto producto = gson.fromJson(req.body(), Producto.class);
-        producto.setId(UUID.randomUUID().toString());
-        producto.setCodigo(producto.getId().replace("-", ""));
+        producto.setIdPrducto(UUID.randomUUID().toString());
+        producto.setCodigo(producto.getIdProducto().replace("-", ""));
         System.out.println(producto.getCodigo());
         if (daoProducto.agregarProducto(producto)) {
             return "Producto agregado correctamente";
@@ -41,6 +41,16 @@ public class ControladorProducto {
         } else {
             return "Producto no existente";
             
+        }
+    }
+
+    public static String editarProducto(Request req, Response res){
+        Producto producto = gson.fromJson(req.body(), Producto.class);
+        System.out.println(producto.toString());
+        if (daoProducto.editarProducto(producto)) {
+            return "Datos del producto guardados exitosamente";
+        } else {
+            return "No se guardaron los datos del producto";
         }
     }
 

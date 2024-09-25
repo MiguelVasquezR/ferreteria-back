@@ -125,6 +125,9 @@ public class App {
             if ("/producto/eliminar-producto".equals(path)) {
                 return;
             }
+            if ("/producto/editar-producto".equals(path)) {
+                return;
+            }
             String token = req.headers("Authorization");
             if (token == null || token.isEmpty()) {
                 halt(401, "Acceso no autorizado");
@@ -151,7 +154,14 @@ public class App {
 
         path("/persona", ()->{
             post("/agregar-persona", ControladorPersona::crearPersona);
+            //delete("/eliminar-producto", ControladorProducto::eliminarProducto);
+        });
+
+        path("/producto", ()->{
+            post("/agregar-producto", ControladorProducto::crearProducto);
+            get("/obtener-productos", ControladorProducto::obtenerProductos);
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);
+            put("/editar-producto", ControladorProducto::editarProducto);
         });
 
     }

@@ -1,7 +1,7 @@
 package resenas.modelo;
 
 public class Producto {
-    private String id;
+    private String idProducto;
     private String codigo;
     private String nombre;
     private float cantidad;
@@ -11,9 +11,9 @@ public class Producto {
     private float precioMayoreo;
     private String urlImage;
 
-    public Producto(String id, String codigo, String nombre, float cantidad, float stockMinimo, float costo,
+    public Producto(String idProducto, String codigo, String nombre, float cantidad, float stockMinimo, float costo,
             float precioMenudeo, float precioMayoreo, String urlImage) {
-        this.id = id;
+        this.idProducto = idProducto;
         this.codigo = codigo;
         this.nombre = nombre;
         this.cantidad = cantidad;
@@ -27,12 +27,12 @@ public class Producto {
     public Producto() {
     }
 
-    public String getId() {
-        return id;
+    public String getIdProducto() {
+        return idProducto;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdPrducto(String idProducto) {
+        this.idProducto = idProducto;
     }
 
     public String getNombre() {
@@ -98,5 +98,18 @@ public class Producto {
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
     }
+
+    @Override
+    public String toString() {
+        return "Producto [idProducto=" + idProducto + ", codigo=" + codigo + ", nombre=" + nombre + ", cantidad=" + cantidad
+                + ", stockMinimo=" + stockMinimo + ", costo=" + costo + ", precioMenudeo=" + precioMenudeo
+                + ", precioMayoreo=" + precioMayoreo + ", urlImage=" + urlImage + ", getId()=" + getIdProducto()
+                + ", getNombre()=" + getNombre() + ", getCantidad()=" + getCantidad() + ", getStockMinimo()="
+                + getStockMinimo() + ", getClass()=" + getClass() + ", getCosto()=" + getCosto()
+                + ", getPrecioMenudeo()=" + getPrecioMenudeo() + ", getPrecioMayoreo()=" + getPrecioMayoreo()
+                + ", getCodigo()=" + getCodigo() + ", getUrlImage()=" + getUrlImage() + ", hashCode()=" + hashCode()
+                + ", toString()=" + super.toString() + "]";
+    }
+    
 
 }

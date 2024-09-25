@@ -20,7 +20,7 @@ public class DAOProducto {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
                     "INSERT INTO producto (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, producto.getId());
+            ps.setString(1, producto.getIdProducto());
             ps.setString(2, producto.getUrlImage());
             ps.setString(3, producto.getCodigo());
             ps.setString(4, producto.getNombre());
@@ -65,7 +65,7 @@ public class DAOProducto {
             rs = ps.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();
-                producto.setId(rs.getString("idProducto"));
+                producto.setIdPrducto(rs.getString("idProducto"));
                 producto.setUrlImage(rs.getString("urlImage"));
                 producto.setCodigo(rs.getString("codigo"));
                 producto.setNombre(rs.getString("nombre"));
@@ -115,6 +115,47 @@ public class DAOProducto {
             e.printStackTrace();
             return false; 
         } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean editarProducto(Producto producto){
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        System.out.println(producto.toString());
+
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement(
+                "UPDATE producto SET urlImage = ?, codigo = ?, nombre = ?, cantidad = ?, stockMinimo = ?, costo = ?, precioMenudeo = ?, precioMayoreo = ? WHERE idProducto = ?"
+            );
+            ps.setString(1, producto.getUrlImage());
+            ps.setString(2, producto.getCodigo());
+            ps.setString(3, producto.getNombre());
+            ps.setFloat(4, producto.getCantidad());
+            ps.setFloat(5, producto.getStockMinimo());
+            ps.setFloat(6, producto.getCosto());
+            ps.setFloat(7, producto.getPrecioMenudeo());
+            ps.setFloat(8, producto.getPrecioMayoreo());
+            ps.setString(9, producto.getIdProducto());
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return true;
+            } else {
+                return false;
+            }   
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }finally{
             try {
                 con.close();
                 if (con.isClosed()) {

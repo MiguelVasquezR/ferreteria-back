@@ -19,7 +19,7 @@ public class DAOPersona {
         ps.setString(1, Persona.getId());
         ps.setString(2, Persona.getId_direccion());
         ps.setString(3, Persona.getNombre());
-        ps.setInt(4, Persona.getTelefono());
+        ps.setString(4, Persona.getTelefono());
         ps.setString(5, Persona.getCorreo());
         ps.setString(6, Persona.getRfc());
         ps.setFloat(7, Persona.getSaldo_pendiente());

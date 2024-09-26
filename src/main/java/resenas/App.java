@@ -13,6 +13,7 @@ import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
 import resenas.controlador.ControladorPersona;
 import resenas.controlador.ControladorProducto;
+import resenas.controlador.ControladorProveedor;
 import resenas.controlador.ControladorUsuario;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
@@ -107,27 +108,6 @@ public class App {
             if ("/cambiar-contrasena".equals(path)) {
                 return;
             }
-            if ("/direccion/agregar-direccion".equals(path)) {
-                return;
-            }
-
-            if ("/persona/agregar-persona".equals(path)) {
-                return;
-            }
-
-
-            if ("/producto/agregar-producto".equals(path)) {
-                return;
-            }
-            if ("/producto/obtener-productos".equals(path)) {
-                return;
-            }
-            if ("/producto/eliminar-producto".equals(path)) {
-                return;
-            }
-            if ("/producto/editar-producto".equals(path)) {
-                return;
-            }
             String token = req.headers("Authorization");
             if (token == null || token.isEmpty()) {
                 halt(401, "Acceso no autorizado");
@@ -148,16 +128,20 @@ public class App {
             return "Hola mundo";
         });
 
-        path("/direccion", ()->{
-           post("/agregar-direccion", ControladorDireccion::crearDireccion);
+        path("/direccion", () -> {
+            post("/agregar-direccion", ControladorDireccion::crearDireccion);
         });
 
-        path("/persona", ()->{
+        path("/persona", () -> {
             post("/agregar-persona", ControladorPersona::crearPersona);
-            //delete("/eliminar-producto", ControladorProducto::eliminarProducto);
+            // delete("/eliminar-producto", ControladorProducto::eliminarProducto);
         });
 
-        path("/producto", ()->{
+        path("/proveedor", () -> {
+            post("/agregar", ControladorProveedor::registrarProveedor);
+        });
+
+        path("/producto", () -> {
             post("/agregar-producto", ControladorProducto::crearProducto);
             get("/obtener-productos", ControladorProducto::obtenerProductos);
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);

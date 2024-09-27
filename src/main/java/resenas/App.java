@@ -144,6 +144,7 @@ public class App {
         path("/producto", () -> {
             post("/agregar-producto", ControladorProducto::crearProducto);
             get("/obtener-productos", ControladorProducto::obtenerProductos);
+            get("/obtener-producto", ControladorProducto::obtenerProducto);
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);
             put("/editar-producto", ControladorProducto::editarProducto);
         });

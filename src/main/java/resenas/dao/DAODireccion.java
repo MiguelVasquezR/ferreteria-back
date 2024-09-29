@@ -2,10 +2,8 @@ package resenas.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Direccion;
-import resenas.modelo.Persona;
 
 public class DAODireccion {
      private SQLConnection sqlConnection = new SQLConnection();
@@ -20,8 +18,7 @@ public class DAODireccion {
         ps.setString(2, direccion.getCiudad());
         ps.setString(3, direccion.getColonia());
         ps.setString(4, direccion.getCalle());
-        ps.setInt(5, direccion.getNumero());
-
+        ps.setString(5, direccion.getNumero());
             int res=ps.executeUpdate();
             if (res>0) {
                 return true;

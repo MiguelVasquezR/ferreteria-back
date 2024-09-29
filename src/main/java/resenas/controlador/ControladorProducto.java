@@ -24,6 +24,16 @@ public class ControladorProducto {
         }
     }
 
+    public static String obtenerProducto(Request req, Response res) {
+        String idProducto = req.queryParams("id");
+        Producto producto = daoProducto.obtenerProductoByID(idProducto);
+        if (producto != null) {
+            return gson.toJson(producto);
+        } else {
+            return "Producto no encontrado";
+        }
+    }
+
     public static String obtenerProductos(Request req, Response res) {
         if (daoProducto.getProducts() != null) {
             return gson.toJson(daoProducto.getProducts());

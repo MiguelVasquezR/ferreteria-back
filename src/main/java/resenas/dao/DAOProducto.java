@@ -93,27 +93,66 @@ public class DAOProducto {
 
     }
 
-    public boolean eliminarProducto(String idProducto){
+    public Producto obtenerProductoByID(String id) {
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Producto producto = new Producto();
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT * FROM producto WHERE idProducto = ?");
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                producto.setIdPrducto(rs.getString("idProducto"));
+                producto.setUrlImage(rs.getString("urlImage"));
+                producto.setCodigo(rs.getString("codigo"));
+                producto.setNombre(rs.getString("nombre"));
+                producto.setCantidad(rs.getFloat("cantidad"));
+                producto.setStockMinimo(rs.getFloat("stockMinimo"));
+                producto.setCosto(rs.getFloat("costo"));
+                producto.setPrecioMenudeo(rs.getFloat("precioMenudeo"));
+                producto.setPrecioMayoreo(rs.getFloat("precioMayoreo"));
+            }
+            return producto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public boolean eliminarProducto(String idProducto) {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
 
         try {
             con = sqlConnection.getConnection();
-            
+
             ps = con.prepareStatement(
                     "DELETE FROM producto WHERE idProducto = ? ");
             ps.setString(1, idProducto);
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;
-                
+
             } else {
-                return false;                
-            }         
+                return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return false; 
+            return false;
         } finally {
             try {
                 con.close();
@@ -126,17 +165,15 @@ public class DAOProducto {
         }
     }
 
-    public boolean editarProducto(Producto producto){
+    public boolean editarProducto(Producto producto) {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
-        System.out.println(producto.toString());
 
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                "UPDATE producto SET urlImage = ?, codigo = ?, nombre = ?, cantidad = ?, stockMinimo = ?, costo = ?, precioMenudeo = ?, precioMayoreo = ? WHERE idProducto = ?"
-            );
+                    "UPDATE producto SET urlImage = ?, codigo = ?, nombre = ?, cantidad = ?, stockMinimo = ?, costo = ?, precioMenudeo = ?, precioMayoreo = ? WHERE idProducto = ?");
             ps.setString(1, producto.getUrlImage());
             ps.setString(2, producto.getCodigo());
             ps.setString(3, producto.getNombre());
@@ -151,11 +188,11 @@ public class DAOProducto {
                 return true;
             } else {
                 return false;
-            }   
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }finally{
+        } finally {
             try {
                 con.close();
                 if (con.isClosed()) {

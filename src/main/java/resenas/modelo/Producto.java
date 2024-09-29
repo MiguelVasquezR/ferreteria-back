@@ -101,15 +101,9 @@ public class Producto {
 
     @Override
     public String toString() {
-        return "Producto [idProducto=" + idProducto + ", codigo=" + codigo + ", nombre=" + nombre + ", cantidad=" + cantidad
-                + ", stockMinimo=" + stockMinimo + ", costo=" + costo + ", precioMenudeo=" + precioMenudeo
-                + ", precioMayoreo=" + precioMayoreo + ", urlImage=" + urlImage + ", getId()=" + getIdProducto()
-                + ", getNombre()=" + getNombre() + ", getCantidad()=" + getCantidad() + ", getStockMinimo()="
-                + getStockMinimo() + ", getClass()=" + getClass() + ", getCosto()=" + getCosto()
-                + ", getPrecioMenudeo()=" + getPrecioMenudeo() + ", getPrecioMayoreo()=" + getPrecioMayoreo()
-                + ", getCodigo()=" + getCodigo() + ", getUrlImage()=" + getUrlImage() + ", hashCode()=" + hashCode()
-                + ", toString()=" + super.toString() + "]";
+        return "Producto [idProducto=" + idProducto + ", codigo=" + codigo + ", nombre=" + nombre + ", cantidad="
+                + cantidad + ", stockMinimo=" + stockMinimo + ", costo=" + costo + ", precioMenudeo=" + precioMenudeo
+                + ", precioMayoreo=" + precioMayoreo + ", urlImage=" + urlImage + "]";
     }
-    
 
 }

@@ -4,7 +4,7 @@ public class Persona {
 private String id;
 private String id_direccion;
 private String nombre;
-private int telefono;
+private String telefono;
 private String correo;
 private String rfc;
 private float saldo_pendiente;
@@ -15,7 +15,7 @@ public Persona(){
 
 }
 
-public Persona(String id, String id_direccion, String nombre, int telefono,
+public Persona(String id, String id_direccion, String nombre, String telefono,
  String correo, String rfc, float saldo_pendiente) {
 this.id=id;
 this.id_direccion=id_direccion;
@@ -51,11 +51,11 @@ public void setNombre(String nombre) {
     this.nombre = nombre;
 }
 
-public int getTelefono() {
+public String getTelefono() {
     return telefono;
 }
 
-public void setTelefono(int telefono) {
+public void setTelefono(String telefono) {
     this.telefono = telefono;
 }
 
@@ -82,6 +82,14 @@ public float getSaldo_pendiente() {
 public void setSaldo_pendiente(float saldo_pendiente) {
     this.saldo_pendiente = saldo_pendiente;
 }
+
+@Override
+public String toString() {
+    return "Persona [id=" + id + ", id_direccion=" + id_direccion + ", nombre=" + nombre + ", telefono=" + telefono
+            + ", correo=" + correo + ", rfc=" + rfc + ", saldo_pendiente=" + saldo_pendiente + "]";
+}
+
+
 
 
 }

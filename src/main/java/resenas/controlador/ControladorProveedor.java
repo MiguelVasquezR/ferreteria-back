@@ -43,6 +43,20 @@ public class ControladorProveedor {
     }
 
     public static String actualizarProveedor(Request req, Response res) {
+        String idPersona=req.queryParams("id");
+        Persona persona = gson.fromJson(req.body(), Persona.class);
+        Direccion direccion= gson.fromJson(req.body(), Direccion.class);
+        Persona personaBd=daoPersona.obtenerPersonaById(idPersona);
+        System.out.println(personaBd.toString());
+
+        persona.setId(idPersona);
+        if (daoPersona.editarProveedor(persona)) {
+            direccion.setId(personaBd.getId_direccion());
+          if (daoDireccion.editarDireccion(direccion)) {
+            return "actualizado";
+          }
+
+        }
 
         return "";
 

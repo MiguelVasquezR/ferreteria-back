@@ -108,6 +108,10 @@ public class App {
             if ("/cambiar-contrasena".equals(path)) {
                 return;
             }
+
+            if ("/proveedor/actualizar-proveedor".equals(path)) {
+                return;
+            }
             String token = req.headers("Authorization");
             if (token == null || token.isEmpty()) {
                 halt(401, "Acceso no autorizado");
@@ -132,13 +136,14 @@ public class App {
             post("/agregar-direccion", ControladorDireccion::crearDireccion);
         });
 
-        path("/persona", () -> {
-            post("/agregar-persona", ControladorPersona::crearPersona);
+       // path("/persona", () -> {
+        //    post("/agregar-persona", ControladorPersona::crearPersona);
             // delete("/eliminar-producto", ControladorProducto::eliminarProducto);
-        });
+       // });
 
         path("/proveedor", () -> {
             post("/agregar", ControladorProveedor::registrarProveedor);
+            put("/actualizar-proveedor", ControladorProveedor::actualizarProveedor);
         });
 
         path("/producto", () -> {

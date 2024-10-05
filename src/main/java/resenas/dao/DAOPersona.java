@@ -3,12 +3,8 @@ package resenas.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Persona;
-import resenas.modelo.Producto;
-import resenas.modelo.Proveedor;
-
 public class DAOPersona {
     private SQLConnection sqlConnection = new SQLConnection();
 
@@ -17,7 +13,8 @@ public class DAOPersona {
         PreparedStatement ps = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("INSERT INTO persona VALUES (?,?,?,?,?,?,?)");
+            ps = con.prepareStatement(
+                    "INSERT INTO persona (idPersona, idDireccion, nombre, telefono, correo, rfc, idRol) VALUES (?,?,?,?,?,?,?)");
             ps.setString(1, Persona.getId());
             ps.setString(2, Persona.getId_direccion());
             ps.setString(3, Persona.getNombre());
@@ -25,6 +22,8 @@ public class DAOPersona {
             ps.setString(5, Persona.getCorreo());
             ps.setString(6, Persona.getRfc());
             ps.setString(7, Persona.getIdRol());
+
+            System.out.println(ps);
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;
@@ -48,8 +47,7 @@ public class DAOPersona {
         }
     }
 
-
-     public boolean editarProveedor(Persona persona) {
+    public boolean editarProveedor(Persona persona) {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
@@ -58,11 +56,11 @@ public class DAOPersona {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
                     "UPDATE persona SET nombre = ?, telefono = ?, correo = ?, rfc = ? WHERE idPersona = ?");
-            ps.setString(1,persona.getNombre());
-            ps.setString(2,persona.getTelefono());
-            ps.setString(3,persona.getCorreo());
-            ps.setString(4,persona.getRfc());
-            ps.setString(5,persona.getId());
+            ps.setString(1, persona.getNombre());
+            ps.setString(2, persona.getTelefono());
+            ps.setString(3, persona.getCorreo());
+            ps.setString(4, persona.getRfc());
+            ps.setString(5, persona.getId());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;
@@ -119,6 +117,5 @@ public class DAOPersona {
         }
 
     }
-
 
 }

@@ -19,7 +19,7 @@ public class DAOProducto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO producto (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO producto (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo, estado, descripcion) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, producto.getIdProducto());
             ps.setString(2, producto.getUrlImage());
             ps.setString(3, producto.getCodigo());
@@ -29,6 +29,8 @@ public class DAOProducto {
             ps.setFloat(7, producto.getCosto());
             ps.setFloat(8, producto.getPrecioMenudeo());
             ps.setFloat(9, producto.getPrecioMayoreo());
+            ps.setString(10, "Disponible");
+            ps.setString(11, producto.getDescripcion());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;
@@ -61,7 +63,7 @@ public class DAOProducto {
         ResultSet rs = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("SELECT * FROM producto");
+            ps = con.prepareStatement("SELECT * FROM producto where estado != 'No disponible'");
             rs = ps.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();
@@ -74,6 +76,7 @@ public class DAOProducto {
                 producto.setCosto(rs.getFloat("costo"));
                 producto.setPrecioMenudeo(rs.getFloat("precioMenudeo"));
                 producto.setPrecioMayoreo(rs.getFloat("precioMayoreo"));
+                producto.setEstado(rs.getString("estado"));
                 productos.add(producto);
             }
             return productos;
@@ -114,6 +117,7 @@ public class DAOProducto {
                 producto.setCosto(rs.getFloat("costo"));
                 producto.setPrecioMenudeo(rs.getFloat("precioMenudeo"));
                 producto.setPrecioMayoreo(rs.getFloat("precioMayoreo"));
+                producto.setEstado(rs.getString("estado"));
             }
             return producto;
         } catch (Exception e) {
@@ -141,8 +145,9 @@ public class DAOProducto {
             con = sqlConnection.getConnection();
 
             ps = con.prepareStatement(
-                    "DELETE FROM producto WHERE idProducto = ? ");
-            ps.setString(1, idProducto);
+                    "UPDATE producto SET estado = ? WHERE idProducto = ? ");
+            ps.setString(1, "No disponible");
+            ps.setString(2, idProducto);
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

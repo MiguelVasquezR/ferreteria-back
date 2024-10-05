@@ -74,4 +74,6 @@ public class Persona {
                 + ", correo=" + correo + ", rfc=" + rfc + ", idRol=" + idRol + "]";
     }
 
+    
+
 }

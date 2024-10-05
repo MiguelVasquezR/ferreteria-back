@@ -10,19 +10,8 @@ public class Producto {
     private float precioMenudeo;
     private float precioMayoreo;
     private String urlImage;
-
-    public Producto(String idProducto, String codigo, String nombre, float cantidad, float stockMinimo, float costo,
-            float precioMenudeo, float precioMayoreo, String urlImage) {
-        this.idProducto = idProducto;
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.cantidad = cantidad;
-        this.stockMinimo = stockMinimo;
-        this.costo = costo;
-        this.precioMenudeo = precioMenudeo;
-        this.precioMayoreo = precioMayoreo;
-        this.urlImage = urlImage;
-    }
+    private String estado;
+    private String descripcion;
 
     public Producto() {
     }
@@ -99,11 +88,32 @@ public class Producto {
         this.urlImage = urlImage;
     }
 
+    public void setIdProducto(String idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     @Override
     public String toString() {
         return "Producto [idProducto=" + idProducto + ", codigo=" + codigo + ", nombre=" + nombre + ", cantidad="
                 + cantidad + ", stockMinimo=" + stockMinimo + ", costo=" + costo + ", precioMenudeo=" + precioMenudeo
-                + ", precioMayoreo=" + precioMayoreo + ", urlImage=" + urlImage + "]";
+                + ", precioMayoreo=" + precioMayoreo + ", urlImage=" + urlImage + ", estado=" + estado
+                + ", descripcion=" + descripcion + "]";
     }
 
 }

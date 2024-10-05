@@ -97,7 +97,7 @@ public class App {
             return "Ha vencido el tiempo para actualizar la contraseña";
         });
 
-        before((req, res) -> {
+        /* before((req, res) -> {
             String path = req.pathInfo();
             if ("/login".equals(path)) {
                 return;
@@ -120,7 +120,7 @@ public class App {
                 halt(401, "Acceso no autorizado");
                 return;
             }
-        });
+        }); */
 
         // Rutas protegidas por el middleware
         get("/", (req, res) -> {
@@ -139,6 +139,7 @@ public class App {
 
         path("/proveedor", () -> {
             post("/agregar", ControladorProveedor::registrarProveedor);
+            get("/obtener", ControladorProveedor::obtenerProveedores);
         });
 
         path("/producto", () -> {

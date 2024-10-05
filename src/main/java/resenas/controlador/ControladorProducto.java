@@ -16,7 +16,7 @@ public class ControladorProducto {
         Producto producto = gson.fromJson(req.body(), Producto.class);
         producto.setIdPrducto(UUID.randomUUID().toString());
         producto.setCodigo(producto.getIdProducto().replace("-", ""));
-        System.out.println(producto.getCodigo());
+        System.out.println(producto.toString());
         if (daoProducto.agregarProducto(producto)) {
             return "Producto agregado correctamente";
         } else {
@@ -42,19 +42,17 @@ public class ControladorProducto {
         }
     }
 
-    public static String eliminarProducto(Request req, Response res){
+    public static String eliminarProducto(Request req, Response res) {
         String idProducto = req.queryParams("id");
-        
         if (daoProducto.eliminarProducto(idProducto)) {
             return "Producto eliminado exitosamente";
-            
+
         } else {
             return "Producto no existente";
-            
         }
     }
 
-    public static String editarProducto(Request req, Response res){
+    public static String editarProducto(Request req, Response res) {
         Producto producto = gson.fromJson(req.body(), Producto.class);
         System.out.println(producto.toString());
         if (daoProducto.editarProducto(producto)) {

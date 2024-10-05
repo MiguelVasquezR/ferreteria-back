@@ -7,8 +7,10 @@ import com.google.gson.JsonObject;
 
 import resenas.dao.DAODireccion;
 import resenas.dao.DAOPersona;
+import resenas.dao.DAOProveedor;
 import resenas.modelo.Direccion;
 import resenas.modelo.Persona;
+import resenas.utils.Utils;
 import spark.Request;
 import spark.Response;
 
@@ -16,6 +18,7 @@ public class ControladorProveedor {
     private static Gson gson = new Gson();
     private static DAOPersona daoPersona = new DAOPersona();
     private static DAODireccion daoDireccion = new DAODireccion();
+    private static DAOProveedor daoProveedor = new DAOProveedor();
 
     public static JsonObject registrarProveedor(Request req, Response res) {
         Direccion direccion = gson.fromJson(req.body(), Direccion.class);
@@ -26,6 +29,7 @@ public class ControladorProveedor {
             Persona persona = gson.fromJson(req.body(), Persona.class);
             persona.setId(UUID.randomUUID().toString());
             persona.setId_direccion(direccion.getId());
+            persona.setIdRol(Utils.MYSQL_PROVEEDOR);
             if (daoPersona.agregarPersona(persona)) {
                 respuesta.addProperty("message", "Proveedor registrado correctamente");
                 res.status(201);
@@ -35,7 +39,7 @@ public class ControladorProveedor {
                 res.status(400);
                 return respuesta;
             }
-        }else{
+        } else {
             respuesta.addProperty("message", "No se pudo registrar la direccion");
             res.status(400);
             return respuesta;
@@ -46,6 +50,10 @@ public class ControladorProveedor {
 
         return "";
 
+    }
+
+    public static String obtenerProveedores(Request req, Response res) {
+        return gson.toJson(daoProveedor.obtenerProveedores());
     }
 
 }

@@ -1,29 +1,30 @@
+package resenas.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Persona;
-import resenas.modelo.Usuario;
+import resenas.modelo.Proveedor;
 
 public class DAOProveedor {
-     private SQLConnection sqlConnection = new SQLConnection();
-     public boolean agregarPersona (Persona Persona){
+    private SQLConnection sqlConnection = new SQLConnection();
+
+    public boolean agregarPersona(Persona Persona) {
         Connection con = null;
         PreparedStatement ps = null;
 
         try {
-        con=sqlConnection.getConnection();
-        ps=con.prepareStatement("INSERT INTO persona VALUES (?,?,?,?,?,?,?)");
-        ps.setString(1, Persona.getId());
-        ps.setString(2, Persona.getId_direccion());
-        ps.setString(3, Persona.getNombre());
-        ps.setString(4, Persona.getTelefono());
-        ps.setString(5, Persona.getCorreo());
-        ps.setString(6, Persona.getRfc());
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("INSERT INTO persona VALUES (?,?,?,?,?,?,?)");
+            ps.setString(1, Persona.getId());
+            ps.setString(2, Persona.getId_direccion());
+            ps.setString(3, Persona.getNombre());
+            ps.setString(4, Persona.getTelefono());
+            ps.setString(5, Persona.getCorreo());
+            ps.setString(6, Persona.getRfc());
 
-
-            int res=ps.executeUpdate();
-            if (res>0) {
+            int res = ps.executeUpdate();
+            if (res > 0) {
                 return true;
             } else {
                 return false;
@@ -45,7 +46,6 @@ public class DAOProveedor {
         }
     }
 
-
     public boolean editarProveedor(Proveedor proveedor) {
         sqlConnection = new SQLConnection();
         Connection con = null;
@@ -58,10 +58,10 @@ public class DAOProveedor {
             ps.setString(1, proveedor.getId());
             ps.setString(2, proveedor.getId_direccion());
             ps.setString(3, proveedor.getNombre());
-            ps.setFloat(4, proveedor.getTelefono());
-            ps.setFloat(5, proveedor.getCorreo());
-            ps.setFloat(6, proveedor.getRfc());
-            ps.setFloat(7, proveedor.getId());
+            ps.setString(4, proveedor.getTelefono());
+            ps.setString(5, proveedor.getCorreo());
+            ps.setString(6, proveedor.getRfc());
+            ps.setString(7, proveedor.getId());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

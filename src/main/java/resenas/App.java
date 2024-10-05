@@ -11,7 +11,6 @@ import resenas.utils.Correo;
 import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
-import resenas.controlador.ControladorPersona;
 import resenas.controlador.ControladorProducto;
 import resenas.controlador.ControladorProveedor;
 import resenas.controlador.ControladorUsuario;
@@ -97,30 +96,37 @@ public class App {
             return "Ha vencido el tiempo para actualizar la contraseña";
         });
 
-        /* before((req, res) -> {
-            String path = req.pathInfo();
-            if ("/login".equals(path)) {
-                return;
-            }
-            if ("/olvide-contrasena".equals(path)) {
-                return;
-            }
-            if ("/cambiar-contrasena".equals(path)) {
-                return;
-            }
-            String token = req.headers("Authorization");
-            if (token == null || token.isEmpty()) {
-                halt(401, "Acceso no autorizado");
-                return;
-            }
-            String messageVerifiedToken = JwtUtils.verifyToken(token.replace("Bearer ", ""));
-            if (messageVerifiedToken.equals("Token valido")) {
-                return;
-            } else {
-                halt(401, "Acceso no autorizado");
-                return;
-            }
-        }); */
+        /*
+         * before((req, res) -> {
+         * String path = req.pathInfo();
+         * if ("/login".equals(path)) {
+         * return;
+         * }
+         * if ("/olvide-contrasena".equals(path)) {
+         * return;
+         * }
+         * if ("/cambiar-contrasena".equals(path)) {
+         * return;
+         * }
+         * 
+         * if ("/proveedor/actualizar-proveedor".equals(path)) {
+         * return;
+         * }
+         * String token = req.headers("Authorization");
+         * if (token == null || token.isEmpty()) {
+         * halt(401, "Acceso no autorizado");
+         * return;
+         * }
+         * String messageVerifiedToken = JwtUtils.verifyToken(token.replace("Bearer ",
+         * ""));
+         * if (messageVerifiedToken.equals("Token valido")) {
+         * return;
+         * } else {
+         * halt(401, "Acceso no autorizado");
+         * return;
+         * }
+         * });
+         */
 
         // Rutas protegidas por el middleware
         get("/", (req, res) -> {
@@ -132,14 +138,15 @@ public class App {
             post("/agregar-direccion", ControladorDireccion::crearDireccion);
         });
 
-        path("/persona", () -> {
-            post("/agregar-persona", ControladorPersona::crearPersona);
-            // delete("/eliminar-producto", ControladorProducto::eliminarProducto);
-        });
+        // path("/persona", () -> {
+        // post("/agregar-persona", ControladorPersona::crearPersona);
+        // delete("/eliminar-producto", ControladorProducto::eliminarProducto);
+        // });
 
         path("/proveedor", () -> {
             post("/agregar", ControladorProveedor::registrarProveedor);
             get("/obtener", ControladorProveedor::obtenerProveedores);
+            put("/actualizar-proveedor", ControladorProveedor::actualizarProveedor);
         });
 
         path("/producto", () -> {

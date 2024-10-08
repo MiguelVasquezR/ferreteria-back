@@ -18,7 +18,7 @@ public class ControladorVenta {
         venta.setIdVenta(UUID.randomUUID().toString());
         System.out.println(venta.toString());
         if (daoVenta.guardarVenta(venta)) {
-            return "Producto agregado correctamente";
+            return "Venta guardada exitosamente";
         } else {
             return "Error al agregar producto";
         }

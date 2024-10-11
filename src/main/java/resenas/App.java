@@ -12,6 +12,7 @@ import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
 import resenas.controlador.ControladorProducto;
+import resenas.controlador.ControladorProductoVenta;
 import resenas.controlador.ControladorProveedor;
 import resenas.controlador.ControladorUsuario;
 import resenas.modelo.Usuario;
@@ -96,22 +97,28 @@ public class App {
             return "Ha vencido el tiempo para actualizar la contraseña";
         });
 
+        before((req, res) -> {
+            String path = req.pathInfo();
+            if ("/login".equals(path)) {
+                return;
+            }
+            if ("/olvide-contrasena".equals(path)) {
+                return;
+            }
+            if ("/cambiar-contrasena".equals(path)) {
+                return;
+            }
+
+            if ("/proveedor/actualizar-proveedor".equals(path)) {
+                return;
+            }
+
+            if ("/producto-venta/listaMasVendidos".equals(path)) {
+                return;
+            }
+        });
+
         /*
-         * before((req, res) -> {
-         * String path = req.pathInfo();
-         * if ("/login".equals(path)) {
-         * return;
-         * }
-         * if ("/olvide-contrasena".equals(path)) {
-         * return;
-         * }
-         * if ("/cambiar-contrasena".equals(path)) {
-         * return;
-         * }
-         * 
-         * if ("/proveedor/actualizar-proveedor".equals(path)) {
-         * return;
-         * }
          * String token = req.headers("Authorization");
          * if (token == null || token.isEmpty()) {
          * halt(401, "Acceso no autorizado");
@@ -155,6 +162,12 @@ public class App {
             get("/obtener-producto", ControladorProducto::obtenerProducto);
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);
             put("/editar-producto", ControladorProducto::editarProducto);
+        });
+
+        path("/producto-venta", () -> {
+            get("/listaMasVendidos", ControladorProductoVenta::listaMasVendida);
+            get("/listaMenosVendido", ControladorProductoVenta::listaMenosVendido);
+
         });
 
     }

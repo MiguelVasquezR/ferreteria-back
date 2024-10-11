@@ -97,7 +97,7 @@ public class App {
             return "Ha vencido el tiempo para actualizar la contraseña";
         });
 
-        /* 
+        /*
           before((req, res) -> {
           String path = req.pathInfo();
           if ("/login".equals(path)) {
@@ -114,12 +114,16 @@ public class App {
           return;
           }
 
-        * if("/venta/guardar".equals(path)){
-        *   return;
-        * }
+          if("/venta/guardar".equals(path)){
+          return;
+          }
 
-        *});
+          if("/venta/diaria".equals(path)){
+            return;
+          }
+        });
         
+         
         * String token = req.headers("Authorization");
          * if (token == null || token.isEmpty()) {
          * halt(401, "Acceso no autorizado");
@@ -167,6 +171,7 @@ public class App {
 
         path("/venta", () -> {
             post("/guardar", ControladorVenta::guardarVenta);
+            get("/diaria", ControladorVenta::ventaDiaria);
         });
 
     }

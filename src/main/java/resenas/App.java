@@ -13,6 +13,7 @@ import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
 import resenas.controlador.ControladorProducto;
 import resenas.controlador.ControladorProveedor;
+import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
 import resenas.controlador.ControladorVenta;
 import resenas.modelo.Usuario;
@@ -121,6 +122,10 @@ public class App {
           if("/venta/diaria".equals(path)){
             return;
           }
+
+          if ("/reporte/guardar".equals(path)) {
+            return;
+          }
         });
         
          
@@ -172,6 +177,10 @@ public class App {
         path("/venta", () -> {
             post("/guardar", ControladorVenta::guardarVenta);
             get("/diaria", ControladorVenta::ventaDiaria);
+        });
+
+        path("/reporte", () -> {
+            post("/guardar", ControladorReporte::guardarReporte);
         });
 
     }

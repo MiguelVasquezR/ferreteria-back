@@ -16,7 +16,7 @@ public class DAOVenta {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO venta (idVenta, idUsuario, monto, fecha) VALUES(?, ?, ?, ?)");
+                    "INSERT INTO VENTA (idVenta, idUsuario, monto, fecha) VALUES(?, ?, ?, ?)");
             ps.setString(1, venta.getIdVenta());
             ps.setString(2, venta.getIdUsuario());
             ps.setFloat(3, venta.getMonto());

@@ -1,6 +1,5 @@
 package resenas.dao;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,10 +17,9 @@ public class DAOProveedor {
     public boolean agregarPersona(Persona Persona) {
         Connection con = null;
         PreparedStatement ps = null;
-
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("INSERT INTO persona VALUES (?,?,?,?,?,?,?)");
+            ps = con.prepareStatement("INSERT INTO PERSONA VALUES (?,?,?,?,?,?,?)");
             ps.setString(1, Persona.getId());
             ps.setString(2, Persona.getId_direccion());
             ps.setString(3, Persona.getNombre());
@@ -60,7 +58,7 @@ public class DAOProveedor {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "UPDATE persona SET idPersona = ?, idDireccion = ?, nombre = ?, telefono = ?, correo = ?, rfc = ? WHERE idPersona = ? AND tipo ='proveedor'");
+                    "UPDATE PERSONA SET idPersona = ?, idDireccion = ?, nombre = ?, telefono = ?, correo = ?, rfc = ? WHERE idPersona = ? AND tipo ='proveedor'");
             ps.setString(1, proveedor.getId());
             ps.setString(2, proveedor.getId_direccion());
             ps.setString(3, proveedor.getNombre());
@@ -89,7 +87,6 @@ public class DAOProveedor {
         }
     }
 
-
     public ArrayList<JsonObject> obtenerProveedores() {
 
         ArrayList<JsonObject> proveedores = new ArrayList<JsonObject>();
@@ -99,7 +96,7 @@ public class DAOProveedor {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "SELECT P.idPersona, P.nombre, P.telefono, P.correo, P.rfc, R.nombre, D.ciudad, D.colonia, D.calle, D.numero FROM PERSONA P JOIN ROLES R ON P.idRol = R.idRol JOIN DIRECCION D ON P.idDireccion = D.idDireccion WHERE R.nombre = ?");
+                    "SELECT P.idPersona, P.nombre, P.telefono, P.correo, P.rfc, R.nombre, D.ciudad, D.colonia, D.calle, D.numero, P.estado FROM PERSONA P JOIN ROLES R ON P.idRol = R.idRol JOIN DIRECCION D ON P.idDireccion = D.idDireccion WHERE R.nombre = ? AND P.estado != 'Inactivo'");
             ps.setString(1, "Proveedor");
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -114,6 +111,7 @@ public class DAOProveedor {
                 proveedor.addProperty("colonia", rs.getString(8));
                 proveedor.addProperty("calle", rs.getString(9));
                 proveedor.addProperty("numero", rs.getString(10));
+                proveedor.addProperty("estado", rs.getString(11));
                 proveedores.add(proveedor);
             }
             return proveedores;

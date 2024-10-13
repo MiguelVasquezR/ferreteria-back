@@ -7,6 +7,7 @@ public class Persona {
     private String telefono;
     private String correo;
     private String rfc;
+    private String estado;
     private String idRol;
 
     public Persona() {
@@ -68,12 +69,18 @@ public class Persona {
         this.idRol = idRol;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "Persona [id=" + id + ", id_direccion=" + id_direccion + ", nombre=" + nombre + ", telefono=" + telefono
-                + ", correo=" + correo + ", rfc=" + rfc + ", idRol=" + idRol + "]";
+                + ", correo=" + correo + ", rfc=" + rfc + ", estado=" + estado + ", idRol=" + idRol + "]";
     }
-
-    
 
 }

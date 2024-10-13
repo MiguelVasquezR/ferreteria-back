@@ -53,7 +53,7 @@ CREATE TABLE USUARIO
     idUsuario  VARCHAR(255) NOT NULL PRIMARY KEY,
     idPersona  VARCHAR(255) NOT NULL,
     usuario    VARCHAR(255) NOT NULL,
-    contraseña VARCHAR(255) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
     FOREIGN KEY (idPersona) REFERENCES PERSONA (idPersona)
 );
 

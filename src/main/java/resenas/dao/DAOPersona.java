@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Persona;
+
 public class DAOPersona {
     private SQLConnection sqlConnection = new SQLConnection();
 
@@ -14,7 +15,7 @@ public class DAOPersona {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO persona (idPersona, idDireccion, nombre, telefono, correo, rfc, idRol) VALUES (?,?,?,?,?,?,?)");
+                    "INSERT INTO PERSONA (idPersona, idDireccion, nombre, telefono, correo, rfc, idRol) VALUES (?,?,?,?,?,?,?)");
             ps.setString(1, Persona.getId());
             ps.setString(2, Persona.getId_direccion());
             ps.setString(3, Persona.getNombre());
@@ -55,7 +56,7 @@ public class DAOPersona {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "UPDATE persona SET nombre = ?, telefono = ?, correo = ?, rfc = ? WHERE idPersona = ?");
+                    "UPDATE PERSONA SET nombre = ?, telefono = ?, correo = ?, rfc = ? WHERE idPersona = ?");
             ps.setString(1, persona.getNombre());
             ps.setString(2, persona.getTelefono());
             ps.setString(3, persona.getCorreo());
@@ -90,7 +91,7 @@ public class DAOPersona {
         Persona persona = new Persona();
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("SELECT * FROM persona WHERE idPersona = ?");
+            ps = con.prepareStatement("SELECT * FROM PERSONA WHERE idPersona = ?");
             ps.setString(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -105,6 +106,37 @@ public class DAOPersona {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public boolean eliminarPersona(String id) {
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("UPDATE PERSONA SET estado = ? WHERE idPersona = ?");
+            ps.setString(1, "Inactivo");
+            ps.setString(2, id);
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         } finally {
             try {
                 con.close();

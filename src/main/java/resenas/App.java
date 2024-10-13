@@ -13,7 +13,9 @@ import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
 import resenas.controlador.ControladorProducto;
 import resenas.controlador.ControladorProveedor;
+import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
+import resenas.controlador.ControladorVenta;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
 
@@ -153,6 +155,15 @@ public class App {
             get("/obtener-producto", ControladorProducto::obtenerProducto);
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);
             put("/editar-producto", ControladorProducto::editarProducto);
+        });
+
+        path("/venta", () -> {
+            post("/guardar", ControladorVenta::guardarVenta);
+            get("/diaria", ControladorVenta::ventaDiaria);
+        });
+
+        path("/reporte", () -> {
+            post("/guardar", ControladorReporte::guardarReporte);
         });
 
     }

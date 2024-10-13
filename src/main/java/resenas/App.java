@@ -14,6 +14,7 @@ import resenas.controlador.ControladorDireccion;
 import resenas.controlador.ControladorProducto;
 import resenas.controlador.ControladorProveedor;
 import resenas.controlador.ControladorUsuario;
+import resenas.controlador.ControladorVenta;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
 
@@ -48,12 +49,12 @@ public class App {
             System.out.println(contrasenEncriptada);
             Usuario usuario = ControladorUsuario.iniciarSesion(dataCliente.getUser(), contrasenEncriptada);
             if (usuario != null) {
-                String token = JwtUtils.generateToken(usuario.getRol(), usuario.getUser());
+                String token = JwtUtils.generateToken(usuario.getIdPersona(), usuario.getUser());
                 if (token != null && !token.isEmpty()) {
                     res.header("Access-Control-Expose-Headers", "ACCESS_TOKEN");
                     res.header("Access-Control-Expose-Headers", "ROL");
                     res.header("ACCESS_TOKEN", token);
-                    res.header("ROL", usuario.getRol());
+                    res.header("ROL", usuario.getIdPersona());
                     return "Usuario autenticado";
                 } else {
                     res.status(200);
@@ -96,22 +97,29 @@ public class App {
             return "Ha vencido el tiempo para actualizar la contraseña";
         });
 
-        /*
-         * before((req, res) -> {
-         * String path = req.pathInfo();
-         * if ("/login".equals(path)) {
-         * return;
-         * }
-         * if ("/olvide-contrasena".equals(path)) {
-         * return;
-         * }
-         * if ("/cambiar-contrasena".equals(path)) {
-         * return;
-         * }
-         * 
-         * if ("/proveedor/actualizar-proveedor".equals(path)) {
-         * return;
-         * }
+        
+          before((req, res) -> {
+          String path = req.pathInfo();
+          if ("/login".equals(path)) {
+          return;
+          }
+          if ("/olvide-contrasena".equals(path)) {
+          return;
+          }
+          if ("/cambiar-contrasena".equals(path)) {
+          return;
+          }
+          
+          if ("/proveedor/actualizar-proveedor".equals(path)) {
+          return;
+          }
+        
+
+          if ("/venta/editar-venta".equals(path)) { 
+          }
+        });
+
+         /*
          * String token = req.headers("Authorization");
          * if (token == null || token.isEmpty()) {
          * halt(401, "Acceso no autorizado");
@@ -155,6 +163,10 @@ public class App {
             get("/obtener-producto", ControladorProducto::obtenerProducto);
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);
             put("/editar-producto", ControladorProducto::editarProducto);
+        });
+
+        path("/venta", () -> {
+            put("/editar-venta", ControladorVenta::aV);
         });
 
     }

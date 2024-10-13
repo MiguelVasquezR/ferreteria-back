@@ -3,6 +3,8 @@ package resenas.modelo;
 import java.sql.Date;
 
 public class Venta {
+   
+
     private String idVenta;
     private String idUsuario;
     private float monto;
@@ -43,10 +45,12 @@ public class Venta {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+  
 
+    @Override
+    public String toString() {
+        return "Venta [idVenta=" + idVenta + ", idUsuario=" + idUsuario + ", monto=" + monto + ", fecha=" + fecha + "]";
+    }
     
-
-    
-
 
 }

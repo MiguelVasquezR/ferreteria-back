@@ -78,9 +78,10 @@ public class App {
             Usuario dataCliente = gson.fromJson(req.body(), Usuario.class);
             String contrasenEncriptada = Encriptar.encriptar(dataCliente.getPassword());
             JsonObject usuario = ControladorUsuario.iniciarSesion(dataCliente.getUser(), contrasenEncriptada);
+
             if (usuario != null) {
                 String token = JwtUtils.generateToken(usuario.get("rol").getAsString(),
-                        usuario.get("usuario").getAsString());
+                        usuario.get("id").getAsString());
                 if (token != null && !token.isEmpty()) {
                     res.header("Access-Control-Expose-Headers", "ACCESS_TOKEN");
                     res.header("Access-Control-Expose-Headers", "ROL");
@@ -137,11 +138,6 @@ public class App {
         path("/direccion", () -> {
             post("/agregar-direccion", ControladorDireccion::crearDireccion);
         });
-
-        // path("/persona", () -> {
-        // post("/agregar-persona", ControladorPersona::crearPersona);
-        // delete("/eliminar-producto", ControladorProducto::eliminarProducto);
-        // });
 
         path("/proveedor", () -> {
             post("/agregar", ControladorProveedor::registrarProveedor);

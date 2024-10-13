@@ -22,13 +22,14 @@ public class DAOUsuario {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "SELECT r.nombre, u.usuario FROM USUARIO as u JOIN PERSONA as p ON u.idPersona = p.idPersona JOIN ROLES as r ON p.idRol = r.idRol WHERE u.usuario = ? AND u.contrasena = ?");
+                    "SELECT r.nombre, u.usuario, u.idUsuario FROM USUARIO as u JOIN PERSONA as p ON u.idPersona = p.idPersona JOIN ROLES as r ON p.idRol = r.idRol WHERE u.usuario = ? AND u.contrasena = ?");
             ps.setString(1, usuario);
             ps.setString(2, contrasena);
             rs = ps.executeQuery();
             if (rs.next()) {
                 json.addProperty("rol", rs.getString("nombre"));
                 json.addProperty("usuario", rs.getString("usuario"));
+                json.addProperty("id", rs.getString("idUsuario"));
                 return json;
             }
             return null;

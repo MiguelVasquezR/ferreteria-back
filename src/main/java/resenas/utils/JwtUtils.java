@@ -37,6 +37,15 @@ public class JwtUtils {
         return jwt.getClaim("Correo").asString();
     }
 
+    public static String obtenerIdUsuaraio(String token) {
+        Algorithm algorithm = Algorithm.HMAC256(Utils.PASSWORD_TOKEN);
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer("auth0")
+                .build();
+        DecodedJWT jwt = verifier.verify(token);
+        return jwt.getClaim("USUARIO").asString();
+    }
+
     public static String verifyToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(Utils.PASSWORD_TOKEN);

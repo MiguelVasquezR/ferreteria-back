@@ -5,9 +5,10 @@ import java.sql.Date;
 public class Venta {
     private String idVenta;
     private String idUsuario;
+    private float cantidad;
     private float monto;
     private Date fecha;
-    
+
     public Venta() {
 
     }
@@ -28,14 +29,6 @@ public class Venta {
         this.idUsuario = idUsuario;
     }
 
-    public float getMonto() {
-        return monto;
-    }
-
-    public void setMonto(float monto) {
-        this.monto = monto;
-    }
-
     public Date getFecha() {
         return fecha;
     }
@@ -44,9 +37,26 @@ public class Venta {
         this.fecha = fecha;
     }
 
-    
+    public float getCantidad() {
+        return cantidad;
+    }
 
-    
+    public void setCantidad(float cantidad) {
+        this.cantidad = cantidad;
+    }
 
+    public float getMonto() {
+        return monto;
+    }
+
+    public void setMonto(float monto) {
+        this.monto = monto;
+    }
+
+    @Override
+    public String toString() {
+        return "Venta [idVenta=" + idVenta + ", idUsuario=" + idUsuario + ", cantidad=" + cantidad + ", monto=" + monto
+                + ", fecha=" + fecha + "]";
+    }
 
 }

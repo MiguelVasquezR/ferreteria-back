@@ -3,10 +3,10 @@ package resenas.modelo;
 public class Usuario {
 
     private String id;
+    private String id_persona;
     private String user;
     private String password;
     private String correo;
-    private String rol;
 
     public String getId() {
         return id;
@@ -32,12 +32,12 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getRol() {
-        return rol;
+    public String getIdPersona() {
+        return id_persona;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setIdPersona(String id_persona) {
+        this.id_persona = id_persona;
     }
 
     public String getCorreo() {

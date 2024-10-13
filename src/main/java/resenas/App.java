@@ -17,6 +17,7 @@ import resenas.controlador.ControladorProveedor;
 import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
 import resenas.controlador.ControladorVenta;
+import resenas.controlador.ControladorVenta;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
 
@@ -167,6 +168,10 @@ public class App {
             get("/listaMasVendidos", ControladorProductoVenta::listaMasVendida);
             get("/listaMenosVendido", ControladorProductoVenta::listaMenosVendido);
 
+        });
+
+        path("/venta", () -> {
+            put("/editar-venta", ControladorVenta::aV);
         });
 
     }

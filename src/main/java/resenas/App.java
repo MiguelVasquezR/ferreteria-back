@@ -37,7 +37,36 @@ public class App {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Allow-Credentials", "true");
             response.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            response.header("Access-Control-Allow-Headers", "Content-Type, Authorization, ACCESS_TOKEN");
+            response.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+            if ("OPTIONS".equals(request.requestMethod())) {
+                response.status(200);
+                return;
+            }
+
+            String path = request.pathInfo();
+            if ("/login".equals(path)) {
+                return;
+            }
+            if ("/olvide-contrasena".equals(path)) {
+                return;
+            }
+            if ("/cambiar-contrasena".equals(path)) {
+                return;
+            }
+            String token = request.headers("Authorization");
+            if (token == null || token.isEmpty()) {
+                halt(401, "Acceso no autorizado");
+                return;
+            }
+            String messageVerifiedToken = JwtUtils.verifyToken(token.replace("Bearer ",
+                    ""));
+            if (messageVerifiedToken.equals("Token valido")) {
+                return;
+            } else {
+                halt(401, "Acceso no autorizado");
+                return;
+            }
         });
         options("/*", (request, response) -> {
             response.status(200);
@@ -47,15 +76,15 @@ public class App {
         post("/login", (req, res) -> {
             Usuario dataCliente = gson.fromJson(req.body(), Usuario.class);
             String contrasenEncriptada = Encriptar.encriptar(dataCliente.getPassword());
-            System.out.println(contrasenEncriptada);
-            Usuario usuario = ControladorUsuario.iniciarSesion(dataCliente.getUser(), contrasenEncriptada);
+            JsonObject usuario = ControladorUsuario.iniciarSesion(dataCliente.getUser(), contrasenEncriptada);
             if (usuario != null) {
-                String token = JwtUtils.generateToken(usuario.getRol(), usuario.getUser());
+                String token = JwtUtils.generateToken(usuario.get("rol").getAsString(),
+                        usuario.get("usuario").getAsString());
                 if (token != null && !token.isEmpty()) {
                     res.header("Access-Control-Expose-Headers", "ACCESS_TOKEN");
                     res.header("Access-Control-Expose-Headers", "ROL");
                     res.header("ACCESS_TOKEN", token);
-                    res.header("ROL", usuario.getRol());
+                    res.header("ROL", usuario.get("rol").getAsString());
                     return "Usuario autenticado";
                 } else {
                     res.status(200);
@@ -98,53 +127,6 @@ public class App {
             return "Ha vencido el tiempo para actualizar la contraseña";
         });
 
-        /*
-          before((req, res) -> {
-          String path = req.pathInfo();
-          if ("/login".equals(path)) {
-          return;
-          }
-          if ("/olvide-contrasena".equals(path)) {
-          return;
-          }
-          if ("/cambiar-contrasena".equals(path)) {
-          return;
-          }
-          
-          if ("/proveedor/actualizar-proveedor".equals(path)) {
-          return;
-          }
-
-          if("/venta/guardar".equals(path)){
-          return;
-          }
-
-          if("/venta/diaria".equals(path)){
-            return;
-          }
-
-          if ("/reporte/guardar".equals(path)) {
-            return;
-          }
-        });
-        
-         
-        * String token = req.headers("Authorization");
-         * if (token == null || token.isEmpty()) {
-         * halt(401, "Acceso no autorizado");
-         * return;
-         * }
-         * String messageVerifiedToken = JwtUtils.verifyToken(token.replace("Bearer ",
-         * ""));
-         * if (messageVerifiedToken.equals("Token valido")) {
-         * return;
-         * } else {
-         * halt(401, "Acceso no autorizado");
-         * return;
-         * }
-         */
-    
-
         // Rutas protegidas por el middleware
         get("/", (req, res) -> {
             System.out.println("Hola como estas");
@@ -164,6 +146,7 @@ public class App {
             post("/agregar", ControladorProveedor::registrarProveedor);
             get("/obtener", ControladorProveedor::obtenerProveedores);
             put("/actualizar-proveedor", ControladorProveedor::actualizarProveedor);
+            delete("/eliminar", ControladorProveedor::eliminarProveedor);
         });
 
         path("/producto", () -> {

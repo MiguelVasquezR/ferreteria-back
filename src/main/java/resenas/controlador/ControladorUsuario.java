@@ -1,13 +1,14 @@
 package resenas.controlador;
 
+import com.google.gson.JsonObject;
+
 import resenas.dao.DAOUsuario;
-import resenas.modelo.Usuario;
 
 public class ControladorUsuario {
 
     private static DAOUsuario daoUsuario = new DAOUsuario();
 
-    public static Usuario iniciarSesion(String usuario, String contrasena) {
+    public static JsonObject iniciarSesion(String usuario, String contrasena) {
         return daoUsuario.validarCredenciales(usuario, contrasena);
     }
 

@@ -12,6 +12,7 @@ import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
 import resenas.controlador.ControladorProducto;
+import resenas.controlador.ControladorProductoVenta;
 import resenas.controlador.ControladorProveedor;
 import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
@@ -164,6 +165,12 @@ public class App {
 
         path("/reporte", () -> {
             post("/guardar", ControladorReporte::guardarReporte);
+        });
+
+        path("/producto-venta", () -> {
+            get("/listaMasVendidos", ControladorProductoVenta::listaMasVendida);
+            get("/listaMenosVendido", ControladorProductoVenta::listaMenosVendido);
+
         });
 
     }

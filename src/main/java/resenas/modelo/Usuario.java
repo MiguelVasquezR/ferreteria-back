@@ -48,4 +48,12 @@ public class Usuario {
         this.correo = correo;
     }
 
+    @Override
+    public String toString() {
+        return "Usuario [id=" + id + ", user=" + user + ", password=" + password + ", correo=" + correo + ", rol=" + rol
+                + "]";
+    }
+
+    
+
 }

@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.JsonAdapter;
+
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Persona;
 import resenas.modelo.Usuario;
@@ -14,23 +17,23 @@ public class DAOUsuario {
 
     private SQLConnection sqlConnection = new SQLConnection();
 
-    public Usuario validarCredenciales(String usuario, String contrasena) {
+    public JsonObject validarCredenciales(String usuario, String contrasena) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+        JsonObject json = new JsonObject();
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("SELECT * FROM usuario where usuario=? and contrasena=?");
+            ps = con.prepareStatement(
+                    "SELECT r.nombre, u.usuario, u.idUsuario FROM USUARIO as u JOIN PERSONA as p ON u.idPersona = p.idPersona JOIN ROLES as r ON p.idRol = r.idRol WHERE u.usuario = ? AND u.contrasena = ?");
             ps.setString(1, usuario);
             ps.setString(2, contrasena);
             rs = ps.executeQuery();
             if (rs.next()) {
-                Usuario user = new Usuario();
-                user.setId(rs.getString("id"));
-                user.setIdPersona(rs.getString("id_persona"));
-                user.setUser(rs.getString("usuario"));
-                user.setPassword(rs.getString("contrasena"));
-                return user;
+                json.addProperty("rol", rs.getString("nombre"));
+                json.addProperty("usuario", rs.getString("usuario"));
+                json.addProperty("id", rs.getString("idUsuario"));
+                return json;
             }
             return null;
         } catch (Exception e) {
@@ -53,7 +56,7 @@ public class DAOUsuario {
         PreparedStatement ps = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("UPDATE usuario SET contrasena=? WHERE correo=?");
+            ps = con.prepareStatement("UPDATE USUARIO SET contraseña=? WHERE correo=?");
             ps.setString(1, nuevaContrasena);
             ps.setString(2, correo);
             int res = ps.executeUpdate();

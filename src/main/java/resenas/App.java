@@ -12,8 +12,11 @@ import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
 import resenas.controlador.ControladorProducto;
+import resenas.controlador.ControladorProductoVenta;
 import resenas.controlador.ControladorProveedor;
+import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
+import resenas.controlador.ControladorVenta;
 import resenas.controlador.ControladorVenta;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
@@ -36,7 +39,36 @@ public class App {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Allow-Credentials", "true");
             response.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-            response.header("Access-Control-Allow-Headers", "Content-Type, Authorization, ACCESS_TOKEN");
+            response.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+            if ("OPTIONS".equals(request.requestMethod())) {
+                response.status(200);
+                return;
+            }
+
+            String path = request.pathInfo();
+            if ("/login".equals(path)) {
+                return;
+            }
+            if ("/olvide-contrasena".equals(path)) {
+                return;
+            }
+            if ("/cambiar-contrasena".equals(path)) {
+                return;
+            }
+            String token = request.headers("Authorization");
+            if (token == null || token.isEmpty()) {
+                halt(401, "Acceso no autorizado");
+                return;
+            }
+            String messageVerifiedToken = JwtUtils.verifyToken(token.replace("Bearer ",
+                    ""));
+            if (messageVerifiedToken.equals("Token valido")) {
+                return;
+            } else {
+                halt(401, "Acceso no autorizado");
+                return;
+            }
         });
         options("/*", (request, response) -> {
             response.status(200);
@@ -46,15 +78,16 @@ public class App {
         post("/login", (req, res) -> {
             Usuario dataCliente = gson.fromJson(req.body(), Usuario.class);
             String contrasenEncriptada = Encriptar.encriptar(dataCliente.getPassword());
-            System.out.println(contrasenEncriptada);
-            Usuario usuario = ControladorUsuario.iniciarSesion(dataCliente.getUser(), contrasenEncriptada);
+            JsonObject usuario = ControladorUsuario.iniciarSesion(dataCliente.getUser(), contrasenEncriptada);
+
             if (usuario != null) {
-                String token = JwtUtils.generateToken(usuario.getIdPersona(), usuario.getUser());
+                String token = JwtUtils.generateToken(usuario.get("rol").getAsString(),
+                        usuario.get("id").getAsString());
                 if (token != null && !token.isEmpty()) {
                     res.header("Access-Control-Expose-Headers", "ACCESS_TOKEN");
                     res.header("Access-Control-Expose-Headers", "ROL");
                     res.header("ACCESS_TOKEN", token);
-                    res.header("ROL", usuario.getIdPersona());
+                    res.header("ROL", usuario.get("rol").getAsString());
                     return "Usuario autenticado";
                 } else {
                     res.status(200);
@@ -97,45 +130,6 @@ public class App {
             return "Ha vencido el tiempo para actualizar la contraseña";
         });
 
-        
-          before((req, res) -> {
-          String path = req.pathInfo();
-          if ("/login".equals(path)) {
-          return;
-          }
-          if ("/olvide-contrasena".equals(path)) {
-          return;
-          }
-          if ("/cambiar-contrasena".equals(path)) {
-          return;
-          }
-          
-          if ("/proveedor/actualizar-proveedor".equals(path)) {
-          return;
-          }
-        
-
-          if ("/venta/editar-venta".equals(path)) { 
-          }
-        });
-
-         /*
-         * String token = req.headers("Authorization");
-         * if (token == null || token.isEmpty()) {
-         * halt(401, "Acceso no autorizado");
-         * return;
-         * }
-         * String messageVerifiedToken = JwtUtils.verifyToken(token.replace("Bearer ",
-         * ""));
-         * if (messageVerifiedToken.equals("Token valido")) {
-         * return;
-         * } else {
-         * halt(401, "Acceso no autorizado");
-         * return;
-         * }
-         * });
-         */
-
         // Rutas protegidas por el middleware
         get("/", (req, res) -> {
             System.out.println("Hola como estas");
@@ -146,15 +140,11 @@ public class App {
             post("/agregar-direccion", ControladorDireccion::crearDireccion);
         });
 
-        // path("/persona", () -> {
-        // post("/agregar-persona", ControladorPersona::crearPersona);
-        // delete("/eliminar-producto", ControladorProducto::eliminarProducto);
-        // });
-
         path("/proveedor", () -> {
             post("/agregar", ControladorProveedor::registrarProveedor);
             get("/obtener", ControladorProveedor::obtenerProveedores);
             put("/actualizar-proveedor", ControladorProveedor::actualizarProveedor);
+            delete("/eliminar", ControladorProveedor::eliminarProveedor);
         });
 
         path("/producto", () -> {
@@ -163,6 +153,21 @@ public class App {
             get("/obtener-producto", ControladorProducto::obtenerProducto);
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);
             put("/editar-producto", ControladorProducto::editarProducto);
+        });
+
+        path("/venta", () -> {
+            post("/guardar", ControladorVenta::guardarVenta);
+            get("/diaria", ControladorVenta::ventaDiaria);
+        });
+
+        path("/reporte", () -> {
+            post("/guardar", ControladorReporte::guardarReporte);
+        });
+
+        path("/producto-venta", () -> {
+            get("/listaMasVendidos", ControladorProductoVenta::listaMasVendida);
+            get("/listaMenosVendido", ControladorProductoVenta::listaMenosVendido);
+
         });
 
         path("/venta", () -> {

@@ -19,7 +19,7 @@ public class DAOProducto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO producto (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo, estado, descripcion) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO PRODUCTO (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo, estado, descripcion) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, producto.getIdProducto());
             ps.setString(2, producto.getUrlImage());
             ps.setString(3, producto.getCodigo());
@@ -63,7 +63,7 @@ public class DAOProducto {
         ResultSet rs = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("SELECT * FROM producto where estado != 'No disponible'");
+            ps = con.prepareStatement("SELECT * FROM PRODUCTO where estado != 'No disponible'");
             rs = ps.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();
@@ -104,7 +104,7 @@ public class DAOProducto {
         Producto producto = new Producto();
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("SELECT * FROM producto WHERE idProducto = ?");
+            ps = con.prepareStatement("SELECT * FROM PRODUCTO WHERE idProducto = ?");
             ps.setString(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -145,7 +145,7 @@ public class DAOProducto {
             con = sqlConnection.getConnection();
 
             ps = con.prepareStatement(
-                    "UPDATE producto SET estado = ? WHERE idProducto = ? ");
+                    "UPDATE PRODUCTO SET estado = ? WHERE idProducto = ? ");
             ps.setString(1, "No disponible");
             ps.setString(2, idProducto);
             int res = ps.executeUpdate();
@@ -178,7 +178,7 @@ public class DAOProducto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "UPDATE producto SET urlImage = ?, codigo = ?, nombre = ?, cantidad = ?, stockMinimo = ?, costo = ?, precioMenudeo = ?, precioMayoreo = ? WHERE idProducto = ?");
+                    "UPDATE PRODUCTO SET urlImage = ?, codigo = ?, nombre = ?, cantidad = ?, stockMinimo = ?, costo = ?, precioMenudeo = ?, precioMayoreo = ? WHERE idProducto = ?");
             ps.setString(1, producto.getUrlImage());
             ps.setString(2, producto.getCodigo());
             ps.setString(3, producto.getNombre());

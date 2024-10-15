@@ -11,6 +11,7 @@ import resenas.utils.Correo;
 import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
+import resenas.controlador.ControladorPago;
 import resenas.controlador.ControladorProducto;
 import resenas.controlador.ControladorProductoVenta;
 import resenas.controlador.ControladorProveedor;
@@ -172,6 +173,10 @@ public class App {
 
         path("/venta", () -> {
             put("/editar-venta", ControladorVenta::aV);
+        });
+
+        path("/pago", () -> {
+            post("/agregar-pago", ControladorPago::crearPago);
         });
 
     }

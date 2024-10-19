@@ -11,6 +11,7 @@ import resenas.utils.Correo;
 import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
+import resenas.controlador.ControladorPago;
 import resenas.controlador.ControladorProducto;
 import resenas.controlador.ControladorProductoVenta;
 import resenas.controlador.ControladorProveedor;
@@ -18,6 +19,7 @@ import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
 import resenas.controlador.ControladorVenta;
 import resenas.controlador.ControladorObra;
+import resenas.controlador.ControladorVenta;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
 
@@ -175,6 +177,12 @@ public class App {
             post("/agregar", ControladorObra::guardarObra);
             get("/obtener", ControladorObra::obtenerObras);
 
+        path("/venta", () -> {
+            put("/editar-venta", ControladorVenta::aV);
+        });
+
+        path("/pago", () -> {
+            post("/agregar-pago", ControladorPago::crearPago);
         });
 
     }

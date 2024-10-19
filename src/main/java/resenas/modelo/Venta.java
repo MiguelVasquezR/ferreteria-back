@@ -3,6 +3,8 @@ package resenas.modelo;
 import java.sql.Date;
 
 public class Venta {
+   
+
     private String idVenta;
     private String idUsuario;
     private float cantidad;

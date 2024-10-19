@@ -18,6 +18,7 @@ import resenas.controlador.ControladorProveedor;
 import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
 import resenas.controlador.ControladorVenta;
+import resenas.controlador.ControladorObra;
 import resenas.controlador.ControladorVenta;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
@@ -58,6 +59,7 @@ public class App {
                 return;
             }
             String token = request.headers("Authorization");
+
             if (token == null || token.isEmpty()) {
                 halt(401, "Acceso no autorizado");
                 return;
@@ -170,6 +172,10 @@ public class App {
             get("/listaMenosVendido", ControladorProductoVenta::listaMenosVendido);
 
         });
+
+        path("/obra", () -> {
+            post("/agregar", ControladorObra::guardarObra);
+            get("/obtener", ControladorObra::obtenerObras);
 
         path("/venta", () -> {
             put("/editar-venta", ControladorVenta::aV);

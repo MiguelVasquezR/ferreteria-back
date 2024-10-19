@@ -23,8 +23,6 @@ public class DAOPersona {
             ps.setString(5, Persona.getCorreo());
             ps.setString(6, Persona.getRfc());
             ps.setString(7, Persona.getIdRol());
-
-            System.out.println(ps);
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

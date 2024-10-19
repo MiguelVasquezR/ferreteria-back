@@ -42,7 +42,7 @@ public class Utils {
         MYSQL_VENDEDOR = dotenv.get("MYSQL_VENDEDOR");
         MYSQL_GERENTE = dotenv.get("MYSQL_GERENTE");
         MYSQL_PROVEEDOR = dotenv.get("MYSQL_PROVEEDOR");
-        MYSQL_ENCARGADO_OBRA = dotenv.get("MYSQL_ENCARGADO_OBRA");
+        MYSQL_ENCARGADO_OBRA = dotenv.get("MYSQL_ENCARGADO_PROYECTO");
 
     }
 }

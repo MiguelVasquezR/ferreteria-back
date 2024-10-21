@@ -12,8 +12,10 @@ import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
 import resenas.controlador.ControladorDireccion;
 import resenas.controlador.ControladorPago;
+import resenas.controlador.ControladorPaquete;
 import resenas.controlador.ControladorProducto;
 import resenas.controlador.ControladorProductoVenta;
+import resenas.controlador.ControladorProducto_Paquete;
 import resenas.controlador.ControladorProveedor;
 import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
@@ -177,6 +179,14 @@ public class App {
 
         path("/pago", () -> {
             post("/agregar-pago", ControladorPago::crearPago);
+        });
+
+        path("/paquete", () -> {
+            post("/agregar", ControladorPaquete::agregarPaquete);
+        });
+
+        path("/producto-paquete", () -> {
+            post("/agregar", ControladorProducto_Paquete::agregarProductoPaquete);
         });
 
     }

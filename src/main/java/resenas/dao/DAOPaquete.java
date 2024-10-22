@@ -2,7 +2,7 @@ package resenas.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-
+import java.sql.ResultSet;
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Paquete;
 
@@ -34,6 +34,40 @@ public class DAOPaquete {
                 if (con.isClosed()) {
                     ps.close();
                     sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Paquete obtenerById(String idPaquete){
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Paquete paquete = new Paquete();
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT * FROM PAQUETE WHERE idPaquete = ?");
+            ps.setString(1, idPaquete);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                paquete.setIdPaquete(rs.getString("idPaquete"));
+                paquete.setPrecio(rs.getInt("precio"));
+                paquete.setDescripcion(rs.getString("descripcion"));
+            }
+            return paquete;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }finally{
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    ps.close();
+                    sqlConnection.closeConnection();
+                    
                 }
             } catch (Exception e) {
                 e.printStackTrace();

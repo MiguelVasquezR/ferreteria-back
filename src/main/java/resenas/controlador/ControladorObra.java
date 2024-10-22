@@ -81,4 +81,17 @@ public class ControladorObra {
         return gson.toJson(daoProyecto.obtenerProyectos());
     }
 
+    public static JsonObject eliminarObra(Request req, Response res) {
+        String id = req.queryParams("id").replace("'", "");
+        JsonObject mensaje = new JsonObject();
+        if (daoProyecto.eliminarProyecto(id)) {
+            mensaje.addProperty("mensaje", "Obra eliminada correctamente");
+            mensaje.addProperty("status", 200);
+        } else {
+            mensaje.addProperty("mensaje", "Obra no eliminada correctamente");
+            mensaje.addProperty("status", 400);
+        }
+        return mensaje;
+    }
+
 }

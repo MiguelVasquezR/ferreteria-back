@@ -174,6 +174,7 @@ public class App {
         path("/obra", () -> {
             post("/agregar", ControladorObra::guardarObra);
             get("/obtener", ControladorObra::obtenerObras);
+            delete("/eliminar", ControladorObra::eliminarObra);
 
         });
 

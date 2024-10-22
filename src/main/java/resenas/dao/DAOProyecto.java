@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import resenas.conexion.SQLConnection;
@@ -20,13 +21,13 @@ public class DAOProyecto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO PROYECTO (idProyecto, idPersona, fecha, idDireccion, descripcion) VALUES(?, ?, ?, ?, ?)");
+                    "INSERT INTO PROYECTO (idProyecto, idPersona, fecha, idDireccion, descripcion, estado) VALUES(?, ?, ?, ?, ?, ?)");
             ps.setString(1, proyecto.getIdProyecto());
             ps.setString(2, proyecto.getIdPersona());
             ps.setDate(3, proyecto.getFecha());
             ps.setString(4, proyecto.getIdDireccion());
             ps.setString(5, proyecto.getDescripcion());
-
+            ps.setString(6, "Disponible");
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;
@@ -81,8 +82,9 @@ public class DAOProyecto {
                     "JOIN \n" + //
                     "    PROYECTO py ON p.idPersona = py.idPersona\n" + //
                     "JOIN \n" + //
-                    "    DIRECCION d2 ON py.idDireccion = d2.idDireccion;\n" + //
+                    "    DIRECCION d2 ON py.idDireccion = d2.idDireccion WHERE py.estado = 'Disponible';\n" + //
                     "");
+
             rs = ps.executeQuery();
             while (rs.next()) {
                 JsonObject proyecto = new JsonObject();
@@ -118,6 +120,38 @@ public class DAOProyecto {
             }
         }
 
+    }
+
+    public boolean eliminarProyecto(String id) {
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        System.out.println("id: " + id);
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement(
+                    "UPDATE PROYECTO SET estado = ? WHERE idProyecto = ?");
+            ps.setString(1, "Inactivo");
+            ps.setString(2, id);
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

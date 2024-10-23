@@ -34,4 +34,13 @@ public class ControladorPaquete {
             
         }
     }
+
+    public static String editarPaquete(Request req, Response res){
+        Paquete paquete = gson.fromJson(req.body(), Paquete.class);
+        if (daoPaquete.editarPaquete(paquete)) {
+            return "Datos del paquete editdos exitosamente";
+        }else{
+            return "No se guardaron los cambios";
+        }
+    }
 }

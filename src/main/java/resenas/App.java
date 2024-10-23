@@ -10,6 +10,8 @@ import com.google.gson.JsonObject;
 import resenas.utils.Correo;
 import resenas.utils.Encriptar;
 import resenas.utils.JwtUtils;
+import spark.Request;
+import spark.Response;
 import resenas.controlador.ControladorDireccion;
 import resenas.controlador.ControladorPago;
 import resenas.controlador.ControladorPaquete;
@@ -21,7 +23,6 @@ import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
 import resenas.controlador.ControladorVenta;
 import resenas.controlador.ControladorObra;
-import resenas.controlador.ControladorVenta;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
 
@@ -196,6 +197,22 @@ public class App {
 
         path("/producto-paquete", () -> {
             post("/agregar", ControladorProducto_Paquete::agregarProductoPaquete);
+        });
+
+
+        post("/enviar-correo", (Request req, Response res) -> {
+            JsonObject data = gson.fromJson(req.body(), JsonObject.class);
+
+            String correo = data.get("correo").getAsString();
+            String asunto = data.get("asunto").getAsString();
+            String mensaje = data.get("mensaje").getAsString();
+
+            JsonObject msjResponse = Correo.solicitarPedidoCorreo(correo, asunto, mensaje);
+
+            System.out.println(msjResponse);
+
+
+            return "";
         });
 
     }

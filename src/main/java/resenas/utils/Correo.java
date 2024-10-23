@@ -3,7 +3,7 @@ package resenas.utils;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-import static spark.Spark.stop;
+import com.google.gson.JsonObject;
 
 import java.util.Properties;
 
@@ -81,6 +81,84 @@ public class Correo {
             System.out.println("Error al enviar el correo: " + e.getMessage());
             return "Hubo un error";
         }
+    }
+
+    public static JsonObject solicitarPedidoCorreo(String destinatario, String asunto, String mensaje) {
+
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+
+        JsonObject respuesta = new JsonObject();
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(Utils.REMITENTE_GOOGLE, Utils.PASSWORD_GOOGLE);
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(Utils.REMITENTE_GOOGLE));
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
+            MimeBodyPart htmlPart = new MimeBodyPart();
+
+            String mensajeHTML = "<html>" +
+                    "<head>" +
+                    "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">" +
+                    "</head>" +
+                    "<body style='margin: 0; padding: 0; font-family: Arial, sans-serif; width: 100%;'>" +
+                    "<table width='100%' bgcolor='#F58A27' style='color: #fff; text-align: center;'>" +
+                    "<tr>" +
+                    "<td>" +
+                    "<img style=\"width: 100px;\" src=\"cid:imagen\">" +
+                    "</td>" +
+                    "<td>" +
+                    "<h1>Ferretería Callejas</h1>" +
+                    "</td>" +
+                    "</tr>" +
+                    "</table>" +
+                    "<div style='width: 100%; background-color: #fff; text-align: center;'>" +
+                    "<h2>" + asunto + "</h2>" +
+                    "<div style='background-color: #f2f2f2; width: 30%; padding: 10px; margin: 0 auto;'>" +
+                    "<p> " + mensaje + " </p>" +
+                    "<p>  Puedes contactarnos al número 2283044402 o a este correo </p>" +
+                    "</div>" +
+                    "</div>" +
+                    "<div style='width: 100%; background-color: #fff; margin-top: 40px;  text-align: center;'>" +
+                    "</div>" +
+                    "</body>" +
+                    "</html>";
+
+            message.setSubject("Solicitud de Pedido de forma inmediata - Ferretería Callejas");
+            htmlPart.setContent(mensajeHTML, "text/html");
+
+            MimeBodyPart adjuntoPart = new MimeBodyPart();
+            adjuntoPart.attachFile("src/main/java/resenas/recursos/bitmap.png");
+            adjuntoPart.setContentID("<imagen>");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(htmlPart);
+            multipart.addBodyPart(adjuntoPart);
+
+            message.setContent(multipart);
+
+            Transport.send(message);
+            respuesta.addProperty("status", 200);
+            respuesta.addProperty("message", "Correo enviado correctamente");
+        } catch (MessagingException e) {
+            respuesta.addProperty("status", 400);
+            respuesta.addProperty("message", "Correo no enviado correctamente");
+        } catch (Exception e) {
+            respuesta.addProperty("status", 400);
+            respuesta.addProperty("message", "Correo no enviado correctamente");
+        }
+
+        return respuesta;
+
     }
 
 }

@@ -43,4 +43,13 @@ public class ControladorPaquete {
             return "No se guardaron los cambios";
         }
     }
+
+    public static String eliminarPaquete(Request req, Response res){
+        String idPaquete = req.queryParams("idPaquete");
+        if (daoPaquete.eliminarPaquete(idPaquete)) {
+            return "Paquete eliminado exitosamente";
+        } else {
+            return "Error al elminar paquete";
+        }
+    }
 }

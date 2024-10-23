@@ -195,6 +195,7 @@ public class App {
             post("/agregar", ControladorPaquete::agregarPaquete);
             get("/obtener-paquete", ControladorPaquete::obtenerById);
             put("/editar", ControladorPaquete::editarPaquete);
+            put("/eliminar", ControladorPaquete::eliminarPaquete);
         });
 
         path("/producto-paquete", () -> {

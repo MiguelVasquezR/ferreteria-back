@@ -109,5 +109,35 @@ public class DAOPaquete {
             }
         }
     }
+
+    public boolean eliminarPaquete(String idPaquete){
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("UPDATE PAQUETE SET estado = ? WHERE idPaquete = ?");
+            ps.setString(1, "No disponible");
+            ps.setString(2, idPaquete);
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }finally{
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
     
 }

@@ -11,6 +11,7 @@ import resenas.dao.DAODireccion;
 import resenas.dao.DAOPersona;
 import resenas.dao.DAOProyecto;
 import resenas.modelo.Direccion;
+import resenas.modelo.Paquete;
 import resenas.modelo.Persona;
 import resenas.modelo.Proyecto;
 import resenas.utils.Utils;
@@ -92,6 +93,18 @@ public class ControladorObra {
             mensaje.addProperty("status", 400);
         }
         return mensaje;
+    }
+
+    public static String obtenerById(Request req, Response res){
+        String idProyecto = req.queryParams("idProyecto");
+        JsonObject proyecto = daoProyecto.obtenById(idProyecto);
+        if (proyecto != null) {
+            return gson.toJson(proyecto);
+            
+        } else {
+            return "Paquete no existente";
+            
+        }
     }
 
 }

@@ -18,7 +18,7 @@ public class DAOPaquete {
             ps.setString(1, paquete.getIdPaquete());
             ps.setInt(2, paquete.getPrecio());
             ps.setString(3, paquete.getDescripcion());
-            ps.setString(4, paquete.getEstado());
+            ps.setString(4, "Disponible");
 
             int res = ps.executeUpdate();
             if (res>0) {

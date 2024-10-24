@@ -179,6 +179,7 @@ public class App {
         path("/obra", () -> {
             post("/agregar", ControladorObra::guardarObra);
             get("/obtener", ControladorObra::obtenerObras);
+            get("/obtener-obra", ControladorObra::obtenerById);
             delete("/eliminar", ControladorObra::eliminarObra);
         });
 
@@ -194,6 +195,7 @@ public class App {
             post("/agregar", ControladorPaquete::agregarPaquete);
             get("/obtener-paquete", ControladorPaquete::obtenerById);
             put("/editar", ControladorPaquete::editarPaquete);
+            put("/eliminar", ControladorPaquete::eliminarPaquete);
         });
 
         path("/producto-paquete", () -> {

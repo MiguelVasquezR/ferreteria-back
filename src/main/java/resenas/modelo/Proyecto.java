@@ -9,13 +9,15 @@ public class Proyecto {
     private String idDireccion;
     private Date fecha;
     private String descripcion;
+    private String estado;
 
-    public Proyecto(String idProyecto, String idPersona, String idDireccion, Date fecha, String descripcion) {
+    public Proyecto(String idProyecto, String idPersona, String idDireccion, Date fecha, String descripcion, String estado) {
         this.idProyecto = idProyecto;
         this.idPersona = idPersona;
         this.idDireccion = idDireccion;
         this.fecha = fecha;
         this.descripcion = descripcion;
+        this.estado  =estado;
     }
 
     public Proyecto() {
@@ -59,6 +61,15 @@ public class Proyecto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     @Override

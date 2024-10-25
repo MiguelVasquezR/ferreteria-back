@@ -209,4 +209,34 @@ public class DAOProducto {
         }
     }
 
+    public boolean personalizarStockMinimo (Producto producto, String idProducto){
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("UPDATE PRODUCTO SET stockMinimo = ? WHERE idProducto = ?");
+            ps.setFloat(1, producto.getStockMinimo());
+            ps.setString(2, idProducto);
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }finally{
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

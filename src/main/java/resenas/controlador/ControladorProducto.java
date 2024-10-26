@@ -62,4 +62,14 @@ public class ControladorProducto {
         }
     }
 
+    public static String personalizarStockMinimo(Request req, Response res){
+        Producto producto = gson.fromJson(req.body(), Producto.class);
+        String idProducto = req.queryParams("idProducto");
+        if (daoProducto.personalizarStockMinimo(producto, idProducto)) {
+            return "Stock minimo modificado exitosamente";
+        } else {
+            return "Error al configurar stock minimo";
+        }
+    }
+
 }

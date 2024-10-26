@@ -159,6 +159,7 @@ public class App {
             get("/obtener-producto", ControladorProducto::obtenerProducto);
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);
             put("/editar-producto", ControladorProducto::editarProducto);
+            put("/configurar-stock-minimo", ControladorProducto::personalizarStockMinimo);
         });
 
         path("/venta", () -> {

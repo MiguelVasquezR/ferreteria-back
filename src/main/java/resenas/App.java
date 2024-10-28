@@ -175,7 +175,7 @@ public class App {
 
         path("/producto-venta", () -> {
             get("/listaMasVendidos", ControladorProductoVenta::listaMasVendida);
-            get("/listaMenosVendido", ControladorProductoVenta::listaMenosVendido);
+            get("/listaMenosVendidos", ControladorProductoVenta::listaMenosVendido);
 
         });
 

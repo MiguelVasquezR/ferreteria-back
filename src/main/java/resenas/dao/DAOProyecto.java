@@ -154,7 +154,7 @@ public class DAOProyecto {
         }
     }
 
-    public JsonObject obtenById(String idProyecto){
+    public JsonObject obtenById(String idProyecto) {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
@@ -186,7 +186,7 @@ public class DAOProyecto {
                     "    DIRECCION d2 ON py.idDireccion = d2.idDireccion WHERE py.idProyecto = ?;\n" + //
                     "");
             ps.setString(1, idProyecto);
-            rs  =ps.executeQuery();
+            rs = ps.executeQuery();
             while (rs.next()) {
                 proyecto.addProperty("idProyecto", rs.getString("idProyecto"));
                 proyecto.addProperty("nombre", rs.getString("nombre"));
@@ -206,7 +206,7 @@ public class DAOProyecto {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }finally{
+        } finally {
             try {
                 con.close();
                 if (con.isClosed()) {
@@ -217,5 +217,45 @@ public class DAOProyecto {
             }
         }
     }
+
+    public boolean editarProyecto   (Proyecto proyecto) {
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement(
+                    "UPDATE PROYECTO SET idPersona = ?, idDireccion = ?, fecha = ?, descripcion = ?, estado = ? WHERE idProyecto = ?");
+            ps.setString(1, proyecto.getIdPersona());
+            ps.setString(2, proyecto.getIdDireccion());
+            ps.setDate(3, proyecto.getFecha());
+            ps.setString(4, proyecto.getDescripcion());
+            ps.setString(5, proyecto.getEstado());
+            ps.setString(6, proyecto.getIdProyecto());
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
 
 }

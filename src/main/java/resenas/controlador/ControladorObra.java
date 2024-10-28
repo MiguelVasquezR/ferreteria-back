@@ -13,6 +13,7 @@ import resenas.dao.DAOProyecto;
 import resenas.modelo.Direccion;
 import resenas.modelo.Paquete;
 import resenas.modelo.Persona;
+import resenas.modelo.Producto;
 import resenas.modelo.Proyecto;
 import resenas.utils.Utils;
 import spark.Request;
@@ -95,15 +96,24 @@ public class ControladorObra {
         return mensaje;
     }
 
-    public static String obtenerById(Request req, Response res){
+    public static String obtenerById(Request req, Response res) {
         String idProyecto = req.queryParams("idProyecto");
         JsonObject proyecto = daoProyecto.obtenById(idProyecto);
         if (proyecto != null) {
             return gson.toJson(proyecto);
-            
+
         } else {
             return "Paquete no existente";
-            
+
+        }
+    }
+
+    public static String editarProyecto(Request req, Response res) {
+        Proyecto  proyecto = gson.fromJson(req.body(), Proyecto.class);
+        if (daoProyecto.editarProyecto(proyecto)) {
+            return "Datos del producto guardados exitosamente";
+        } else {
+            return "No se guardaron los datos del producto";
         }
     }
 

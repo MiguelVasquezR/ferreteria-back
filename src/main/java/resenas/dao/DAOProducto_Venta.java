@@ -21,15 +21,19 @@ public class DAOProducto_Venta {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                "SELECT idProducto, SUM(cantidad) AS total_vendido FROM producto_venta GROUP BY idProducto ORDER BY total_vendido ASC"
+                "SELECT p.nombre, SUM(pv.cantidad) AS total_vendido, p.precioMenudeo, p.urlImage\n" + 
+                "FROM PRODUCTO_VENTA pv\n" + 
+                "INNER JOIN PRODUCTO p ON pv.idProducto = p.idProducto\n" + 
+                "GROUP BY p.nombre, p.precioMenudeo, p.urlImage\n" + 
+                "ORDER BY total_vendido ASC;"
             );
             rs = ps.executeQuery();
             while (rs.next()) {
                 Producto_Venta producto_Venta = new Producto_Venta();
-                producto_Venta.setIdProductoVenta(rs.getString("idProducto"));
-                producto_Venta.setIdProducto(rs.getString("idProducto"));
-                // Aquí puedes agregar idVenta si lo necesitas
+                producto_Venta.setNombre(rs.getString("nombre"));
+                producto_Venta.setPrecioMenudeo(rs.getFloat("precioMenudeo"));
                 producto_Venta.setCantidad(rs.getFloat("total_vendido"));
+                producto_Venta.setUrlImage(rs.getString("urlImage"));
                 producto_ventas.add(producto_Venta);
             }
             return producto_ventas;
@@ -57,15 +61,21 @@ public class DAOProducto_Venta {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                "SELECT idProducto, SUM(cantidad) AS total_vendido FROM producto_venta GROUP BY idProducto ORDER BY total_vendido DESC"
+                "SELECT p.nombre, SUM(pv.cantidad) AS total_vendido, p.precioMenudeo, p.urlImage\n" + //
+                "FROM PRODUCTO_VENTA pv\n" + //
+                "INNER JOIN PRODUCTO p ON pv.idProducto = p.idProducto\n" + //
+                "GROUP BY p.nombre, p.precioMenudeo, p.urlImage\n" + //
+                "ORDER BY total_vendido DESC;"
+                
+
             );
             rs = ps.executeQuery();
             while (rs.next()) {
                 Producto_Venta producto_Venta = new Producto_Venta();
-                producto_Venta.setIdProductoVenta(rs.getString("idProducto"));
-                producto_Venta.setIdProducto(rs.getString("idProducto"));
-                // Aquí puedes agregar idVenta si lo necesitas
+                producto_Venta.setNombre(rs.getString("nombre"));
+                producto_Venta.setPrecioMenudeo(rs.getFloat("precioMenudeo"));
                 producto_Venta.setCantidad(rs.getFloat("total_vendido"));
+                producto_Venta.setUrlImage(rs.getString("urlImage"));
                 producto_ventas.add(producto_Venta);
             }
             return producto_ventas;

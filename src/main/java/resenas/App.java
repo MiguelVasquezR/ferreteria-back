@@ -22,7 +22,9 @@ import resenas.controlador.ControladorProveedor;
 import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
 import resenas.controlador.ControladorVenta;
+import resenas.dao.DAOPersona;
 import resenas.controlador.ControladorObra;
+import resenas.modelo.Persona;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
 
@@ -200,20 +202,18 @@ public class App {
             post("/agregar", ControladorProducto_Paquete::agregarProductoPaquete);
         });
 
-
         post("/enviar-correo", (Request req, Response res) -> {
             JsonObject data = gson.fromJson(req.body(), JsonObject.class);
-
-            String correo = data.get("correo").getAsString();
             String asunto = data.get("asunto").getAsString();
             String mensaje = data.get("mensaje").getAsString();
-
-            JsonObject msjResponse = Correo.solicitarPedidoCorreo(correo, asunto, mensaje);
-
-            System.out.println(msjResponse);
-
-
-            return "";
+            String idPersona = req.queryParams("id");
+            DAOPersona daoPersona = new DAOPersona();
+            Persona persona = daoPersona.obtenerPersonaById(idPersona);
+            JsonObject msjResponse = null;
+            if (persona != null) {
+                msjResponse = Correo.solicitarPedidoCorreo(persona.getCorreo(), asunto, mensaje);
+            }
+            return msjResponse;
         });
 
     }

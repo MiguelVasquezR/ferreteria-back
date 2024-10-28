@@ -183,7 +183,8 @@ public class App {
             post("/agregar", ControladorObra::guardarObra);
             get("/obtener", ControladorObra::obtenerObras);
             get("/obtener-obra", ControladorObra::obtenerById);
-            delete("/eliminar", ControladorObra::eliminarObra);
+            delete("/eliminar", ControladorObra::eliminarObra); 
+            put("/editar-proyecto", ControladorObra::editarProyecto);
         });
 
         path("/venta", () -> {
@@ -219,6 +220,8 @@ public class App {
             return msjResponse;
         });
 
+    
+    
     }
 
     static int getHerokuAssignedPort() {

@@ -12,6 +12,7 @@ public class Producto {
     private String urlImage;
     private String estado;
     private String descripcion;
+    private String idProveedor;
 
     public Producto() {
     }
@@ -108,12 +109,22 @@ public class Producto {
         this.descripcion = descripcion;
     }
 
+    
+
     @Override
     public String toString() {
         return "Producto [idProducto=" + idProducto + ", codigo=" + codigo + ", nombre=" + nombre + ", cantidad="
                 + cantidad + ", stockMinimo=" + stockMinimo + ", costo=" + costo + ", precioMenudeo=" + precioMenudeo
                 + ", precioMayoreo=" + precioMayoreo + ", urlImage=" + urlImage + ", estado=" + estado
                 + ", descripcion=" + descripcion + "]";
+    }
+
+    public String getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(String idProveedor) {
+        this.idProveedor = idProveedor;
     }
 
 }

@@ -77,6 +77,7 @@ public class DAOProducto {
                 producto.setPrecioMenudeo(rs.getFloat("precioMenudeo"));
                 producto.setPrecioMayoreo(rs.getFloat("precioMayoreo"));
                 producto.setEstado(rs.getString("estado"));
+                producto.setIdProveedor(rs.getString("idPersona"));
                 productos.add(producto);
             }
             return productos;

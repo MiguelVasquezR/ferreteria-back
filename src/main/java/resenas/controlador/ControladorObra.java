@@ -108,13 +108,44 @@ public class ControladorObra {
         }
     }
 
-    public static String editarProyecto(Request req, Response res) {
-        Proyecto  proyecto = gson.fromJson(req.body(), Proyecto.class);
-        if (daoProyecto.editarProyecto(proyecto)) {
-            return "Datos del producto guardados exitosamente";
+    public static JsonObject editarProyecto(Request req, Response res) {
+        JsonObject jsonObject = JsonParser.parseString(req.body()).getAsJsonObject();
+        JsonObject direccionProyectoJson = new JsonObject();
+        direccionProyectoJson.addProperty("calle", jsonObject.get("calleP").getAsString());
+        direccionProyectoJson.addProperty("numero", jsonObject.get("numeroP").getAsString());
+        direccionProyectoJson.addProperty("colonia", jsonObject.get("coloniaP").getAsString());
+        direccionProyectoJson.addProperty("ciudad", jsonObject.get("ciudadP").getAsString());
+
+        Direccion direccionProyecto = gson.fromJson(direccionProyectoJson, Direccion.class);
+        Direccion direccionPersona = gson.fromJson(req.body(), Direccion.class);
+        Persona persona = gson.fromJson(req.body(), Persona.class);
+        Proyecto proyecto = new Proyecto();
+
+        JsonObject mensaje = new JsonObject();
+        if (daoDireccion.editarDireccion(direccionPersona)) {
+            if (daoPersona.editarPersona(persona)) {
+                if (daoDireccion.editarDireccion(direccionProyecto)) {
+                    if (daoProyecto.editarProyecto(proyecto)) {
+                        mensaje.addProperty("mensaje", "Obra editada correctamente");
+                        mensaje.addProperty("status", 200);
+                    } else {
+                        mensaje.addProperty("mensaje", "Obra no editada correctamente");
+                        mensaje.addProperty("status", 400);
+                    }
+                } else {
+                    mensaje.addProperty("mensaje", "Obra no editada correctamente");
+                    mensaje.addProperty("status", 400);
+                }
+            } else {
+
+            }
         } else {
-            return "No se guardaron los datos del producto";
+            mensaje.addProperty("mensaje", "Obra no editada correctamente");
+            mensaje.addProperty("status", 400);
         }
+
+        return mensaje;
+       
     }
 
 }

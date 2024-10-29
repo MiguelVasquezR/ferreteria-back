@@ -108,6 +108,7 @@ public class ControladorObra {
         }
     }
 
+
     public static JsonObject editarProyecto(Request req, Response res) {
         JsonObject jsonObject = JsonParser.parseString(req.body()).getAsJsonObject();
         JsonObject direccionProyectoJson = new JsonObject();
@@ -139,13 +140,6 @@ public class ControladorObra {
             } else {
 
             }
-        } else {
-            mensaje.addProperty("mensaje", "Obra no editada correctamente");
-            mensaje.addProperty("status", 400);
-        }
 
-        return mensaje;
-       
-    }
 
 }

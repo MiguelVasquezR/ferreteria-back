@@ -3,8 +3,11 @@ package resenas.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Paquete;
+import resenas.modelo.Producto;
 
 public class DAOPaquete {
     private SQLConnection sqlConnection = new SQLConnection();
@@ -76,6 +79,41 @@ public class DAOPaquete {
                 e.printStackTrace();
             }
         }
+    }
+
+     public ArrayList<Paquete> obtenerPaquetes() {
+        sqlConnection = new SQLConnection();
+        ArrayList<Paquete> paquetes = new ArrayList<Paquete>();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT * FROM PAQUETE where estado != 'No disponible'");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Paquete paquete = new Paquete();
+                paquete.setIdPaquete(rs.getString("idPaquete"));
+                paquete.setPrecio(rs.getInt("precio"));
+                paquete.setDescripcion(rs.getString("descripcion"));
+                paquete.setEstado(rs.getString("estado"));
+                paquetes.add(paquete);
+            }
+            return paquetes;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public boolean editarPaquete(Paquete paquete){

@@ -23,6 +23,14 @@ public class ControladorPaquete {
 
     }
 
+    public static String obtenerPaquetes(Request req, Response res) {
+        if (daoPaquete.obtenerPaquetes() != null) {
+            return gson.toJson(daoPaquete.obtenerPaquetes());
+        } else {
+            return "No has agregado paquetes";
+        }
+    }
+
     public static String obtenerById(Request req, Response res){
         String idPaquete = req.queryParams("idPaquete");
         Paquete paquete = daoPaquete.obtenerById(idPaquete);

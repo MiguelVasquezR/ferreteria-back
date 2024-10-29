@@ -153,7 +153,7 @@ CREATE TABLE REPORTE
 
 CREATE TABLE OFERTA
 (
-    idOferte    VARCHAR(255) NOT NULL PRIMARY KEY,
+    idOferta    VARCHAR(255) NOT NULL PRIMARY KEY,
     idProducto  VARCHAR(255) NOT NULL,
     fechaInicio DATE         NOT NULL,
     fechaFinal  DATE         NOT NULL,

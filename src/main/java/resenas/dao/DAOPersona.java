@@ -148,4 +148,42 @@ public class DAOPersona {
 
     }
 
+    public boolean editarPersona(Persona persona) {
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement(
+                    "UPDATE PERSONA SET idDireccion = ?, nombre = ?, telefono = ?, correo = ?, rfc = ?, idRol = ?, estado = ? WHERE idPersona = ?");
+            ps.setString(1, persona.getId_direccion());
+            ps.setString(2, persona.getNombre());
+            ps.setString(3, persona.getTelefono());
+            ps.setString(4, persona.getCorreo());
+            ps.setString(5, persona.getRfc());
+            ps.setString(6, persona.getIdRol());
+            ps.setString(7, persona.getEstado());
+            ps.setString(8, persona.getId());
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

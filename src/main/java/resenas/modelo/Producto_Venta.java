@@ -5,7 +5,9 @@ public class Producto_Venta {
     private String nombre;
     private String urlImage;
     private float cantidad;
-
+    private String idProductoVenta;
+    private String idVenta;
+    private String idProducto;
 
     public String getUrlImage() {
         return urlImage;
@@ -14,7 +16,6 @@ public class Producto_Venta {
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
     }
-
 
     public float getPrecioMenudeo() {
         return precioMenudeo;
@@ -43,10 +44,30 @@ public class Producto_Venta {
         this.cantidad = cantidad;
     }
 
-    @Override
-    public String toString() {
-        return "Producto_Venta [idProductoVenta=" + idProductoVenta + ", idProducto=" + idProducto + ", idVenta="
-                + idVenta
-                + ", cantidad=" + cantidad + "]";
+    public String getIdProductoVenta() {
+        return idProductoVenta;
     }
+
+    public void setIdProductoVenta(String idProductoVenta) {
+        this.idProductoVenta = idProductoVenta;
+    }
+
+    public String getIdVenta() {
+        return idVenta;
+    }
+
+    public void setIdVenta(String idVenta) {
+        this.idVenta = idVenta;
+    }
+
+    public String getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(String idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    
+
 }

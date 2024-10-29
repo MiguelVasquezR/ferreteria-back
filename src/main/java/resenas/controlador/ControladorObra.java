@@ -109,7 +109,7 @@ public class ControladorObra {
     }
 
     public static String editarProyecto(Request req, Response res) {
-        Proyecto  proyecto = gson.fromJson(req.body(), Proyecto.class);
+        Proyecto proyecto = gson.fromJson(req.body(), Proyecto.class);
         if (daoProyecto.editarProyecto(proyecto)) {
             return "Datos del producto guardados exitosamente";
         } else {

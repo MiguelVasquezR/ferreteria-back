@@ -63,7 +63,9 @@ public class DAOProyecto {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement("SELECT\n" + //
                     "    py.idProyecto,\n" + //
+                    "    py.descripcion,\n" + //
                     "    p.nombre,\n" + //
+                    "    p.idPersona,\n" + //
                     "    p.correo,\n" + //
                     "    p.rfc,\n" + //
                     "    p.telefono,\n" + //
@@ -71,10 +73,12 @@ public class DAOProyecto {
                     "    d1.ciudad AS ciudad_persona,\n" + //
                     "    d1.colonia AS colonia_persona,\n" + //
                     "    d1.numero AS numero_persona,\n" + //
+                    "    d1.idDireccion AS id_direccion_persona,\n" + //
                     "    d2.calle AS calle_proyecto,\n" + //
                     "    d2.ciudad AS ciudad_proyecto,\n" + //
                     "    d2.colonia AS colonia_proyecto,\n" + //
-                    "    d2.numero AS numero_proyecto\n" + //
+                    "    d2.numero AS numero_proyecto,\n" + //
+                    "    d2.idDireccion AS id_direccion_proyecto\n" + //
                     "FROM \n" + //
                     "    PERSONA p\n" + //
                     "JOIN \n" + //
@@ -101,6 +105,11 @@ public class DAOProyecto {
                 proyecto.addProperty("ciudad_proyecto", rs.getString("ciudad_proyecto"));
                 proyecto.addProperty("colonia_proyecto", rs.getString("colonia_proyecto"));
                 proyecto.addProperty("numero_proyecto", rs.getString("numero_proyecto"));
+                proyecto.addProperty("id_direccion_persona", rs.getString("id_direccion_persona"));
+                proyecto.addProperty("id_direccion_proyecto", rs.getString("id_direccion_proyecto"));
+                proyecto.addProperty("idPersona", rs.getString("idPersona"));
+                proyecto.addProperty("descripcion", rs.getString("descripcion"));
+
                 proyectos.add(proyecto);
 
             }
@@ -225,13 +234,10 @@ public class DAOProyecto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "UPDATE PROYECTO SET idPersona = ?, idDireccion = ?, fecha = ?, descripcion = ?, estado = ? WHERE idProyecto = ?");
-            ps.setString(1, proyecto.getIdPersona());
-            ps.setString(2, proyecto.getIdDireccion());
-            ps.setDate(3, proyecto.getFecha());
-            ps.setString(4, proyecto.getDescripcion());
-            ps.setString(5, proyecto.getEstado());
-            ps.setString(6, proyecto.getIdProyecto());
+                    "UPDATE PROYECTO SET fecha = ?, descripcion = ? WHERE idProyecto = ?");
+            ps.setDate(1, proyecto.getFecha());
+            ps.setString(2, proyecto.getDescripcion());
+            ps.setString(3, proyecto.getIdProyecto());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

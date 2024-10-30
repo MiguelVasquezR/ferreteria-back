@@ -189,6 +189,7 @@ public class App {
         });
 
         path("/oferta", () -> {
+            post("/agregar", ControladorOferta::crearOferta);
             put("/cambiar-estado", ControladorOferta::finalizarOferta);
         });
 

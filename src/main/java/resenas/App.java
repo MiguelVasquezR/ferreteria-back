@@ -24,6 +24,7 @@ import resenas.controlador.ControladorUsuario;
 import resenas.controlador.ControladorVenta;
 import resenas.dao.DAOPersona;
 import resenas.controlador.ControladorObra;
+import resenas.controlador.ControladorOferta;
 import resenas.modelo.Persona;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
@@ -185,6 +186,10 @@ public class App {
             get("/obtener-obra", ControladorObra::obtenerById);
             delete("/eliminar", ControladorObra::eliminarObra); 
             put("/editar-proyecto", ControladorObra::editarProyecto);
+        });
+
+        path("/oferta", () -> {
+            put("/cambiar-estado", ControladorOferta::finalizarOferta);
         });
 
         path("/venta", () -> {

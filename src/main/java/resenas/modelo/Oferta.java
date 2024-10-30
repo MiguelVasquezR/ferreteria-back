@@ -8,8 +8,17 @@ public class Oferta {
     private Date fechaInicio;
     private Date fechaFinal;
     private String detalles;
+    private String estado;
     
     public Oferta() {
+    }
+    
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public String getIdOferta() {

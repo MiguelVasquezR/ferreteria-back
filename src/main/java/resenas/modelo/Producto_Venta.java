@@ -1,9 +1,6 @@
 package resenas.modelo;
 
 public class Producto_Venta {
-    private String idProductoVenta;
-    private String idProducto;
-    private String idVenta;
     private float precioMenudeo;
     private String nombre;
     private String urlImage;
@@ -67,30 +64,8 @@ public class Producto_Venta {
         return idProducto;
     }
 
-
-    public String getIdProductoVenta() {
-        return idProductoVenta;
-    }
-
-    public void setIdProductoVenta(String idProductoVenta) {
-        this.idProductoVenta = idProductoVenta;
-    }
-
-    public String getIdProducto() {
-        return idProducto;
-    }
-
-
     public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
     }
 
-
-    public String getIdVenta() {
-        return idVenta;
-    }
-
-    public void setIdVenta(String idVenta) {
-        this.idVenta = idVenta;
-    }
 }

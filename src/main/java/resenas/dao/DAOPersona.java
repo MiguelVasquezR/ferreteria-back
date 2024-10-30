@@ -156,15 +156,14 @@ public class DAOPersona {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "UPDATE PERSONA SET idDireccion = ?, nombre = ?, telefono = ?, correo = ?, rfc = ?, idRol = ?, estado = ? WHERE idPersona = ?");
+                    "UPDATE PERSONA SET idDireccion = ?, nombre = ?, telefono = ?, correo = ?, rfc = ?, estado = ? WHERE idPersona = ?");
             ps.setString(1, persona.getId_direccion());
             ps.setString(2, persona.getNombre());
             ps.setString(3, persona.getTelefono());
             ps.setString(4, persona.getCorreo());
             ps.setString(5, persona.getRfc());
-            ps.setString(6, persona.getIdRol());
-            ps.setString(7, persona.getEstado());
-            ps.setString(8, persona.getId());
+            ps.setString(6, "Disponible");
+            ps.setString(7, persona.getId());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

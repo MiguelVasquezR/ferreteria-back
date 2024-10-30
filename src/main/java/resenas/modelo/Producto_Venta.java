@@ -5,6 +5,9 @@ public class Producto_Venta {
     private String nombre;
     private String urlImage;
     private float cantidad;
+    private String idProducto;
+    private String idProductoVenta;
+    private String idVenta;
 
     public String getUrlImage() {
         return urlImage;
@@ -41,6 +44,14 @@ public class Producto_Venta {
         this.cantidad = cantidad;
     }
 
+    public String getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(String idProducto) {
+        this.idProducto = idProducto;
+    }
+
     public String getIdProductoVenta() {
         return idProductoVenta;
     }
@@ -56,14 +67,5 @@ public class Producto_Venta {
     public void setIdVenta(String idVenta) {
         this.idVenta = idVenta;
     }
-
-    public String getIdProducto() {
-        return idProducto;
-    }
-
-    public void setIdProducto(String idProducto) {
-        this.idProducto = idProducto;
-    }
-
 
 }

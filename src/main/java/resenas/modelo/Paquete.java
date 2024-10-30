@@ -1,11 +1,15 @@
 package resenas.modelo;
 
+import java.util.List;
+
 public class Paquete {
     String idPaquete;
     int precio;
+    String nombre;
     String descripcion;
     String estado;
-    
+    List<Producto> productos;
+
     public Paquete() {
     }
 
@@ -44,6 +48,22 @@ public class Paquete {
     @Override
     public String toString() {
         return "Paquete [idPaquete=" + idPaquete + ", precio=" + precio + ", descripcion=" + descripcion + "]";
+    }
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
 }

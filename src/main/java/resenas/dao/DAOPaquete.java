@@ -11,20 +11,21 @@ import resenas.modelo.Producto;
 
 public class DAOPaquete {
     private SQLConnection sqlConnection = new SQLConnection();
-    
-    public boolean agregarPaquete(Paquete paquete){
+
+    public boolean agregarPaquete(Paquete paquete) {
         Connection con = null;
         PreparedStatement ps = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("INSERT INTO PAQUETE (idPaquete, precio, descripcion, estado) VALUES (?, ?, ?, ?)");
+            ps = con.prepareStatement(
+                    "INSERT INTO PAQUETE (idPaquete, nombre, precio, descripcion, estado) VALUES (?, ?, ?, ?, ?)");
             ps.setString(1, paquete.getIdPaquete());
-            ps.setInt(2, paquete.getPrecio());
-            ps.setString(3, paquete.getDescripcion());
-            ps.setString(4, "Disponible");
-
+            ps.setString(2, paquete.getNombre());
+            ps.setInt(3, paquete.getPrecio());
+            ps.setString(4, paquete.getDescripcion());
+            ps.setString(5, "Disponible");
             int res = ps.executeUpdate();
-            if (res>0) {
+            if (res > 0) {
                 return true;
             } else {
                 return false;
@@ -32,7 +33,7 @@ public class DAOPaquete {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }finally{
+        } finally {
             try {
                 con.close();
                 if (con.isClosed()) {
@@ -45,7 +46,7 @@ public class DAOPaquete {
         }
     }
 
-    public Paquete obtenerById(String idPaquete){
+    public Paquete obtenerById(String idPaquete) {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
@@ -66,13 +67,13 @@ public class DAOPaquete {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }finally{
+        } finally {
             try {
                 con.close();
                 if (con.isClosed()) {
                     ps.close();
                     sqlConnection.closeConnection();
-                    
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -80,7 +81,7 @@ public class DAOPaquete {
         }
     }
 
-     public ArrayList<Paquete> obtenerPaquetes() {
+    public ArrayList<Paquete> obtenerPaquetes() {
         sqlConnection = new SQLConnection();
         ArrayList<Paquete> paquetes = new ArrayList<Paquete>();
         Connection con = null;
@@ -115,7 +116,7 @@ public class DAOPaquete {
 
     }
 
-    public boolean editarPaquete(Paquete paquete){
+    public boolean editarPaquete(Paquete paquete) {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
@@ -128,15 +129,15 @@ public class DAOPaquete {
             ps.setString(3, paquete.getEstado());
             ps.setString(4, paquete.getIdPaquete());
             int res = ps.executeUpdate();
-            if (res>0) {
-                return true;                
+            if (res > 0) {
+                return true;
             } else {
-                return false;                
+                return false;
             }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }finally{
+        } finally {
             try {
                 con.close();
                 if (con.isClosed()) {
@@ -148,7 +149,7 @@ public class DAOPaquete {
         }
     }
 
-    public boolean eliminarPaquete(String idPaquete){
+    public boolean eliminarPaquete(String idPaquete) {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
@@ -166,7 +167,7 @@ public class DAOPaquete {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }finally{
+        } finally {
             try {
                 con.close();
                 if (con.isClosed()) {
@@ -177,5 +178,5 @@ public class DAOPaquete {
             }
         }
     }
-    
+
 }

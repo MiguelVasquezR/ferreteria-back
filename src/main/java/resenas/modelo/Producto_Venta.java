@@ -8,9 +8,6 @@ public class Producto_Venta {
     private String nombre;
     private String urlImage;
     private float cantidad;
-    private String idProductoVenta;
-    private String idVenta;
-    private String idProducto;
 
     public String getUrlImage() {
         return urlImage;
@@ -68,29 +65,10 @@ public class Producto_Venta {
     }
 
 
-    public String getIdProductoVenta() {
-        return idProductoVenta;
-    }
-
-    public void setIdProductoVenta(String idProductoVenta) {
-        this.idProductoVenta = idProductoVenta;
-    }
-
-    public String getIdProducto() {
-        return idProducto;
-    }
-
-
     public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
     }
 
 
-    public String getIdVenta() {
-        return idVenta;
-    }
 
-    public void setIdVenta(String idVenta) {
-        this.idVenta = idVenta;
-    }
 }

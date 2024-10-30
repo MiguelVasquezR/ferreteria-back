@@ -49,7 +49,7 @@ public class DAOOferta {
 
     }
 
-     public boolean actualizarEstadoFinalizado(String idOferta) {
+     public boolean actualizarEstadoFinalizado() {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
@@ -63,9 +63,8 @@ public class DAOOferta {
             throw new NullPointerException("La conexión a la base de datos es null");
         }
 
-            ps = con.prepareStatement("UPDATE OFERTA SET estado = ? WHERE idOferta = ? AND fechaFinal <= CURRENT_DATE");
-            ps.setString(1, "finalizado");
-            ps.setString(2, idOferta);
+            ps = con.prepareStatement("UPDATE OFERTA SET estado = ? WHERE fechaFinal <= CURRENT_DATE");
+            ps.setString(1, "Finalizado");
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
                 return true;

@@ -27,8 +27,7 @@ public class ControladorOferta {
     }
 
     public static String finalizarOferta(Request req, Response res) {
-        String idOferta = req.queryParams("idOferta");
-        daoOferta.actualizarEstadoFinalizado(idOferta);
+        daoOferta.actualizarEstadoFinalizado();
         return ("Estado de la oferta actualizado a finalizado, si corresponde.");
     }
 }

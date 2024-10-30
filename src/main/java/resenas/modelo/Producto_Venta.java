@@ -1,9 +1,6 @@
 package resenas.modelo;
 
 public class Producto_Venta {
-    private String idProductoVenta;
-    private String idProducto;
-    private String idVenta;
     private float precioMenudeo;
     private String nombre;
     private String urlImage;
@@ -64,11 +61,9 @@ public class Producto_Venta {
         return idProducto;
     }
 
-
     public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
     }
-
 
 
 }

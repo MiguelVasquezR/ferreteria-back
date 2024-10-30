@@ -108,19 +108,29 @@ public class ControladorObra {
         }
     }
 
-
     public static JsonObject editarProyecto(Request req, Response res) {
+
         JsonObject jsonObject = JsonParser.parseString(req.body()).getAsJsonObject();
         JsonObject direccionProyectoJson = new JsonObject();
         direccionProyectoJson.addProperty("calle", jsonObject.get("calleP").getAsString());
         direccionProyectoJson.addProperty("numero", jsonObject.get("numeroP").getAsString());
         direccionProyectoJson.addProperty("colonia", jsonObject.get("coloniaP").getAsString());
         direccionProyectoJson.addProperty("ciudad", jsonObject.get("ciudadP").getAsString());
+        direccionProyectoJson.addProperty("id", jsonObject.get("idP").getAsString());
 
         Direccion direccionProyecto = gson.fromJson(direccionProyectoJson, Direccion.class);
         Direccion direccionPersona = gson.fromJson(req.body(), Direccion.class);
         Persona persona = gson.fromJson(req.body(), Persona.class);
+        persona.setId(jsonObject.get("idPersona").getAsString());
+        persona.setId_direccion(direccionPersona.getId());
+        
         Proyecto proyecto = new Proyecto();
+        proyecto.setIdProyecto(jsonObject.get("idProyecto").getAsString());
+        proyecto.setIdPersona(persona.getId());
+        proyecto.setIdDireccion(direccionProyecto.getId());
+        proyecto.setFecha(new Date(System.currentTimeMillis()));
+        proyecto.setDescripcion(jsonObject.get("descripcion").getAsString());
+
 
         JsonObject mensaje = new JsonObject();
         if (daoDireccion.editarDireccion(direccionPersona)) {
@@ -134,13 +144,20 @@ public class ControladorObra {
                         mensaje.addProperty("status", 400);
                     }
                 } else {
-                    mensaje.addProperty("mensaje", "Obra no editada correctamente");
+                    mensaje.addProperty("mensaje", "Obra no editada - direccion proyecto");
                     mensaje.addProperty("status", 400);
                 }
             } else {
-
+                mensaje.addProperty("mensaje", "Obra no editada - persona");
+                mensaje.addProperty("status", 400);
             }
+        } else {
+            mensaje.addProperty("mensaje", "Obra no editada - direccion persona");
+            mensaje.addProperty("status", 400);
+        }
+        return mensaje;
 
+    }
 
 }
 return mensaje;

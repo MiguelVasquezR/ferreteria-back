@@ -211,6 +211,7 @@ public class App {
             put("/eliminar", ControladorPaquete::eliminarPaquete);
         });
 
+        //Esta ruta se implementará en /paquetes/agregar
         path("/producto-paquete", () -> {
             post("/agregar", ControladorProducto_Paquete::agregarProductoPaquete);
         });

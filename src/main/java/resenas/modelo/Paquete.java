@@ -3,6 +3,7 @@ package resenas.modelo;
 import java.util.List;
 
 public class Paquete {
+
     private String idPaquete;
     private String nombre;
     private int precio;
@@ -10,6 +11,7 @@ public class Paquete {
     private String estado;
     private List<Producto> productos;
     
+
     public Paquete() {
     }
 

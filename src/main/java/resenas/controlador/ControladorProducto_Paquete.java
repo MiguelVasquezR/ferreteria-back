@@ -1,8 +1,14 @@
 package resenas.controlador;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import java.lang.reflect.Type;
+import com.google.gson.reflect.TypeToken;
+
+import resenas.dao.DAOPaquete;
 import resenas.dao.DAOProducto_Paquete;
 import resenas.modelo.Paquete;
 import resenas.modelo.Producto;
@@ -12,30 +18,46 @@ import spark.Response;
 
 public class ControladorProducto_Paquete {
     private static DAOProducto_Paquete daoProducto_Paquete = new DAOProducto_Paquete();
+    private static DAOPaquete daoPaquete = new DAOPaquete();
     private static Gson gson = new Gson();
 
     public static String agregarProductoPaquete(Request req, Response res){
         try {
-            Producto_Paquete producto_Paquete = gson.fromJson(req.body(), Producto_Paquete.class);
-            Producto producto = gson.fromJson(req.body(), Producto.class);
-            Paquete paquete = gson.fromJson(req.body(), Paquete.class);
+        JsonObject jsonPaquete = gson.fromJson(req.body(), JsonObject.class);
 
-            producto_Paquete.setIdProductoPaquete(UUID.randomUUID().toString());
-            producto_Paquete.setIdProducto(producto.getIdProducto());
-            producto_Paquete.setIdPaquete(paquete.getIdPaquete());
+        String nombre = jsonPaquete.get("nombre").getAsString();
+        int precio = jsonPaquete.get("precio").getAsInt();
+        String descripcion = jsonPaquete.get("descripcion").getAsString();
 
-            if(daoProducto_Paquete.agregarProductoPaquete(producto_Paquete)){
-                res.status(201);
-                return "Producto_Paquete agregado exitosamente";
-            } else {
-                res.status(500); // Error interno del servidor
-                return "Error al agregar producto_paquete";
+        Type tipoListaProductos = new TypeToken<List<Producto>>() {}.getType();
+        List<Producto> productos = gson.fromJson(jsonPaquete.get("productos"), tipoListaProductos);
+
+        Paquete paquete = new Paquete();
+        paquete.setIdPaquete(UUID.randomUUID().toString());
+        paquete.setNombre(nombre);
+        paquete.setPrecio(precio);
+        paquete.setDescripcion(descripcion);
+        paquete.setProductos(productos);
+
+        if (daoPaquete.agregarPaquete(paquete)) {
+            for (Producto producto : productos) {
+                Producto_Paquete productoPaquete = new Producto_Paquete();
+                productoPaquete.setIdProductoPaquete(UUID.randomUUID().toString());
+                productoPaquete.setIdPaquete(paquete.getIdPaquete());
+                productoPaquete.setIdProducto(producto.getIdProducto());
+
+                if (!daoProducto_Paquete.agregarProductoPaquete(productoPaquete)) {
+                    return "Error al agregar producto al paquete";
+                }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace(); // Manejo de excepciones
-            res.status(400);
-            return "Error al procesar la solicitud";
+            return "Paquete y productos agregados exitosamente";
+        } else {
+            return "Error al agregar el paquete";
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+        res.status(500);
+        return "Error interno del servidor";
+    }
     }
 }

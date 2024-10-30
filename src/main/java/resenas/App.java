@@ -22,8 +22,10 @@ import resenas.controlador.ControladorProveedor;
 import resenas.controlador.ControladorReporte;
 import resenas.controlador.ControladorUsuario;
 import resenas.controlador.ControladorVenta;
+import resenas.dao.DAOOferta;
 import resenas.dao.DAOPersona;
 import resenas.controlador.ControladorObra;
+import resenas.controlador.ControladorOferta;
 import resenas.modelo.Persona;
 import resenas.modelo.Usuario;
 import resenas.utils.FileBinario;
@@ -96,6 +98,8 @@ public class App {
                     res.header("Access-Control-Expose-Headers", "ROL");
                     res.header("ACCESS_TOKEN", token);
                     res.header("ROL", usuario.get("rol").getAsString());
+                    DAOOferta daoOferta = new DAOOferta();
+                    daoOferta.actualizarEstadoFinalizado();
                     return "Usuario autenticado";
                 } else {
                     res.status(200);
@@ -185,6 +189,10 @@ public class App {
             get("/obtener-obra", ControladorObra::obtenerById);
             delete("/eliminar", ControladorObra::eliminarObra); 
             put("/editar-proyecto", ControladorObra::editarProyecto);
+        });
+
+        path("/oferta", () -> {
+            post("/agregar", ControladorOferta::crearOferta);
         });
 
         path("/venta", () -> {

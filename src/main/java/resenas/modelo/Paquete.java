@@ -3,12 +3,14 @@ package resenas.modelo;
 import java.util.List;
 
 public class Paquete {
-    String idPaquete;
-    int precio;
-    String nombre;
-    String descripcion;
-    String estado;
-    List<Producto> productos;
+
+    private String idPaquete;
+    private String nombre;
+    private int precio;
+    private String descripcion;
+    private String estado;
+    private List<Producto> productos;
+    
 
     public Paquete() {
     }

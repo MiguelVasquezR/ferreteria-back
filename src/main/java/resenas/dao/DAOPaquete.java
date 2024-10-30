@@ -17,11 +17,12 @@ public class DAOPaquete {
         PreparedStatement ps = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("INSERT INTO PAQUETE (idPaquete, precio, descripcion, estado) VALUES (?, ?, ?, ?)");
+            ps = con.prepareStatement("INSERT INTO PAQUETE (idPaquete, nombre, precio, descripcion, estado) VALUES (?, ?, ?, ?, ?)");
             ps.setString(1, paquete.getIdPaquete());
-            ps.setInt(2, paquete.getPrecio());
-            ps.setString(3, paquete.getDescripcion());
-            ps.setString(4, "Disponible");
+            ps.setString(2, paquete.getNombre());
+            ps.setInt(3, paquete.getPrecio());
+            ps.setString(4, paquete.getDescripcion());
+            ps.setString(5, "Disponible");
 
             int res = ps.executeUpdate();
             if (res>0) {
@@ -122,11 +123,12 @@ public class DAOPaquete {
 
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("UPDATE PAQUETE SET precio = ?, descripcion = ?, estado = ? WHERE idPaquete = ?");
-            ps.setInt(1, paquete.getPrecio());
-            ps.setString(2, paquete.getDescripcion());
-            ps.setString(3, paquete.getEstado());
-            ps.setString(4, paquete.getIdPaquete());
+            ps = con.prepareStatement("UPDATE PAQUETE SET nombre = ?, precio = ?, descripcion = ?, estado = ? WHERE idPaquete = ?");
+            ps.setString(1, paquete.getNombre());
+            ps.setInt(2, paquete.getPrecio());
+            ps.setString(3, paquete.getDescripcion());
+            ps.setString(4, paquete.getEstado());
+            ps.setString(5, paquete.getIdPaquete());
             int res = ps.executeUpdate();
             if (res>0) {
                 return true;                

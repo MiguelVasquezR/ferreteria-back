@@ -1,12 +1,12 @@
 package resenas.modelo;
 
-public class Reporte {
+public class ReporteDagno {
     private String idReporte;
-    private String idProducto;
+    private String nombre;
     private String urlImage;
     private String descripcion;
     
-    public Reporte() {
+    public ReporteDagno() {
     }
 
     public String getIdReporte() {
@@ -17,12 +17,12 @@ public class Reporte {
         this.idReporte = idReporte;
     }
 
-    public String getIdProducto() {
-        return idProducto;
+    public String getnombre() {
+        return nombre;
     }
 
-    public void setIdProducto(String idProducto) {
-        this.idProducto = idProducto;
+    public void setnombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getUrlImage() {
@@ -43,7 +43,7 @@ public class Reporte {
 
     @Override
     public String toString() {
-        return "Reporte [idReporte=" + idReporte + ", idProducto=" + idProducto + ", urlImage=" + urlImage
+        return "Reporte [idReporte=" + idReporte + ", nombre=" + nombre + ", urlImage=" + urlImage
                 + ", descripcion=" + descripcion + "]";
     }
 

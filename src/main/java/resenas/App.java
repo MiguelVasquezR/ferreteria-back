@@ -208,7 +208,7 @@ public class App {
             get("/obtener-paquete", ControladorPaquete::obtenerById);
             get("/obtener-paquetes", ControladorPaquete::obtenerPaquetes);
             put("/editar", ControladorPaquete::editarPaquete);
-            put("/eliminar", ControladorPaquete::eliminarPaquete);
+            delete("/eliminar", ControladorPaquete::eliminarPaquete);
         });
 
         //Esta ruta se implementará en /paquetes/agregar

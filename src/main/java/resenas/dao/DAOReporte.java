@@ -4,21 +4,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 import resenas.conexion.SQLConnection;
-import resenas.modelo.Reporte;
+import resenas.modelo.ReporteDagno;
 
 public class DAOReporte {
     private SQLConnection sqlConnection;
 
-    public boolean guadarReporte(Reporte reporte){
+    public boolean guadarReporte(ReporteDagno reporte) {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                "INSERT INTO reporte (idReporte, idProducto, urlImage, descripcion) VALUES(?,?,?,?)");
+                    "INSERT INTO REPORTE (idReporte, nombre, urlImage, descripcion) VALUES(?,?,?,?)");
             ps.setString(1, reporte.getIdReporte());
-            ps.setString(2, reporte.getIdProducto());
+            ps.setString(2, reporte.getnombre());
             ps.setString(3, reporte.getUrlImage());
             ps.setString(4, reporte.getDescripcion());
 
@@ -31,7 +31,7 @@ public class DAOReporte {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }finally {
+        } finally {
             try {
                 con.close();
                 if (con.isClosed()) {
@@ -43,5 +43,5 @@ public class DAOReporte {
         }
 
     }
-    
+
 }

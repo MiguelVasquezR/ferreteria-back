@@ -100,6 +100,7 @@ public class App {
                     res.header("ROL", usuario.get("rol").getAsString());
                     DAOOferta daoOferta = new DAOOferta();
                     daoOferta.actualizarEstadoFinalizado();
+                    daoOferta.getOffers();
                     return "Usuario autenticado";
                 } else {
                     res.status(200);

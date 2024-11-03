@@ -30,4 +30,12 @@ public class ControladorOferta {
         daoOferta.actualizarEstadoFinalizado();
         return ("Estado de la oferta actualizado a finalizado, si corresponde.");
     }
+
+    public static String obtenerOfertas(Request req, Response res) {
+        if (daoOferta.getOffers() != null) {
+            return gson.toJson(daoOferta.getOffers());
+        } else {
+            return "No has agregado ofertas";
+        }
+    }
 }

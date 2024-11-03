@@ -2,10 +2,13 @@ package resenas.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Oferta;
+import resenas.modelo.Producto;
 
 public class DAOOferta {
     private SQLConnection sqlConnection;
@@ -97,4 +100,42 @@ public class DAOOferta {
         }
     }
         }
+        
+         public ArrayList<Oferta> getOffers() {
+        sqlConnection = new SQLConnection();
+        ArrayList<Oferta> ofertas = new ArrayList<Oferta>();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT * FROM OFERTA where estado != 'Finalizado'");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Oferta oferta = new Oferta();
+                oferta.setIdOferta(rs.getString("idOferta"));
+                oferta.setIdProducto(rs.getString("idProducto"));
+                oferta.setFechaInicio(rs.getDate("fechaInicio"));
+                oferta.setFechaFinal(rs.getDate("fechaFinal"));
+                oferta.setDetalles(rs.getString("detalles"));
+                oferta.setEstado(rs.getString("estado"));
+                oferta.setPrecioOferta(rs.getDouble("precioOferta"));
+                ofertas.add(oferta);
+            }
+            return ofertas;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
     }

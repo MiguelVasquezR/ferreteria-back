@@ -9,9 +9,20 @@ public class Oferta {
     private Date fechaFinal;
     private String detalles;
     private String estado;
+    private double precioOferta;
     
     public Oferta() {
     }
+
+    public double getPrecioOferta() {
+        return precioOferta;
+    }
+
+
+    public void setPrecioOferta(double precioOferta) {
+        this.precioOferta = precioOferta;
+    }
+
     
     public String getEstado() {
         return estado;

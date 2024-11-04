@@ -231,6 +231,10 @@ public class App {
             return msjResponse;
         });
 
+        path("/usuario", () ->{
+            get("/obtener-sueldo-mas-comision", ControladorUsuario::obtenerSueldoMasComision);
+        });
+
     
     
     }

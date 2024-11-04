@@ -69,7 +69,6 @@ public class App {
 
             if (token == null || token.isEmpty()) {
                 halt(401, "Acceso no autorizado");
-                return;
             }
             String messageVerifiedToken = JwtUtils.verifyToken(token.replace("Bearer ",
                     ""));

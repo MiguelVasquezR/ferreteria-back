@@ -215,6 +215,7 @@ public class App {
         //Esta ruta se implementará en /paquetes/agregar
         path("/producto-paquete", () -> {
             post("/agregar", ControladorProducto_Paquete::agregarProductoPaquete);
+            get("/obtener-productos-en-paquete", ControladorProducto_Paquete::obtenerProductosEnPaquete);
         });
 
         post("/enviar-correo", (Request req, Response res) -> {

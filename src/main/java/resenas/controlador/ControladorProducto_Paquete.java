@@ -60,4 +60,19 @@ public class ControladorProducto_Paquete {
         return "Error interno del servidor";
     }
     }
+
+    public static String obtenerProductosEnPaquete(Request req, Response res){
+        String idPaquete = req.queryParams("idPaquete");
+        if (idPaquete == null || idPaquete.isEmpty()) {
+            res.status(400);
+            return "idPaquete es requerido";
+        }
+        List<JsonObject> productosEnPaquete = daoProducto_Paquete.obtenerListaProductos(idPaquete);
+        if (productosEnPaquete.isEmpty()) {
+            res.status(404);
+            return "No se encontraron productos en el paquete especificado";
+        }else{
+            return gson.toJson(productosEnPaquete);
+        }
+    }
 }

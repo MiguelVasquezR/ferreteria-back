@@ -3,17 +3,17 @@ package resenas.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
-import com.google.gson.annotations.JsonAdapter;
+
 
 import resenas.conexion.SQLConnection;
-import resenas.modelo.Persona;
+
 import resenas.modelo.Usuario;
-import resenas.modelo.Venta;
+
 
 public class DAOUsuario {
 
@@ -122,14 +122,14 @@ public class DAOUsuario {
         PreparedStatement ps = null;
     
         // Verificar que los campos no sean nulos
-        if (usuario.getId() == null || usuario.getUser() == null) {
+        if (usuario.getId() == null || usuario.getUsuario() == null) {
             throw new IllegalArgumentException("Los campos idUsuario y usuario no pueden ser nulos.");
         }
     
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement("UPDATE usuario SET usuario = ?, contraseña = ? WHERE idUsuario = ?");
-            ps.setString(1, usuario.getUser()); // Asegúrate de que este campo tiene un valor válido
+            ps.setString(1, usuario.getUsuario()); // Asegúrate de que este campo tiene un valor válido
             ps.setString(2, usuario.getPassword()); // Asegúrate de que este campo tiene un valor válido
             ps.setString(3, usuario.getPassword()); // Aquí se espera el ID del usuario que se está actualizando
             
@@ -189,6 +189,39 @@ public class DAOUsuario {
             }
         }
     }
-    
 
+    public boolean agregarUsuario(Usuario usuario){
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("INSERT INTO USUARIO (idUsuario, idPersona, usuario, contrasena, sueldo) VALUES (?, ?, ?, ?, ?) ");
+            ps.setString(1, usuario.getId());
+            ps.setString(2, usuario.getIdPersona());
+            ps.setString(3, usuario.getUsuario());
+            ps.setString(4, usuario.getPassword());
+            ps.setDouble(5, usuario.getSueldo());
+            int res = ps.executeUpdate();
+            if (res>0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+            
+        }finally{
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

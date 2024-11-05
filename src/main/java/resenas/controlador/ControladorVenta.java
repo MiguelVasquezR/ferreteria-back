@@ -128,7 +128,7 @@ public class ControladorVenta {
         System.out.println("Usuario desde la solicitud: " + usuario);
     
         // Asegúrate de que estos valores no son nulos
-        if (usuario.getId() == null || usuario.getUser() == null) {
+        if (usuario.getId() == null || usuario.getUsuario() == null) {
             throw new IllegalArgumentException("Los campos idUsuario y usuario no pueden ser nulos.");
         }
     

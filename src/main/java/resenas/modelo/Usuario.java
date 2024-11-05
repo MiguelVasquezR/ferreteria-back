@@ -3,10 +3,9 @@ package resenas.modelo;
 public class Usuario {
 
     private String id;
-    private String id_persona;
-    private String user;
-    private String password;
-    private String correo;
+    private String idPersona;
+    private String usuario;
+    private String contrasena;
     private double sueldo;
 
     public String getId() {
@@ -17,51 +16,34 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUser(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getPassword() {
-        return password;
+        return contrasena;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.contrasena = password;
     }
 
     public String getIdPersona() {
-        return id_persona;
+        return idPersona;
     }
 
-    public void setIdPersona(String id_persona) {
-        this.id_persona = id_persona;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setIdPersona(String idPersona) {
+        this.idPersona = idPersona;
     }
 
     @Override
     public String toString() {
-        return "Usuario [id=" + id + ", user=" + user + ", password=" + password + ", correo=" + correo + "]";
+        return "Usuario [id=" + id + ", ususario=" + usuario + ", password=" + contrasena + "]";
     }
-
-    public String getId_persona() {
-        return id_persona;
-    }
-
-    public void setId_persona(String id_persona) {
-        this.id_persona = id_persona;
-    }
-
     public double getSueldo() {
         return sueldo;
     }

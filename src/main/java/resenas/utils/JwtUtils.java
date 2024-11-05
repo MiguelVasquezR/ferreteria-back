@@ -54,7 +54,8 @@ public class JwtUtils {
                     .build();
             DecodedJWT jwt = verifier.verify(token);
             return "Token valido";
-        } catch (JWTVerificationException exception) {
+        }
+        catch (JWTVerificationException exception) {
             System.out.println(exception.getMessage());
             return "Token invalido";
         }

@@ -69,7 +69,6 @@ public class App {
 
             if (token == null || token.isEmpty()) {
                 halt(401, "Acceso no autorizado");
-                return;
             }
             String messageVerifiedToken = JwtUtils.verifyToken(token.replace("Bearer ",
                     ""));
@@ -167,6 +166,9 @@ public class App {
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);
             put("/editar-producto", ControladorProducto::editarProducto);
             put("/configurar-stock-minimo", ControladorProducto::personalizarStockMinimo);
+            get("/obtener-stock", ControladorProducto::obtenerStock);
+            put("/actualizar-stock", ControladorProducto::actualizarStock);
+            get("/poco-stock", ControladorProducto::obtenerProductosPocoStock);
         });
 
         path("/venta", () -> {

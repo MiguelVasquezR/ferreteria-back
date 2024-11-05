@@ -168,6 +168,7 @@ public class App {
             put("/configurar-stock-minimo", ControladorProducto::personalizarStockMinimo);
             get("/obtener-stock", ControladorProducto::obtenerStock);
             put("/actualizar-stock", ControladorProducto::actualizarStock);
+            get("/poco-stock", ControladorProducto::obtenerProductosPocoStock);
         });
 
         path("/venta", () -> {

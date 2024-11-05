@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import resenas.dao.DAOProducto;
 import resenas.dao.DAOUsuario;
 import resenas.dao.DAOVenta;
 import resenas.modelo.Direccion;
@@ -76,6 +77,16 @@ public class ControladorVenta {
             JsonObject producto = productoElement.getAsJsonObject();
             String cantidadCompra = producto.get("cantidadCompra").getAsString();
             float cantidad = Float.parseFloat(cantidadCompra);
+
+            float cantidadProdcto = (Float) producto.get("cantidad").getAsFloat();
+
+            float nuevaCantidad = cantidadProdcto - cantidad;
+
+            DAOProducto daoProducto = new DAOProducto();
+            if(daoProducto.actualizarCantidad(nuevaCantidad, producto.get("codigo").getAsString())){
+                System.out.println("Cantidad actualizada");
+            }
+            
 
             venta.setCantidad(venta.getCantidad() + cantidad);
 
@@ -179,6 +190,8 @@ public class ControladorVenta {
             return "Error al actualizar venta";
         }
     }
+
+    
     
     
 

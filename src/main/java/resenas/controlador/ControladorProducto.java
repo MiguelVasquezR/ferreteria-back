@@ -12,6 +12,10 @@ public class ControladorProducto {
     private static DAOProducto daoProducto = new DAOProducto();
     private static Gson gson = new Gson();
 
+    public static String obtenerProductosPocoStock(Request req, Response res) {
+        return gson.toJson(daoProducto.obtenerProductosPocoStock());
+    }
+
     public static String actualizarStock(Request req, Response res) {
         String codigo = req.queryParams("codigo");
         float stock = Float.parseFloat(req.queryParams("stockMinimo"));

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Producto;
@@ -271,6 +272,36 @@ public class DAOProducto {
         }
     }
 
+    public boolean actualizarCantidad(float cantidad, String codigo) {
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("UPDATE PRODUCTO SET cantidad = ? WHERE codigo = ?");
+            ps.setFloat(1, cantidad);
+            ps.setString(2, codigo);
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public boolean actualizarStock(String codigo, float cantidad) {
         sqlConnection = new SQLConnection();
         Connection con = null;
@@ -289,6 +320,36 @@ public class DAOProducto {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public List<String> obtenerProductosPocoStock(){
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<String> productos = new ArrayList<String>();
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT nombre FROM PRODUCTO WHERE cantidad < stockMinimo");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                productos.add(rs.getString("nombre"));
+            }
+            return productos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         } finally {
             try {
                 con.close();

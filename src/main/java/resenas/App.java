@@ -69,7 +69,6 @@ public class App {
 
             if (token == null || token.isEmpty()) {
                 halt(401, "Acceso no autorizado");
-                return;
             }
             String messageVerifiedToken = JwtUtils.verifyToken(token.replace("Bearer ",
                     ""));
@@ -167,6 +166,9 @@ public class App {
             delete("/eliminar-producto", ControladorProducto::eliminarProducto);
             put("/editar-producto", ControladorProducto::editarProducto);
             put("/configurar-stock-minimo", ControladorProducto::personalizarStockMinimo);
+            get("/obtener-stock", ControladorProducto::obtenerStock);
+            put("/actualizar-stock", ControladorProducto::actualizarStock);
+            get("/poco-stock", ControladorProducto::obtenerProductosPocoStock);
         });
 
         path("/venta", () -> {
@@ -216,6 +218,7 @@ public class App {
         //Esta ruta se implementará en /paquetes/agregar
         path("/producto-paquete", () -> {
             post("/agregar", ControladorProducto_Paquete::agregarProductoPaquete);
+            get("/obtener-productos-en-paquete", ControladorProducto_Paquete::obtenerProductosEnPaquete);
         });
 
         post("/enviar-correo", (Request req, Response res) -> {
@@ -230,6 +233,10 @@ public class App {
                 msjResponse = Correo.solicitarPedidoCorreo(persona.getCorreo(), asunto, mensaje);
             }
             return msjResponse;
+        });
+
+        path("/usuario", () ->{
+            get("/obtener-sueldo-mas-comision", ControladorUsuario::obtenerSueldoMasComision);
         });
 
     

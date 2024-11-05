@@ -2,6 +2,11 @@ package resenas.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.JsonObject;
 
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Producto_Paquete;
@@ -35,6 +40,42 @@ public class DAOProducto_Paquete {
                 if (con.isClosed()) {
                     sqlConnection.closeConnection();
                     ps.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public List<JsonObject> obtenerListaProductos(String idPaqute){
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<JsonObject> productosEnPaquete = new ArrayList<>();
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT pp.idPaquete, p.nombre AS nombreProducto " +
+                     "FROM PRODUCTO_PAQUETE pp " +
+                     "JOIN PRODUCTO p ON pp.idProducto = p.idProducto " +
+                     "WHERE pp.idPaquete = ?");
+            ps.setString(1, idPaqute);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                JsonObject productoInfo = new JsonObject();
+                productoInfo.addProperty("idPaquete", rs.getString("idPaquete"));
+                productoInfo.addProperty("nombreProducto", rs.getString("nombreProducto"));
+                productosEnPaquete.add(productoInfo);
+            }
+            return productosEnPaquete;
+        } catch (Exception e) {
+            // TODO: handle exception
+            return null;
+        }finally{
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

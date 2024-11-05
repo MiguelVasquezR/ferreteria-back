@@ -2,18 +2,18 @@ package resenas.modelo;
 
 public class Usuario {
 
-    private String id;
+    private String idUsuario;
     private String idPersona;
     private String usuario;
     private String contrasena;
     private double sueldo;
 
     public String getId() {
-        return id;
+        return idUsuario;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.idUsuario = id;
     }
 
     public String getUsuario() {
@@ -42,7 +42,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario [id=" + id + ", ususario=" + usuario + ", password=" + contrasena + "]";
+        return "Usuario [id=" + idUsuario + ", ususario=" + usuario + ", password=" + contrasena + "]";
     }
     public double getSueldo() {
         return sueldo;

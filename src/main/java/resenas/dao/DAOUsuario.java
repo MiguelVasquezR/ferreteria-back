@@ -128,13 +128,13 @@ public class DAOUsuario {
     
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("UPDATE usuario SET usuario = ?, contraseña = ? WHERE idUsuario = ?");
-            ps.setString(1, usuario.getUsuario()); // Asegúrate de que este campo tiene un valor válido
-            ps.setString(2, usuario.getPassword()); // Asegúrate de que este campo tiene un valor válido
-            ps.setString(3, usuario.getPassword()); // Aquí se espera el ID del usuario que se está actualizando
+            ps = con.prepareStatement("UPDATE USUARIO SET usuario = ?, contrasena = ? WHERE idUsuario = ?");
+            ps.setString(1, usuario.getUsuario()); 
+            ps.setString(2, usuario.getPassword()); 
+            ps.setString(3, usuario.getId()); 
             
             int res = ps.executeUpdate();
-            return res > 0; // Retorna verdadero si se actualizó algo
+            return res > 0; 
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -184,6 +184,36 @@ public class DAOUsuario {
                 if (con.isClosed()) {
                     sqlConnection.closeConnection();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean personaExiste(String idPersona){
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT COUNT(*) AS count FROM PERSONA WHERE idPersona = ?");
+            ps.setString(1, idPersona);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                System.out.println("Cantidad de personas con idPersona " + idPersona + ": " + count);
+                return count > 0;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally{
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (con != null && !con.isClosed()) con.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }

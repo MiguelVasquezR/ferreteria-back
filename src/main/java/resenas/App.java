@@ -176,6 +176,7 @@ public class App {
 
         path("/reporte", () -> {
             post("/guardar", ControladorReporte::guardarReporte);
+            get("/obtener", ControladorReporte::obtenerReportePorFrecuencia);
         });
 
         path("/producto-venta", () -> {

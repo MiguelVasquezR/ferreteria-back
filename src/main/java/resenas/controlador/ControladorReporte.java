@@ -1,11 +1,12 @@
 package resenas.controlador;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
 
 import resenas.dao.DAOReporte;
-import resenas.modelo.ReporteDagno;
+import resenas.modelo.ReporteDiario;
 import spark.Request;
 import spark.Response;
 
@@ -14,7 +15,7 @@ public class ControladorReporte {
     private static Gson gson = new Gson();
 
     public static String guardarReporte(Request req, Response res){
-        ReporteDagno reporte = gson.fromJson(req.body(), ReporteDagno.class);
+        ReporteDiario reporte = gson.fromJson(req.body(), ReporteDiario.class);
         reporte.setIdReporte(UUID.randomUUID().toString());
         if (daoReporte.guadarReporte(reporte)) {
             return "Reporte guardado exitosamente";
@@ -23,4 +24,21 @@ public class ControladorReporte {
         }
 
     }    
+
+    public static String obtenerReportePorFrecuencia(Request req, Response res) {
+    String frecuencia = req.queryParams("frecuencia");
+    if (frecuencia == null || frecuencia.isEmpty()) {
+        res.status(400);
+        return "El parámetro 'frecuencia' es obligatorio.";
+    }
+
+    List<ReporteDiario> reportes = daoReporte.obtenerReportesPorFrecuencia(frecuencia);
+    if (reportes.isEmpty()) {
+        res.status(404);
+        return "No se encontraron reportes para la frecuencia especificada.";
+    }
+
+    return gson.toJson(reportes);
+}
+
 }

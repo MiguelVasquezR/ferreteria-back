@@ -1,12 +1,30 @@
 package resenas.modelo;
 
-public class ReporteDagno {
+public class ReporteDiario {
     private String idReporte;
     private String nombre;
     private String urlImage;
     private String descripcion;
+    private float cantidad;
+    private float precioMenudeo;
     
-    public ReporteDagno() {
+    public float getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(float cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public float getPrecioMenudeo() {
+        return precioMenudeo;
+    }
+
+    public void setPrecioMenudeo(float precioMenudeo) {
+        this.precioMenudeo = precioMenudeo;
+    }
+
+    public ReporteDiario() {
     }
 
     public String getIdReporte() {

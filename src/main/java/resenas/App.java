@@ -178,6 +178,7 @@ public class App {
 
         path("/reporte", () -> {
             post("/guardar", ControladorReporte::guardarReporte);
+            get("/obtener", ControladorReporte::obtenerReportePorFrecuencia);
         });
 
         path("/producto-venta", () -> {
@@ -239,6 +240,7 @@ public class App {
             put("/editar", ControladorUsuario::editarUsuario);
             put("/eliminar", ControladorUsuario::eliminarUsuario);
             get("/obtener-sueldo-mas-comision", ControladorUsuario::obtenerSueldoMasComision);
+            get("/obtener-usuarios", ControladorUsuario::obtenerUsuarios);
         });
 
     

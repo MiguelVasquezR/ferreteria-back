@@ -237,6 +237,7 @@ public class App {
 
         path("/usuario", () ->{
             get("/obtener-sueldo-mas-comision", ControladorUsuario::obtenerSueldoMasComision);
+            get("/obtener-usuarios", ControladorUsuario::obtenerUsuarios);
         });
 
     

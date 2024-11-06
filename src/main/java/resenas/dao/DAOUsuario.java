@@ -94,7 +94,6 @@ public class DAOUsuario {
                 usuario.setId(rs.getString("idUsuario"));
                 usuario.setIdPersona(rs.getString("idPersona"));
                 usuario.setUser(rs.getString("usuario"));
-                usuario.setPassword(rs.getString("contraseña"));
             }
             return usuario;
         } catch (Exception e) {
@@ -110,26 +109,31 @@ public class DAOUsuario {
                 e.printStackTrace();
             }
         }
-
     }
 
-    public ArrayList<Usuario> obtenerUsuarios() {
+    public ArrayList<JsonObject> obtenerUsuarios() {
         sqlConnection = new SQLConnection();
-        ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+        ArrayList<JsonObject> usuarios = new ArrayList<JsonObject>();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("SELECT * FROM USUARIO");
+            ps = con.prepareStatement(
+                "SELECT u.idUsuario, u.usuario, u.sueldo, p.nombre, p.correo, p.telefono, p.rfc " +
+                "FROM USUARIO u " +
+                "JOIN PERSONA p ON u.idPersona = p.idPersona"
+            );
             rs = ps.executeQuery();
             while (rs.next()) {
-                Usuario usuario = new Usuario();
-                usuario.setId(rs.getString("idUsuario"));
-                usuario.setIdPersona(rs.getString("idPersona"));
-                usuario.setUser(rs.getString("usuario"));
-                usuario.setPassword(rs.getString("contrasena"));
-                usuario.setSueldo(rs.getDouble("sueldo"));
+                JsonObject usuario = new JsonObject();
+                usuario.addProperty("idUsuario", rs.getString(1));
+                usuario.addProperty("usuario", rs.getString(2));
+                usuario.addProperty("sueldo", rs.getDouble(3));
+                usuario.addProperty("nombre", rs.getString(4));
+                usuario.addProperty("correo", rs.getString(5));
+                usuario.addProperty("telefono", rs.getString(6));
+                usuario.addProperty("rfc", rs.getString(7));
                 usuarios.add(usuario);
             }
             return usuarios;
@@ -146,8 +150,8 @@ public class DAOUsuario {
                 e.printStackTrace();
             }
         }
-
     }
+    
 
     public boolean editarUsuario(Usuario usuario) {
         sqlConnection = new SQLConnection();

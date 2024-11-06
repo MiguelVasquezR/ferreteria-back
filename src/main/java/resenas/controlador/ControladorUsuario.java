@@ -25,6 +25,14 @@ public class ControladorUsuario {
         return daoUsuario.cambiarContrasena(correo, nuevaContrasena);
     }
 
+    public static String obtenerUsuarios(Request req, Response res) {
+        if (daoUsuario.obtenerUsuarios() != null) {
+            return gson.toJson(daoUsuario.obtenerUsuarios());
+        } else {
+            return "No has agregado usuarios";
+        }
+    }
+
     public static String obtenerSueldoMasComision(Request req, Response res){
         List<JsonObject> sueldosComisiones = daoUsuario.obtenerSuledoMasComision();
     if (sueldosComisiones != null && !sueldosComisiones.isEmpty()) {

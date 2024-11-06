@@ -3,15 +3,12 @@ package resenas.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import com.google.gson.JsonObject;
-
-
 import resenas.conexion.SQLConnection;
-
+import resenas.modelo.Persona;
+import resenas.modelo.Producto;
 import resenas.modelo.Usuario;
 
 
@@ -100,6 +97,42 @@ public class DAOUsuario {
                 usuario.setPassword(rs.getString("contraseña"));
             }
             return usuario;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public ArrayList<Usuario> obtenerUsuarios() {
+        sqlConnection = new SQLConnection();
+        ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT * FROM USUARIO");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getString("idUsuario"));
+                usuario.setIdPersona(rs.getString("idPersona"));
+                usuario.setUser(rs.getString("usuario"));
+                usuario.setPassword(rs.getString("contrasena"));
+                usuario.setSueldo(rs.getDouble("sueldo"));
+                usuarios.add(usuario);
+            }
+            return usuarios;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

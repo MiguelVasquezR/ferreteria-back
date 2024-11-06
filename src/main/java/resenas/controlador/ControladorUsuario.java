@@ -65,4 +65,13 @@ public class ControladorUsuario {
         }
     }
 
+    public static String eliminarUsuario(Request req, Response res){
+        String idUsuario = req.queryParams("idUsuario");
+        if (daoUsuario.eliminarUsuario(idUsuario)) {
+            return "Usuario eliminado";
+        } else {
+            return "No se logro eliminar el usuario";
+        }
+    }
+
 }

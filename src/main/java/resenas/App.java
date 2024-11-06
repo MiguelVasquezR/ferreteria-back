@@ -237,6 +237,7 @@ public class App {
         path("/usuario", () ->{
             post("/agregar", ControladorUsuario::agregarUsuario);
             put("/editar", ControladorUsuario::editarUsuario);
+            put("/eliminar", ControladorUsuario::eliminarUsuario);
             get("/obtener-sueldo-mas-comision", ControladorUsuario::obtenerSueldoMasComision);
         });
 

@@ -260,12 +260,13 @@ public class DAOUsuario {
 
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("INSERT INTO USUARIO (idUsuario, idPersona, usuario, contrasena, sueldo) VALUES (?, ?, ?, ?, ?) ");
+            ps = con.prepareStatement("INSERT INTO USUARIO (idUsuario, idPersona, usuario, contrasena, sueldo, estado) VALUES (?, ?, ?, ?, ?, ?) ");
             ps.setString(1, usuario.getId());
             ps.setString(2, usuario.getIdPersona());
             ps.setString(3, usuario.getUsuario());
             ps.setString(4, usuario.getPassword());
             ps.setDouble(5, usuario.getSueldo());
+            ps.setString(6, "Activo");
             int res = ps.executeUpdate();
             if (res>0) {
                 return true;
@@ -276,6 +277,38 @@ public class DAOUsuario {
             e.printStackTrace();
             return false;
             
+        }finally{
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean eliminarUsuario(String idUsuario){
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("UPDATE USUARIO SET estado = ? WHERE idUsuario = ?");
+            ps.setString(1, "Inactivo");
+            ps.setString(2, idUsuario);
+
+            int res = ps.executeUpdate();
+            if (res>0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }finally{
             try {
                 con.close();

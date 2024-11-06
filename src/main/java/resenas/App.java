@@ -87,7 +87,7 @@ public class App {
         post("/login", (req, res) -> {
             Usuario dataCliente = gson.fromJson(req.body(), Usuario.class);
             String contrasenEncriptada = Encriptar.encriptar(dataCliente.getPassword());
-            JsonObject usuario = ControladorUsuario.iniciarSesion(dataCliente.getUser(), contrasenEncriptada);
+            JsonObject usuario = ControladorUsuario.iniciarSesion(dataCliente.getUsuario(), contrasenEncriptada);
 
             if (usuario != null) {
                 String token = JwtUtils.generateToken(usuario.get("rol").getAsString(),
@@ -236,6 +236,8 @@ public class App {
         });
 
         path("/usuario", () ->{
+            post("/agregar", ControladorUsuario::agregarUsuario);
+            put("/editar", ControladorUsuario::editarUsuario);
             get("/obtener-sueldo-mas-comision", ControladorUsuario::obtenerSueldoMasComision);
             get("/obtener-usuarios", ControladorUsuario::obtenerUsuarios);
         });

@@ -197,6 +197,7 @@ public class App {
 
         path("/oferta", () -> {
             post("/agregar", ControladorOferta::crearOferta);
+            get("/obtener", ControladorOferta::obtenerOfertas);
         });
 
         path("/venta", () -> {

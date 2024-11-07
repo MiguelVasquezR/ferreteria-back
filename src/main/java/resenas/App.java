@@ -191,12 +191,13 @@ public class App {
             post("/agregar", ControladorObra::guardarObra);
             get("/obtener", ControladorObra::obtenerObras);
             get("/obtener-obra", ControladorObra::obtenerById);
-            delete("/eliminar", ControladorObra::eliminarObra); 
+            delete("/eliminar", ControladorObra::eliminarObra);
             put("/editar-proyecto", ControladorObra::editarProyecto);
         });
 
         path("/oferta", () -> {
             post("/agregar", ControladorOferta::crearOferta);
+            get("/obtener", ControladorOferta::obtenerOfertas);
         });
 
         path("/venta", () -> {
@@ -215,7 +216,7 @@ public class App {
             delete("/eliminar", ControladorPaquete::eliminarPaquete);
         });
 
-        //Esta ruta se implementará en /paquetes/agregar
+        // Esta ruta se implementará en /paquetes/agregar
         path("/producto-paquete", () -> {
             post("/agregar", ControladorProducto_Paquete::agregarProductoPaquete);
             get("/obtener-productos-en-paquete", ControladorProducto_Paquete::obtenerProductosEnPaquete);
@@ -235,7 +236,7 @@ public class App {
             return msjResponse;
         });
 
-        path("/usuario", () ->{
+        path("/usuario", () -> {
             post("/agregar", ControladorUsuario::agregarUsuario);
             put("/editar", ControladorUsuario::editarUsuario);
             put("/eliminar", ControladorUsuario::eliminarUsuario);
@@ -243,8 +244,6 @@ public class App {
             get("/obtener-usuarios", ControladorUsuario::obtenerUsuarios);
         });
 
-    
-    
     }
 
     static int getHerokuAssignedPort() {

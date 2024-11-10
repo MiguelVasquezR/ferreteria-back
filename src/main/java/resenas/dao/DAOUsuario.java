@@ -324,4 +324,40 @@ public class DAOUsuario {
             }
         }
     }
+
+    public List<JsonObject> obtenerSueldoAdministrador(){
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<JsonObject> sueldoAdministrador= new ArrayList<>();
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT u.idUsuario, p.nombre, u.sueldo " +
+            "FROM USUARIO u " +
+            "JOIN PERSONA p ON u.idPersona = p.idPersona " +
+            "WHERE u.idUsuario = '550e8400-e29b-41d4-a716-446655440004'");
+            rs = ps.executeQuery();
+        while (rs.next()) {
+            JsonObject administradorInfo = new JsonObject();
+            administradorInfo.addProperty("idUsuario", rs.getString("idUsuario"));
+            administradorInfo.addProperty("nombre", rs.getString("nombre"));  
+            administradorInfo.addProperty("sueldo", rs.getDouble("sueldo"));
+            sueldoAdministrador.add(administradorInfo);
+        }
+        return sueldoAdministrador;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }finally{
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

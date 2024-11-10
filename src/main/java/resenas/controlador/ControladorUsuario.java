@@ -44,6 +44,20 @@ public class ControladorUsuario {
     }
     }
     
+    public static String obtenerSueldoAdministrador(Request req, Response res) {
+        // Llamamos al método del DAO para obtener el sueldo del administrador
+        List<JsonObject> sueldoAdministrador = daoUsuario.obtenerSueldoAdministrador();
+        
+        // Comprobamos si la lista contiene datos
+        if (sueldoAdministrador != null && !sueldoAdministrador.isEmpty()) {
+            res.status(200); 
+            return gson.toJson(sueldoAdministrador); // Convertimos la lista a JSON y la retornamos
+        } else {
+            res.status(404); 
+            return "No se encontró el sueldo del administrador."; // Mensaje de error si no hay datos
+        }
+    }
+
     public static String agregarUsuario(Request req, Response res){
         Usuario usuario = gson.fromJson(req.body(), Usuario.class);
         usuario.setId(UUID.randomUUID().toString());

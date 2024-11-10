@@ -242,6 +242,7 @@ public class App {
             put("/eliminar", ControladorUsuario::eliminarUsuario);
             get("/obtener-sueldo-mas-comision", ControladorUsuario::obtenerSueldoMasComision);
             get("/obtener-usuarios", ControladorUsuario::obtenerUsuarios);
+            get("/obtener-sueldo-administrador", ControladorUsuario::obtenerSueldoAdministrador);
         });
 
     }

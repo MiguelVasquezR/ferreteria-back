@@ -21,13 +21,14 @@ public class DAOOferta {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO OFERTA (idOferta, idProducto, fechaInicio, fechaFinal, detalles, estado) VALUES(?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO OFERTA (idOferta, idProducto, fechaInicio, fechaFinal, detalles, estado, precioOferta) VALUES(?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, oferta.getIdOferta());
             ps.setString(2, oferta.getIdProducto());
             ps.setDate(3, oferta.getFechaInicio());
             ps.setDate(4, oferta.getFechaFinal());
             ps.setString(5,  oferta.getDetalles());
             ps.setString(6,  ("Disponible"));
+            ps.setDouble(7, oferta.getPrecioOferta());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

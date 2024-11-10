@@ -6,7 +6,7 @@ public class Usuario {
     private String idPersona;
     private String usuario;
     private String contrasena;
-    private double sueldo;
+    private String sueldo;
     private String estado;
 
     public String getId() {
@@ -41,15 +41,11 @@ public class Usuario {
         this.idPersona = idPersona;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario [id=" + idUsuario + ", ususario=" + usuario + ", password=" + contrasena + "]";
-    }
-    public double getSueldo() {
+    public String getSueldo() {
         return sueldo;
     }
 
-    public void setSueldo(double sueldo) {
+    public void setSueldo(String sueldo) {
         this.sueldo = sueldo;
     }
 
@@ -79,6 +75,12 @@ public class Usuario {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario [idUsuario=" + idUsuario + ", idPersona=" + idPersona + ", usuario=" + usuario + ", contrasena="
+                + contrasena + ", sueldo=" + sueldo + ", estado=" + estado + "]";
     }
 
     

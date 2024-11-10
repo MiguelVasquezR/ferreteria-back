@@ -15,10 +15,10 @@ public class ControladorOferta {
 
     public static String crearOferta(Request req, Response res) {
         Oferta oferta = gson.fromJson(req.body(), Oferta.class);
-        Producto producto = gson.fromJson(req.body(), Producto.class);
         oferta.setIdOferta(UUID.randomUUID().toString());
-        oferta.setIdProducto(producto.getIdProducto());
-        System.out.println(oferta.toString());
+        oferta.setIdProducto(oferta.getIdProducto()); 
+        oferta.setFechaInicio(new java.sql.Date(System.currentTimeMillis())); 
+        oferta.setDetalles(""); 
         if (daoOferta.agergarOferta(oferta)) {
             return "Oferta agregada correctamente";
         } else {

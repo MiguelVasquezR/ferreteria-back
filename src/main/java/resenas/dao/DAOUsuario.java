@@ -54,7 +54,13 @@ public class DAOUsuario {
         PreparedStatement ps = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("UPDATE USUARIO SET contraseña=? WHERE correo=?");
+            ps = con.prepareStatement("UPDATE USUARIO\n" + //
+                                "SET contrasena = ?\n" + //
+                                "WHERE idPersona IN (\n" + //
+                                "    SELECT idPersona\n" + //
+                                "    FROM PERSONA\n" + //
+                                "    WHERE correo = ?\n" + //
+                                ");");
             ps.setString(1, nuevaContrasena);
             ps.setString(2, correo);
             int res = ps.executeUpdate();

@@ -21,47 +21,48 @@ public class ControladorProducto_Paquete {
     private static DAOPaquete daoPaquete = new DAOPaquete();
     private static Gson gson = new Gson();
 
-    public static String agregarProductoPaquete(Request req, Response res){
+    public static String agregarProductoPaquete(Request req, Response res) {
         try {
-        JsonObject jsonPaquete = gson.fromJson(req.body(), JsonObject.class);
+            JsonObject jsonPaquete = gson.fromJson(req.body(), JsonObject.class);
 
-        String nombre = jsonPaquete.get("nombre").getAsString();
-        int precio = jsonPaquete.get("precio").getAsInt();
-        String descripcion = jsonPaquete.get("descripcion").getAsString();
+            String nombre = jsonPaquete.get("nombre").getAsString();
+            int precio = jsonPaquete.get("precio").getAsInt();
+            String descripcion = jsonPaquete.get("descripcion").getAsString();
 
-        Type tipoListaProductos = new TypeToken<List<Producto>>() {}.getType();
-        List<Producto> productos = gson.fromJson(jsonPaquete.get("productos"), tipoListaProductos);
+            Type tipoListaProductos = new TypeToken<List<Producto>>() {
+            }.getType();
+            List<Producto> productos = gson.fromJson(jsonPaquete.get("productos"), tipoListaProductos);
 
-        Paquete paquete = new Paquete();
-        paquete.setIdPaquete(UUID.randomUUID().toString());
-        paquete.setNombre(nombre);
-        paquete.setPrecio(precio);
-        paquete.setDescripcion(descripcion);
-        paquete.setProductos(productos);
+            Paquete paquete = new Paquete();
+            paquete.setIdPaquete(UUID.randomUUID().toString());
+            paquete.setNombre(nombre);
+            paquete.setPrecio(precio);
+            paquete.setDescripcion(descripcion);
+            paquete.setProductos(productos);
 
-        if (daoPaquete.agregarPaquete(paquete)) {
-            for (Producto producto : productos) {
-                Producto_Paquete productoPaquete = new Producto_Paquete();
-                productoPaquete.setIdProductoPaquete(UUID.randomUUID().toString());
-                productoPaquete.setIdPaquete(paquete.getIdPaquete());
-                productoPaquete.setIdProducto(producto.getIdProducto());
+            if (daoPaquete.agregarPaquete(paquete)) {
+                for (Producto producto : productos) {
+                    Producto_Paquete productoPaquete = new Producto_Paquete();
+                    productoPaquete.setIdProductoPaquete(UUID.randomUUID().toString());
+                    productoPaquete.setIdPaquete(paquete.getIdPaquete());
+                    productoPaquete.setIdProducto(producto.getIdProducto());
 
-                if (!daoProducto_Paquete.agregarProductoPaquete(productoPaquete)) {
-                    return "Error al agregar producto al paquete";
+                    if (!daoProducto_Paquete.agregarProductoPaquete(productoPaquete)) {
+                        return "Error al agregar producto al paquete";
+                    }
                 }
+                return "Paquete y productos agregados exitosamente";
+            } else {
+                return "Error al agregar el paquete";
             }
-            return "Paquete y productos agregados exitosamente";
-        } else {
-            return "Error al agregar el paquete";
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.status(500);
+            return "Error interno del servidor";
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-        res.status(500);
-        return "Error interno del servidor";
-    }
     }
 
-    public static String obtenerProductosEnPaquete(Request req, Response res){
+    public static String obtenerProductosEnPaquete(Request req, Response res) {
         String idPaquete = req.queryParams("idPaquete");
         if (idPaquete == null || idPaquete.isEmpty()) {
             res.status(400);
@@ -71,8 +72,13 @@ public class ControladorProducto_Paquete {
         if (productosEnPaquete.isEmpty()) {
             res.status(404);
             return "No se encontraron productos en el paquete especificado";
-        }else{
+        } else {
             return gson.toJson(productosEnPaquete);
         }
+    }
+
+    public static String obtenerPaquetesConProductos(Request req, Response res) {
+        return gson.toJson(daoProducto_Paquete.obtenerPaquetesConProductos());
+
     }
 }

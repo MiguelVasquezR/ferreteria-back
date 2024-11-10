@@ -219,7 +219,7 @@ public class App {
         // Esta ruta se implementará en /paquetes/agregar
         path("/producto-paquete", () -> {
             post("/agregar", ControladorProducto_Paquete::agregarProductoPaquete);
-            get("/obtener-productos-en-paquete", ControladorProducto_Paquete::obtenerProductosEnPaquete);
+            get("/obtener", ControladorProducto_Paquete::obtenerPaquetesConProductos);
         });
 
         post("/enviar-correo", (Request req, Response res) -> {
@@ -242,6 +242,7 @@ public class App {
             put("/eliminar", ControladorUsuario::eliminarUsuario);
             get("/obtener-sueldo-mas-comision", ControladorUsuario::obtenerSueldoMasComision);
             get("/obtener-usuarios", ControladorUsuario::obtenerUsuarios);
+            get("/obtener-sueldo-administrador", ControladorUsuario::obtenerSueldoAdministrador);
         });
 
     }

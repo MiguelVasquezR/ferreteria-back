@@ -15,7 +15,7 @@ public class DAOPersona {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO PERSONA (idPersona, idDireccion, nombre, telefono, correo, rfc, idRol) VALUES (?,?,?,?,?,?,?)");
+                    "INSERT INTO PERSONA (idPersona, idDireccion, nombre, telefono, correo, rfc, idRol, estado) VALUES (?,?,?,?,?,?,?,?)");
             ps.setString(1, Persona.getId());
             ps.setString(2, Persona.getId_direccion());
             ps.setString(3, Persona.getNombre());
@@ -23,6 +23,7 @@ public class DAOPersona {
             ps.setString(5, Persona.getCorreo());
             ps.setString(6, Persona.getRfc());
             ps.setString(7, Persona.getIdRol());
+            ps.setString(8, "Disponible");
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

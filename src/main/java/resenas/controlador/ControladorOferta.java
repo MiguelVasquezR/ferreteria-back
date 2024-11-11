@@ -1,8 +1,11 @@
 package resenas.controlador;
 
+import java.util.Date;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import resenas.dao.DAOOferta;
 import resenas.modelo.Oferta;
 import resenas.modelo.Producto;
@@ -14,11 +17,16 @@ public class ControladorOferta {
     private static Gson gson = new Gson();
 
     public static String crearOferta(Request req, Response res) {
-        Oferta oferta = gson.fromJson(req.body(), Oferta.class);
+        JsonObject json = gson.fromJson(req.body(), JsonObject.class);
+
+        Oferta oferta = new Oferta();
         oferta.setIdOferta(UUID.randomUUID().toString());
-        oferta.setIdProducto(oferta.getIdProducto()); 
-        oferta.setFechaInicio(new java.sql.Date(System.currentTimeMillis())); 
-        oferta.setDetalles(""); 
+        oferta.setIdProducto(json.get("idProducto").getAsString());
+        oferta.setPrecioOferta(json.get("precio").getAsDouble());
+        String fecha = json.get("fechaFinal").getAsString();
+        oferta.setFechaFinal(java.sql.Date.valueOf(fecha));
+        oferta.setFechaInicio(new java.sql.Date(System.currentTimeMillis()));
+        oferta.setDetalles("");
         if (daoOferta.agergarOferta(oferta)) {
             return "Oferta agregada correctamente";
         } else {

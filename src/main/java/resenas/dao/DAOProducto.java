@@ -20,7 +20,7 @@ public class DAOProducto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO PRODUCTO (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo, estado, descripcion) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO PRODUCTO (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo, estado, descripcion, idPersona) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, producto.getIdProducto());
             ps.setString(2, producto.getUrlImage());
             ps.setString(3, producto.getCodigo());
@@ -32,6 +32,7 @@ public class DAOProducto {
             ps.setFloat(9, producto.getPrecioMayoreo());
             ps.setString(10, "Disponible");
             ps.setString(11, producto.getDescripcion());
+            ps.setString(12, producto.getIdPersona());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;
@@ -78,7 +79,7 @@ public class DAOProducto {
                 producto.setPrecioMenudeo(rs.getFloat("precioMenudeo"));
                 producto.setPrecioMayoreo(rs.getFloat("precioMayoreo"));
                 producto.setEstado(rs.getString("estado"));
-                producto.setIdProveedor(rs.getString("idPersona"));
+                producto.setIdPersona(rs.getString("idPersona"));
                 productos.add(producto);
             }
             return productos;

@@ -40,7 +40,7 @@ public class ControladorProducto {
         Producto producto = gson.fromJson(req.body(), Producto.class);
         producto.setIdPrducto(UUID.randomUUID().toString());
         producto.setCodigo(producto.getIdProducto().replace("-", ""));
-        System.out.println(producto.toString());
+        producto.setIdPersona(producto.getIdPersona());
         if (daoProducto.agregarProducto(producto)) {
             return "Producto agregado correctamente";
         } else {

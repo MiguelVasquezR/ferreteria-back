@@ -12,7 +12,7 @@ public class Producto {
     private String urlImage;
     private String estado;
     private String descripcion;
-    private String idProveedor;
+    private String idPersona;
 
     public Producto() {
     }
@@ -119,12 +119,12 @@ public class Producto {
                 + ", descripcion=" + descripcion + "]";
     }
 
-    public String getIdProveedor() {
-        return idProveedor;
+    public String getIdPersona() {
+        return idPersona;
     }
 
-    public void setIdProveedor(String idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setIdPersona(String idPersona) {
+        this.idPersona = idPersona;
     }
 
 }

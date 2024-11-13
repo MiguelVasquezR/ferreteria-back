@@ -125,9 +125,12 @@ public class DAOUsuario {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "SELECT u.idUsuario, u.usuario, u.sueldo, p.nombre, p.correo, p.telefono, p.rfc " +
-                            "FROM USUARIO u " +
-                            "JOIN PERSONA p ON u.idPersona = p.idPersona where u.estado = 'Activo'");
+                "SELECT u.idUsuario, u.usuario, u.sueldo, p.nombre, p.correo, p.telefono, p.rfc " +
+                "FROM USUARIO u " +
+                "JOIN PERSONA p ON u.idPersona = p.idPersona " +
+                "JOIN ROLES r ON p.idRol = r.idRol " +
+                "WHERE u.estado = 'Activo' " +
+                "AND r.nombre IN ('gerente', 'administrador', 'vendedor')");
             rs = ps.executeQuery();
             while (rs.next()) {
                 JsonObject usuario = new JsonObject();

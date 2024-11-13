@@ -52,7 +52,6 @@ public class ControladorProducto {
     public static String obtenerProducto(Request req, Response res) {
         String idProducto = req.queryParams("idProducto");
         JsonObject producto = daoProducto.obtenerProductoByID(idProducto);
-        // Agregar los datos del proveedor al JSON de respuesta
         if (producto != null) {
             return gson.toJson(producto);
         } else {
@@ -61,11 +60,7 @@ public class ControladorProducto {
     }
 
     public static String obtenerProductos(Request req, Response res) {
-        if (daoProducto.getProducts() != null) {
-            return gson.toJson(daoProducto.getProducts());
-        } else {
-            return "No has agregado productos";
-        }
+        return gson.toJson(daoProducto.getProducts());
     }
 
     public static String eliminarProducto(Request req, Response res) {

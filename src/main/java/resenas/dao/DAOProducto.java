@@ -59,29 +59,44 @@ public class DAOProducto {
 
     }
 
-    public ArrayList<Producto> getProducts() {
+    public ArrayList<JsonObject> getProducts() {
         sqlConnection = new SQLConnection();
-        ArrayList<Producto> productos = new ArrayList<Producto>();
+        ArrayList<JsonObject> productos = new ArrayList<JsonObject>();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("SELECT * FROM PRODUCTO where estado != 'No disponible'");
+            ps = con.prepareStatement("SELECT " +
+            "    p.idProducto, p.urlImage, p.codigo, p.nombre, p.cantidad, p.stockMinimo, " +
+            "    p.costo, p.precioMenudeo, p.precioMayoreo, p.estado, p.descripcion, " +
+            "    per.idPersona, per.nombre AS nombrePersona, per.telefono, per.correo, " +
+            "    per.rfc, per.estado AS estadoPersona " +
+            "FROM " +
+            "    PRODUCTO p " +
+            "JOIN " +
+            "    PERSONA per ON p.idPersona = per.idPersona");
             rs = ps.executeQuery();
             while (rs.next()) {
-                Producto producto = new Producto();
-                producto.setIdPrducto(rs.getString("idProducto"));
-                producto.setUrlImage(rs.getString("urlImage"));
-                producto.setCodigo(rs.getString("codigo"));
-                producto.setNombre(rs.getString("nombre"));
-                producto.setCantidad(rs.getFloat("cantidad"));
-                producto.setStockMinimo(rs.getFloat("stockMinimo"));
-                producto.setCosto(rs.getFloat("costo"));
-                producto.setPrecioMenudeo(rs.getFloat("precioMenudeo"));
-                producto.setPrecioMayoreo(rs.getFloat("precioMayoreo"));
-                producto.setEstado(rs.getString("estado"));
-                producto.setIdPersona(rs.getString("idPersona"));
+                JsonObject producto = new JsonObject();
+                producto.addProperty("idProducto", rs.getString("idProducto"));
+                producto.addProperty("urlImage", rs.getString("urlImage"));
+                producto.addProperty("codigo", rs.getString("codigo"));
+                producto.addProperty("nombre", rs.getString("nombre"));
+                producto.addProperty("cantidad", rs.getFloat("cantidad"));
+                producto.addProperty("stockMinimo", rs.getFloat("stockMinimo"));
+                producto.addProperty("costo", rs.getFloat("costo"));
+                producto.addProperty("precioMenudeo", rs.getFloat("precioMenudeo"));
+                producto.addProperty("precioMayoreo", rs.getFloat("precioMayoreo"));
+                producto.addProperty("estado", rs.getString("estado"));
+                producto.addProperty("descripcion", rs.getString("descripcion"));
+    
+                producto.addProperty("idPersona", rs.getString("idPersona"));
+                producto.addProperty("nombrePersona", rs.getString("nombrePersona"));
+                producto.addProperty("telefono", rs.getString("telefono"));
+                producto.addProperty("correo", rs.getString("correo"));
+                producto.addProperty("rfc", rs.getString("rfc"));
+                producto.addProperty("estadoPersona", rs.getString("estadoPersona"));
                 productos.add(producto);
             }
             return productos;
@@ -128,7 +143,6 @@ public class DAOProducto {
         rs = ps.executeQuery();
 
         if (rs.next()) {
-            // Datos del producto
             producto.addProperty("idProducto", rs.getString("idProducto"));
             producto.addProperty("urlImage", rs.getString("urlImage"));
             producto.addProperty("codigo", rs.getString("codigo"));
@@ -141,7 +155,6 @@ public class DAOProducto {
             producto.addProperty("estado", rs.getString("estado"));
             producto.addProperty("descripcion", rs.getString("descripcion"));
 
-            // Datos del proveedor (persona)
             producto.addProperty("idPersona", rs.getString("idPersona"));
             producto.addProperty("nombrePersona", rs.getString("nombrePersona"));
             producto.addProperty("telefono", rs.getString("telefono"));

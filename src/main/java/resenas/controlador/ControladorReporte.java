@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import resenas.dao.DAOReporte;
 import resenas.modelo.ReporteDiario;
@@ -26,19 +27,29 @@ public class ControladorReporte {
     }    
 
     public static String obtenerReportePorFrecuencia(Request req, Response res) {
-    String frecuencia = req.queryParams("frecuencia");
-    if (frecuencia == null || frecuencia.isEmpty()) {
-        res.status(400);
-        return "El parámetro 'frecuencia' es obligatorio.";
+        String frecuencia = req.queryParams("frecuencia");
+        if (frecuencia == null || frecuencia.isEmpty()) {
+            res.status(400);
+            return "El parámetro 'frecuencia' es obligatorio.";
+        }
+
+        List<ReporteDiario> reportes = daoReporte.obtenerReportesPorFrecuencia(frecuencia);
+        if (reportes.isEmpty()) {
+            res.status(404);
+            return "No se encontraron reportes para la frecuencia especificada.";
+        }
+
+        return gson.toJson(reportes);
     }
 
-    List<ReporteDiario> reportes = daoReporte.obtenerReportesPorFrecuencia(frecuencia);
-    if (reportes.isEmpty()) {
-        res.status(404);
-        return "No se encontraron reportes para la frecuencia especificada.";
+    public static String obtenerReporteDaños(Request req, Response res){
+        String idReporte = req.queryParams("idReporte");
+        JsonObject reporte = daoReporte.obtenerReporteProdcutoDañado(idReporte);
+        if (reporte != null) {
+            return gson.toJson(reporte);
+        } else {
+            return "Reporte no encontrado";
+        }
     }
-
-    return gson.toJson(reportes);
-}
 
 }

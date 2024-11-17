@@ -7,6 +7,7 @@ public class ReporteDiario {
     private String descripcion;
     private float cantidad;
     private float precioMenudeo;
+    private String idProveedor;
     private String idPersona;
     private String idProducto;
 
@@ -61,19 +62,20 @@ public class ReporteDiario {
         this.descripcion = descripcion;
     }
 
-    @Override
-    public String toString() {
-        return "ReporteDiario [idReporte=" + idReporte + ", nombre=" + nombre + ", urlImage=" + urlImage
-                + ", descripcion=" + descripcion + ", cantidad=" + cantidad + ", precioMenudeo=" + precioMenudeo
-                + ", idPersona=" + idPersona + ", idProducto=" + idProducto + "]";
-    }
-
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(String idProveedor) {
+        this.idProveedor = idProveedor;
     }
 
     public String getIdPersona() {
@@ -90,6 +92,13 @@ public class ReporteDiario {
 
     public void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
+    }
+
+    @Override
+    public String toString() {
+        return "ReporteDiario [idReporte=" + idReporte + ", nombre=" + nombre + ", urlImage=" + urlImage
+                + ", descripcion=" + descripcion + ", cantidad=" + cantidad + ", precioMenudeo=" + precioMenudeo
+                + ", idProveedor=" + idProveedor + ", idPersona=" + idPersona + ", idProducto=" + idProducto + "]";
     }
 
 }

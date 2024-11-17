@@ -246,6 +246,8 @@ public class App {
             get("/obtener-sueldo-administrador", ControladorUsuario::obtenerSueldoAdministrador);
         });
 
+        
+
     }
 
     static int getHerokuAssignedPort() {

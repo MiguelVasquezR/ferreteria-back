@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import resenas.dao.DAODireccion;
 import resenas.dao.DAOPersona;
@@ -60,6 +61,16 @@ public class ControladorReporte {
         }
 
         return gson.toJson(reportes);
+    }
+
+    public static String obtenerReporteDaños(Request req, Response res){
+        String idReporte = req.queryParams("idReporte");
+        JsonObject reporte = daoReporte.obtenerReporteProdcutoDañado(idReporte);
+        if (reporte != null) {
+            return gson.toJson(reporte);
+        } else {
+            return "Reporte no encontrado";
+        }
     }
 
 }

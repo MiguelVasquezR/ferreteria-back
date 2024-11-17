@@ -30,20 +30,23 @@ public class ControladorReporte {
         DAODireccion daoDireccion = new DAODireccion();
         DAOProducto daoProducto = new DAOProducto();
 
-        Persona persona = daoPersona.obtenerPersonaById(reporte.getIdProveedor());
+        Producto producto = daoProducto.obtenerProductoID(reporte.getNombre());
+        Persona persona = daoPersona.obtenerPersonaById(producto.getIdPersona());
         Direccion direccion = daoDireccion.obtenerDireccionById(persona.getId_direccion());
-        Producto producto = daoProducto.obtenerProductoID(reporte.getIdProducto());
 
-        return Correo.llenarComprobante(producto, persona, direccion, reporte);
-        
+        if (daoReporte.guadarReporte(reporte)) {
+            String path = Correo.llenarComprobante(producto, persona, direccion, reporte);
+            if (path != null || !path.equals("")) {
 
-        /*
-         * if (daoReporte.guadarReporte(reporte)) {
-         * return "Reporte guardado exitosamente";
-         * } else {
-         * return "Error al guardar reporte";
-         * }
-         */
+                if (Correo.productoDanadoo(path, persona.getCorreo(), producto.getNombre())) {
+                    return "Reporte guardado correctamente";
+                } else {
+                    return "Reporte no guardado";
+                }
+            }
+        }
+
+        return "Reporte no guardado";
 
     }
 
@@ -63,7 +66,7 @@ public class ControladorReporte {
         return gson.toJson(reportes);
     }
 
-    public static String obtenerReporteDaños(Request req, Response res){
+    public static String obtenerReporteDaños(Request req, Response res) {
         String idReporte = req.queryParams("idReporte");
         JsonObject reporte = daoReporte.obtenerReporteProdcutoDañado(idReporte);
         if (reporte != null) {

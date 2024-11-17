@@ -68,14 +68,14 @@ public class DAOProducto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement("SELECT " +
-            "    p.idProducto, p.urlImage, p.codigo, p.nombre, p.cantidad, p.stockMinimo, " +
-            "    p.costo, p.precioMenudeo, p.precioMayoreo, p.estado, p.descripcion, " +
-            "    per.idPersona, per.nombre AS nombrePersona, per.telefono, per.correo, " +
-            "    per.rfc, per.estado AS estadoPersona " +
-            "FROM " +
-            "    PRODUCTO p " +
-            "JOIN " +
-            "    PERSONA per ON p.idPersona = per.idPersona");
+                    "    p.idProducto, p.urlImage, p.codigo, p.nombre, p.cantidad, p.stockMinimo, " +
+                    "    p.costo, p.precioMenudeo, p.precioMayoreo, p.estado, p.descripcion, " +
+                    "    per.idPersona, per.nombre AS nombrePersona, per.telefono, per.correo, " +
+                    "    per.rfc, per.estado AS estadoPersona " +
+                    "FROM " +
+                    "    PRODUCTO p " +
+                    "JOIN " +
+                    "    PERSONA per ON p.idPersona = per.idPersona");
             rs = ps.executeQuery();
             while (rs.next()) {
                 JsonObject producto = new JsonObject();
@@ -90,7 +90,7 @@ public class DAOProducto {
                 producto.addProperty("precioMayoreo", rs.getFloat("precioMayoreo"));
                 producto.addProperty("estado", rs.getString("estado"));
                 producto.addProperty("descripcion", rs.getString("descripcion"));
-    
+
                 producto.addProperty("idPersona", rs.getString("idPersona"));
                 producto.addProperty("nombrePersona", rs.getString("nombrePersona"));
                 producto.addProperty("telefono", rs.getString("telefono"));
@@ -117,65 +117,64 @@ public class DAOProducto {
     }
 
     public JsonObject obtenerProductoByID(String idProducto) {
-    sqlConnection = new SQLConnection();
-    Connection con = null;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    JsonObject producto = new JsonObject();
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        JsonObject producto = new JsonObject();
 
-    try {
-        con = sqlConnection.getConnection();
-        ps = con.prepareStatement(
-            "SELECT " +
-            "    p.idProducto, p.urlImage, p.codigo, p.nombre, p.cantidad, p.stockMinimo, " +
-            "    p.costo, p.precioMenudeo, p.precioMayoreo, p.estado, p.descripcion, " +
-            "    per.idPersona, per.nombre AS nombrePersona, per.telefono, per.correo, " +
-            "    per.rfc, per.estado AS estadoPersona " +
-            "FROM " +
-            "    PRODUCTO p " +
-            "JOIN " +
-            "    PERSONA per ON p.idPersona = per.idPersona " +
-            "WHERE " +
-            "    p.idProducto = ?;"
-        );
-
-        ps.setString(1, idProducto);
-        rs = ps.executeQuery();
-
-        if (rs.next()) {
-            producto.addProperty("idProducto", rs.getString("idProducto"));
-            producto.addProperty("urlImage", rs.getString("urlImage"));
-            producto.addProperty("codigo", rs.getString("codigo"));
-            producto.addProperty("nombre", rs.getString("nombre"));
-            producto.addProperty("cantidad", rs.getFloat("cantidad"));
-            producto.addProperty("stockMinimo", rs.getFloat("stockMinimo"));
-            producto.addProperty("costo", rs.getFloat("costo"));
-            producto.addProperty("precioMenudeo", rs.getFloat("precioMenudeo"));
-            producto.addProperty("precioMayoreo", rs.getFloat("precioMayoreo"));
-            producto.addProperty("estado", rs.getString("estado"));
-            producto.addProperty("descripcion", rs.getString("descripcion"));
-
-            producto.addProperty("idPersona", rs.getString("idPersona"));
-            producto.addProperty("nombrePersona", rs.getString("nombrePersona"));
-            producto.addProperty("telefono", rs.getString("telefono"));
-            producto.addProperty("correo", rs.getString("correo"));
-            producto.addProperty("rfc", rs.getString("rfc"));
-            producto.addProperty("estadoPersona", rs.getString("estadoPersona"));
-        }
-
-        return producto;
-    } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-    } finally {
         try {
-            if (con != null) con.close();
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement(
+                    "SELECT " +
+                            "    p.idProducto, p.urlImage, p.codigo, p.nombre, p.cantidad, p.stockMinimo, " +
+                            "    p.costo, p.precioMenudeo, p.precioMayoreo, p.estado, p.descripcion, " +
+                            "    per.idPersona, per.nombre AS nombrePersona, per.telefono, per.correo, " +
+                            "    per.rfc, per.estado AS estadoPersona " +
+                            "FROM " +
+                            "    PRODUCTO p " +
+                            "JOIN " +
+                            "    PERSONA per ON p.idPersona = per.idPersona " +
+                            "WHERE " +
+                            "    p.idProducto = ?;");
+
+            ps.setString(1, idProducto);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                producto.addProperty("idProducto", rs.getString("idProducto"));
+                producto.addProperty("urlImage", rs.getString("urlImage"));
+                producto.addProperty("codigo", rs.getString("codigo"));
+                producto.addProperty("nombre", rs.getString("nombre"));
+                producto.addProperty("cantidad", rs.getFloat("cantidad"));
+                producto.addProperty("stockMinimo", rs.getFloat("stockMinimo"));
+                producto.addProperty("costo", rs.getFloat("costo"));
+                producto.addProperty("precioMenudeo", rs.getFloat("precioMenudeo"));
+                producto.addProperty("precioMayoreo", rs.getFloat("precioMayoreo"));
+                producto.addProperty("estado", rs.getString("estado"));
+                producto.addProperty("descripcion", rs.getString("descripcion"));
+
+                producto.addProperty("idPersona", rs.getString("idPersona"));
+                producto.addProperty("nombrePersona", rs.getString("nombrePersona"));
+                producto.addProperty("telefono", rs.getString("telefono"));
+                producto.addProperty("correo", rs.getString("correo"));
+                producto.addProperty("rfc", rs.getString("rfc"));
+                producto.addProperty("estadoPersona", rs.getString("estadoPersona"));
+            }
+
+            return producto;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
-}
-
 
     public boolean eliminarProducto(String idProducto) {
         sqlConnection = new SQLConnection();
@@ -371,8 +370,7 @@ public class DAOProducto {
         }
     }
 
-
-    public List<String> obtenerProductosPocoStock(){
+    public List<String> obtenerProductosPocoStock() {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
@@ -386,6 +384,47 @@ public class DAOProducto {
                 productos.add(rs.getString("nombre"));
             }
             return productos;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Producto obtenerProductoID(String idProducto) {
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Producto producto = new Producto();
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT * FROM PRODUCTO WHERE idProducto = ?");
+            ps.setString(1, idProducto);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                producto.setIdProducto(rs.getString("idProducto"));
+                producto.setUrlImage(rs.getString("urlImage"));
+                producto.setCodigo(rs.getString("codigo"));
+                producto.setNombre(rs.getString("nombre"));
+                producto.setCantidad(rs.getFloat("cantidad"));
+                producto.setStockMinimo(rs.getFloat("stockMinimo"));
+                producto.setCosto(rs.getFloat("costo"));
+                producto.setPrecioMenudeo(rs.getFloat("precioMenudeo"));
+                producto.setPrecioMayoreo(rs.getFloat("precioMayoreo"));
+                producto.setEstado(rs.getString("estado"));
+                producto.setDescripcion(rs.getString("descripcion"));
+                producto.setIdPersona(rs.getString("idPersona"));
+            }
+            return producto;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

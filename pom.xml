@@ -84,6 +84,14 @@
       <version>1.6.2</version>      <!-- Asegúrate de usar una versión compatible -->
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
+    <dependency>
+      <groupId>org.apache.pdfbox</groupId>
+      <artifactId>pdfbox</artifactId>
+      <version>3.0.3</version>
+    </dependency>
+
+
 
   </dependencies>
 

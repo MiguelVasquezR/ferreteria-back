@@ -1,5 +1,7 @@
 package resenas.controlador;
 
+import static spark.Spark.stop;
+
 import java.util.UUID;
 
 import com.google.gson.Gson;
@@ -42,6 +44,7 @@ public class ControladorProducto {
         producto.setIdPrducto(UUID.randomUUID().toString());
         producto.setCodigo(producto.getIdProducto().replace("-", ""));
         producto.setIdPersona(producto.getIdPersona());
+        System.out.println(producto.toString());
         if (daoProducto.agregarProducto(producto)) {
             return "Producto agregado correctamente";
         } else {

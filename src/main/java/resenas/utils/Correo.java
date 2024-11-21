@@ -22,7 +22,11 @@ import java.util.Properties;
 
 public class Correo {
 
+    
+
     public static String olvideContrasena(String destinatario, String token) {
+
+        System.out.println("Hola");
 
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");

@@ -1,5 +1,6 @@
 package resenas.controlador;
 
+import java.util.Map;
 import java.util.UUID;
 
 import com.google.gson.Gson;
@@ -31,20 +32,27 @@ public class ControladorProveedor {
             persona.setId_direccion(direccion.getId());
             persona.setEstado("Activo");
             persona.setIdRol(Utils.MYSQL_PROVEEDOR);
-            if (daoPersona.agregarPersona(persona)) {
-                respuesta.addProperty("message", "Proveedor registrado correctamente");
-                res.status(201);
-                return respuesta;
-            } else {
-                respuesta.addProperty("message", "No se pudo registrar el proveedor");
-                res.status(400);
-                return respuesta;
+            try{
+                if (daoPersona.agregarPersona(persona)) {
+                    respuesta.addProperty("message", "Proveedor registrado correctamente");
+                    res.status(201);
+                    return respuesta;
+                } else {
+                    respuesta.addProperty("message", "El proveedor ya se encuentra en existencia");
+                    res.status(409);
+                    return respuesta;
+                }
+            }catch(Exception e){
+                 e.printStackTrace();
+                res.status(500); // Código HTTP 500: Internal Server Error
+                respuesta.addProperty("message", "Fallo al agregar al proveedor");
             }
         } else {
             respuesta.addProperty("message", "No se pudo registrar la direccion");
             res.status(400);
             return respuesta;
         }
+        return respuesta;
     }
 
     public static JsonObject actualizarProveedor(Request req, Response res) {

@@ -22,7 +22,11 @@ public class DAOProducto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO PRODUCTO (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo, estado, descripcion, idPersona) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO PRODUCTO (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo, estado, descripcion, idPersona) " +
+                    "SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
+                    "WHERE NOT EXISTS (" +
+                    "    SELECT 1 FROM PRODUCTO WHERE nombre = ? AND idPersona = ?" +
+                    ")");
             ps.setString(1, producto.getIdProducto());
             ps.setString(2, producto.getUrlImage());
             ps.setString(3, producto.getCodigo());
@@ -35,6 +39,9 @@ public class DAOProducto {
             ps.setString(10, "Disponible");
             ps.setString(11, producto.getDescripcion());
             ps.setString(12, producto.getIdPersona());
+
+            ps.setString(13, producto.getNombre());
+            ps.setString(14, producto.getIdPersona());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

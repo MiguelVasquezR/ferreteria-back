@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.JsonObject;
 import resenas.conexion.SQLConnection;
-import resenas.modelo.Persona;
-import resenas.modelo.Producto;
 import resenas.modelo.Usuario;
 
 public class DAOUsuario {

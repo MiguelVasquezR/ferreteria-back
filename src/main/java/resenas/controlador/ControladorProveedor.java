@@ -31,20 +31,28 @@ public class ControladorProveedor {
             persona.setId_direccion(direccion.getId());
             persona.setEstado("Activo");
             persona.setIdRol(Utils.MYSQL_PROVEEDOR);
-            if (daoPersona.agregarPersona(persona)) {
-                respuesta.addProperty("message", "Proveedor registrado correctamente");
-                res.status(201);
-                return respuesta;
-            } else {
-                respuesta.addProperty("message", "No se pudo registrar el proveedor");
-                res.status(400);
-                return respuesta;
+            try{
+                if (daoPersona.agregarPersona(persona)) {
+                    respuesta.addProperty("message", "Proveedor registrado correctamente");
+                    respuesta.addProperty("status", 200);
+                    return respuesta;
+                } else {
+                    respuesta.addProperty("message", "El proveedor ya se encuentra en existencia");
+                    respuesta.addProperty("status", 400);
+                    return respuesta;
+                }
+            }catch(Exception e){
+                 e.printStackTrace();
+                res.status(500); // Código HTTP 500: Internal Server Error
+                respuesta.addProperty("message", "Fallo al agregar al proveedor");
+                respuesta.addProperty("status", 200);
             }
         } else {
             respuesta.addProperty("message", "No se pudo registrar la direccion");
-            res.status(400);
+            respuesta.addProperty("status", 400);
             return respuesta;
         }
+        return respuesta;
     }
 
     public static JsonObject actualizarProveedor(Request req, Response res) {
@@ -58,16 +66,16 @@ public class ControladorProveedor {
             direccion.setId(personaBd.getId_direccion());
             if (daoDireccion.editarDireccion(direccion)) {
                 respuesta.addProperty("message", "Proveedor actualizado correctamente");
-                res.status(201);
+                respuesta.addProperty("status", 200);
                 return respuesta;
             } else {
                 respuesta.addProperty("message", "No se pudo actualizar la direccion");
-                res.status(400);
+                respuesta.addProperty("status", 400);
                 return respuesta;
             }
         }
         respuesta.addProperty("message", "No se pudo actualizar el proveedor");
-        res.status(400);
+        respuesta.addProperty("status", 400);
         return respuesta;
 
     }
@@ -81,10 +89,10 @@ public class ControladorProveedor {
         JsonObject respuesta = new JsonObject();
         if (daoPersona.eliminarPersona(idPersona)) {
             respuesta.addProperty("message", "Proveedor eliminado correctamente");
-            res.status(201);
+            respuesta.addProperty("status", 200);
         } else {
             respuesta.addProperty("message", "No se pudo eliminar el proveedor");
-            res.status(400);
+            respuesta.addProperty("status", 400);
         }
 
         return respuesta;

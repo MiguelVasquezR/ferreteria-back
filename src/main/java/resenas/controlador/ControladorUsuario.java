@@ -64,17 +64,25 @@ public class ControladorUsuario {
     }
 
     public static JsonObject agregarUsuario(Request req, Response res) {
-
+        // Extrae el JSON de la solicitud
         JsonObject json = gson.fromJson(req.body(), JsonObject.class);
+        
+        // Obtén el tipo de usuario
         String tipo = json.get("tipo").getAsString();
-
-        Direccion direccion = gson.fromJson(req.body(), Direccion.class);
+    
+        // Deserializa la dirección desde el JSON
+        JsonObject direccionJson = json.getAsJsonObject("direccion");
+        Direccion direccion = gson.fromJson(direccionJson, Direccion.class);
         direccion.setId(UUID.randomUUID().toString());
-
-        Persona persona = gson.fromJson(req.body(), Persona.class);
+    
+        // Deserializa la persona desde el JSON
+        JsonObject personaJson = json.getAsJsonObject("persona");
+        Persona persona = gson.fromJson(personaJson, Persona.class);
         persona.setId(UUID.randomUUID().toString());
         persona.setId_direccion(direccion.getId());
         persona.setEstado("Activo");
+    
+        // Asigna el rol dependiendo del tipo
         switch (tipo) {
             case "Vendedor":
                 persona.setIdRol(Utils.MYSQL_VENDEDOR);
@@ -89,22 +97,26 @@ public class ControladorUsuario {
                 persona.setIdRol("");
                 break;
         }
-
-        Usuario usuario = gson.fromJson(req.body(), Usuario.class);
-
+    
+        JsonObject usuarioJson = json.getAsJsonObject("usuario");
+        Usuario usuario = gson.fromJson(usuarioJson, Usuario.class);
+    
         String hashedPassword = Encriptar.encriptar(usuario.getPassword());
         usuario.setPassword(hashedPassword);
         usuario.setId(UUID.randomUUID().toString());
         usuario.setIdPersona(persona.getId());
         usuario.setEstado("Activo");
-
+    
         DAOPersona daoPersona = new DAOPersona();
         DAODireccion daoDireccion = new DAODireccion();
-
+        DAOUsuario daoUsuario = new DAOUsuario(); 
+    
         JsonObject respuesta = new JsonObject();
+        
         if (daoDireccion.agregarDireccion(direccion)) {
-
+    
             if (daoPersona.agregarPersona(persona)) {
+        
                 if (daoUsuario.agregarUsuario(usuario)) {
                     respuesta.addProperty("mensaje", "Usuario agregado exitosamente");
                     respuesta.addProperty("status", 200);
@@ -119,12 +131,11 @@ public class ControladorUsuario {
         } else {
             respuesta.addProperty("error", "No se pudo agregar la dirección");
             respuesta.addProperty("status", 400);
-
         }
-
+    
         return respuesta;
-
     }
+    
 
     public static String editarUsuario(Request req, Response res) {
         Usuario usuario = gson.fromJson(req.body(), Usuario.class);

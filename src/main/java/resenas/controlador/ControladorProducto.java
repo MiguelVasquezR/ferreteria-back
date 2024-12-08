@@ -37,15 +37,28 @@ public class ControladorProducto {
         }
     }
 
-    public static String crearProducto(Request req, Response res) {
+    public static JsonObject crearProducto(Request req, Response res) {
         Producto producto = gson.fromJson(req.body(), Producto.class);
         producto.setIdPrducto(UUID.randomUUID().toString());
         producto.setCodigo(producto.getIdProducto().replace("-", ""));
         producto.setIdPersona(producto.getIdPersona());
-        if (daoProducto.agregarProducto(producto)) {
-            return "Producto agregado correctamente";
-        } else {
-            return "Error al agregar producto";
+        JsonObject respuesta = new JsonObject();
+
+        try {
+            if (daoProducto.agregarProducto(producto)) {
+                respuesta.addProperty("message", "Producto registrado correctamente");
+                respuesta.addProperty("status", 200);
+                return respuesta;
+            } else {
+                respuesta.addProperty("message", "El producto ya se encuentra en existencia");
+                respuesta.addProperty("status", 400);
+                return respuesta;
+            } 
+        } catch (Exception e) {
+            e.printStackTrace();
+            respuesta.addProperty("message", "Error al agregar un producto");
+            respuesta.addProperty("status", 500);
+            return respuesta;
         }
     }
 

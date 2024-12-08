@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import com.google.gson.Gson;
 import resenas.dao.DAOPaquete;
-import resenas.dao.DAOProducto;
 import resenas.dao.DAOProducto_Paquete;
 import resenas.modelo.Paquete;
 import resenas.modelo.Producto;

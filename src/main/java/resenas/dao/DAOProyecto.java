@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import resenas.conexion.SQLConnection;
@@ -21,13 +20,20 @@ public class DAOProyecto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO PROYECTO (idProyecto, idPersona, fecha, idDireccion, descripcion, estado) VALUES(?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO PROYECTO (idProyecto, idPersona, fecha, idDireccion, descripcion, estado)" +
+                    "SELECT ?, ?, ?, ?, ?, ?" +
+                    "WHERE NOT EXISTS (" +
+                    "    SELECT 1 FROM PROYECTO WHERE idPersona = ? AND idDireccion = ?" +
+                    ")");
             ps.setString(1, proyecto.getIdProyecto());
             ps.setString(2, proyecto.getIdPersona());
             ps.setDate(3, proyecto.getFecha());
             ps.setString(4, proyecto.getIdDireccion());
             ps.setString(5, proyecto.getDescripcion());
             ps.setString(6, "Disponible");
+
+            ps.setString(7, proyecto.getIdPersona());
+            ps.setString(8, proyecto.getIdDireccion());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

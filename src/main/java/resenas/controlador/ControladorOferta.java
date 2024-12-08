@@ -1,6 +1,6 @@
 package resenas.controlador;
 
-import java.util.Date;
+
 import java.util.UUID;
 
 import com.google.gson.Gson;
@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 
 import resenas.dao.DAOOferta;
 import resenas.modelo.Oferta;
-import resenas.modelo.Producto;
+
 import spark.Request;
 import spark.Response;
 
@@ -27,11 +27,17 @@ public class ControladorOferta {
         oferta.setFechaFinal(java.sql.Date.valueOf(fecha));
         oferta.setFechaInicio(new java.sql.Date(System.currentTimeMillis()));
         oferta.setDetalles("");
-        if (daoOferta.agergarOferta(oferta)) {
-            return "Oferta agregada correctamente";
-        } else {
+        try {
+            if (daoOferta.agergarOferta(oferta)) {
+                return "Oferta agregada correctamente";
+            } else {
+                return "Oferta en Existencia";
+            } 
+        } catch (Exception e) {
+            e.printStackTrace();
             return "Error al agregar oferta";
         }
+       
     }
 
     public static String finalizarOferta(Request req, Response res) {

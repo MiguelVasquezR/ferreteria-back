@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Paquete;
-import resenas.modelo.Producto;
 
 public class DAOPaquete {
     private SQLConnection sqlConnection = new SQLConnection();
@@ -58,6 +57,7 @@ public class DAOPaquete {
             ps.setString(1, idPaquete);
             rs = ps.executeQuery();
             while (rs.next()) {
+                paquete.setNombre(rs.getString("nombre"));
                 paquete.setIdPaquete(rs.getString("idPaquete"));
                 paquete.setPrecio(rs.getInt("precio"));
                 paquete.setDescripcion(rs.getString("descripcion"));
@@ -93,6 +93,7 @@ public class DAOPaquete {
             rs = ps.executeQuery();
             while (rs.next()) {
                 Paquete paquete = new Paquete();
+                paquete.setNombre(rs.getString("nombre"));
                 paquete.setIdPaquete(rs.getString("idPaquete"));
                 paquete.setPrecio(rs.getInt("precio"));
                 paquete.setDescripcion(rs.getString("descripcion"));

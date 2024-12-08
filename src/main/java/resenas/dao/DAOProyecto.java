@@ -13,7 +13,7 @@ import resenas.modelo.Proyecto;
 public class DAOProyecto {
     private SQLConnection sqlConnection;
 
-    public boolean agregarProyecto(Proyecto proyecto) {
+    public String agregarProyecto(Proyecto proyecto) {
         sqlConnection = new SQLConnection();
         Connection con = null;
         PreparedStatement ps = null;
@@ -36,14 +36,14 @@ public class DAOProyecto {
             ps.setString(8, proyecto.getIdDireccion());
             int res = ps.executeUpdate();
             if (res > 0) {
-                return true;
+                return "Exito";
             } else {
-                return false;
+                return "Duplicado";
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return "Error";
 
         } finally {
             try {

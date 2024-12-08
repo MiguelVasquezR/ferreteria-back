@@ -11,9 +11,7 @@ import resenas.dao.DAODireccion;
 import resenas.dao.DAOPersona;
 import resenas.dao.DAOProyecto;
 import resenas.modelo.Direccion;
-import resenas.modelo.Paquete;
 import resenas.modelo.Persona;
-import resenas.modelo.Producto;
 import resenas.modelo.Proyecto;
 import resenas.utils.Utils;
 import spark.Request;
@@ -28,57 +26,67 @@ public class ControladorObra {
 
     public static JsonObject guardarObra(Request req, Response res) {
         JsonObject jsonObject = JsonParser.parseString(req.body()).getAsJsonObject();
+    
         JsonObject direccionProyectoJson = new JsonObject();
         direccionProyectoJson.addProperty("calle", jsonObject.get("calleP").getAsString());
         direccionProyectoJson.addProperty("numero", jsonObject.get("numeroP").getAsString());
         direccionProyectoJson.addProperty("colonia", jsonObject.get("coloniaP").getAsString());
         direccionProyectoJson.addProperty("ciudad", jsonObject.get("ciudadP").getAsString());
-
+    
         Direccion direccionProyecto = gson.fromJson(direccionProyectoJson, Direccion.class);
         direccionProyecto.setId(UUID.randomUUID().toString());
-
+    
         Direccion direccionPersona = gson.fromJson(req.body(), Direccion.class);
         direccionPersona.setId(UUID.randomUUID().toString());
-
+    
         Persona persona = gson.fromJson(req.body(), Persona.class);
         persona.setId(UUID.randomUUID().toString());
         persona.setId_direccion(direccionPersona.getId());
         persona.setEstado("Activo");
         persona.setIdRol(Utils.MYSQL_ENCARGADO_OBRA);
-
+    
         Proyecto proyecto = new Proyecto();
         proyecto.setIdProyecto(UUID.randomUUID().toString());
         proyecto.setIdPersona(persona.getId());
         proyecto.setIdDireccion(direccionProyecto.getId());
         proyecto.setFecha(new Date(System.currentTimeMillis()));
         proyecto.setDescripcion(jsonObject.get("descripcion").getAsString());
-
+    
         JsonObject mensaje = new JsonObject();
+        try{
         if (daoDireccion.agregarDireccion(direccionPersona)) {
             if (daoPersona.agregarPersona(persona)) {
                 if (daoDireccion.agregarDireccion(direccionProyecto)) {
-                    if (daoProyecto.agregarProyecto(proyecto)) {
+                    String resultadoProyecto = daoProyecto.agregarProyecto(proyecto);
+                    if (resultadoProyecto.equals("EXITO")) {
                         mensaje.addProperty("mensaje", "Obra guardada correctamente");
                         mensaje.addProperty("status", 200);
-                    } else {
-                        mensaje.addProperty("mensaje", "Obra no guardada correctamente");
+                    } else if (resultadoProyecto.equals("DUPLICADO")) {
+                        mensaje.addProperty("error", "El proyecto ya existe con la misma persona y dirección.");
                         mensaje.addProperty("status", 400);
+                    } else {
+                        mensaje.addProperty("error", "No se pudo guardar el proyecto por un error desconocido.");
+                        mensaje.addProperty("status", 500);
                     }
                 } else {
-                    mensaje.addProperty("mensaje", "Obra no guardada correctamente");
+                    mensaje.addProperty("error", "No se pudo guardar la dirección del proyecto.");
                     mensaje.addProperty("status", 400);
                 }
             } else {
-
+                mensaje.addProperty("error", "No se pudo guardar la persona.");
+                mensaje.addProperty("status", 400);
             }
         } else {
-            mensaje.addProperty("mensaje", "Obra no guardada correctamente");
+            mensaje.addProperty("error", "No se pudo guardar la dirección de la persona.");
             mensaje.addProperty("status", 400);
         }
-
+    }catch(Exception e){
+        
+    }
+    
         return mensaje;
     }
-
+    
     public static String obtenerObras(Request req, Response res) {
         return gson.toJson(daoProyecto.obtenerProyectos());
     }

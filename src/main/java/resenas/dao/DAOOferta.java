@@ -10,7 +10,6 @@ import com.google.gson.JsonObject;
 
 import resenas.conexion.SQLConnection;
 import resenas.modelo.Oferta;
-import resenas.modelo.Producto;
 
 public class DAOOferta {
     private SQLConnection sqlConnection;
@@ -23,7 +22,11 @@ public class DAOOferta {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO OFERTA (idOferta, idProducto, fechaInicio, fechaFinal, detalles, estado, precioOferta) VALUES(?, ?, ?, ?, ?, ?, ?)");
+                    "INSERT INTO OFERTA (idOferta, idProducto, fechaInicio, fechaFinal, detalles, estado, precioOferta)" +
+                    "SELECT ?, ?, ?, ?, ?, ?, ?" +
+                    "WHERE NOT EXISTS (" +
+                     "    SELECT 1 FROM OFERTA WHERE idProducto = ? AND estado = 'Disponible'" +
+                     ")");
             ps.setString(1, oferta.getIdOferta());
             ps.setString(2, oferta.getIdProducto());
             ps.setDate(3, oferta.getFechaInicio());
@@ -31,6 +34,8 @@ public class DAOOferta {
             ps.setString(5,  oferta.getDetalles());
             ps.setString(6,  ("Disponible"));
             ps.setDouble(7, oferta.getPrecioOferta());
+
+            ps.setString(8, oferta.getIdProducto());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

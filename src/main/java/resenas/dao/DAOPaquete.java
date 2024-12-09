@@ -17,12 +17,18 @@ public class DAOPaquete {
         try {
             con = sqlConnection.getConnection();
 
-            ps = con.prepareStatement("INSERT INTO PAQUETE (idPaquete, nombre, precio, descripcion, estado) VALUES (?, ?, ?, ?, ?)");
+            ps = con.prepareStatement("INSERT INTO PAQUETE (idPaquete, nombre, precio, descripcion, estado)" +
+            "SELECT ?, ?, ?, ?, ?" +
+            "WHERE NOT EXISTS (" +
+            "SELECT 1 FROM PAQUETE WHERE idPaquete = ?" +
+            ")");
             ps.setString(1, paquete.getIdPaquete());
             ps.setString(2, paquete.getNombre());
             ps.setInt(3, paquete.getPrecio());
             ps.setString(4, paquete.getDescripcion());
             ps.setString(5, "Disponible");
+
+            ps.setString(6, paquete.getIdPaquete());
             int res = ps.executeUpdate();
             if (res > 0) {
                 return true;

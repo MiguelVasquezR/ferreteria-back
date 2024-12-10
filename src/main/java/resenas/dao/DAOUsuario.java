@@ -53,12 +53,12 @@ public class DAOUsuario {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement("UPDATE USUARIO\n" + //
-                                "SET contrasena = ?\n" + //
-                                "WHERE idPersona IN (\n" + //
-                                "    SELECT idPersona\n" + //
-                                "    FROM PERSONA\n" + //
-                                "    WHERE correo = ?\n" + //
-                                ");");
+                    "SET contrasena = ?\n" + //
+                    "WHERE idPersona IN (\n" + //
+                    "    SELECT idPersona\n" + //
+                    "    FROM PERSONA\n" + //
+                    "    WHERE correo = ?\n" + //
+                    ");");
             ps.setString(1, nuevaContrasena);
             ps.setString(2, correo);
             int res = ps.executeUpdate();
@@ -122,13 +122,20 @@ public class DAOUsuario {
         ResultSet rs = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement(
-                "SELECT u.idUsuario, u.usuario, u.sueldo, p.nombre, p.correo, p.telefono, p.rfc " +
-                "FROM USUARIO u " +
-                "JOIN PERSONA p ON u.idPersona = p.idPersona " +
-                "JOIN ROLES r ON p.idRol = r.idRol " +
-                "WHERE u.estado = 'Activo' " +
-                "AND r.nombre IN ('gerente', 'administrador', 'vendedor')");
+            ps = con.prepareStatement("SELECT u.idUsuario,\n" + //
+                    "       u.usuario,\n" + //
+                    "       u.sueldo,\n" + //
+                    "       p.nombre,\n" + //
+                    "       p.correo,\n" + //
+                    "       p.telefono,\n" + //
+                    "       p.rfc,\n" + //
+                    "       r.nombre AS rol\n" + //
+                    "FROM USUARIO u\n" + //
+                    "         JOIN PERSONA p ON u.idPersona = p.idPersona\n" + //
+                    "         JOIN ROLES r ON p.idRol = r.idRol\n" + //
+                    "WHERE u.estado = 'Activo'\n" + //
+                    "  AND r.nombre IN ('gerente', 'administrador', 'vendedor');\n" + //
+                    "");
             rs = ps.executeQuery();
             while (rs.next()) {
                 JsonObject usuario = new JsonObject();
@@ -139,6 +146,7 @@ public class DAOUsuario {
                 usuario.addProperty("correo", rs.getString(5));
                 usuario.addProperty("telefono", rs.getString(6));
                 usuario.addProperty("rfc", rs.getString(7));
+                usuario.addProperty("rol", rs.getString(8));
                 usuarios.add(usuario);
             }
             return usuarios;

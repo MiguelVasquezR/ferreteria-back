@@ -1,5 +1,7 @@
 package resenas.controlador;
 
+import static spark.Spark.secure;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -64,6 +66,7 @@ public class ControladorUsuario {
     }
 
     public static JsonObject agregarUsuario(Request req, Response res) {
+
         // Extrae el JSON de la solicitud
         JsonObject json = gson.fromJson(req.body(), JsonObject.class);
         

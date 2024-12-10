@@ -20,10 +20,17 @@ public class DAOProducto_Paquete {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO PRODUCTO_PAQUETE (idProductoPaquete, idProducto, idPaquete) VALUES (?, ?, ?)");
+                    "INSERT INTO PRODUCTO_PAQUETE (idProductoPaquete, idProducto, idPaquete)" +
+                    "SELECT ?, ?, ? " +
+                     "WHERE NOT EXISTS (" +
+                     "SELECT 1 FROM PRODUCTO_PAQUETE WHERE idProducto = ? AND idPaquete = ?" +
+                     ")");
             ps.setString(1, producto_Paquete.getIdProductoPaquete());
             ps.setString(2, producto_Paquete.getIdProducto());
             ps.setString(3, producto_Paquete.getIdPaquete());
+
+            ps.setString(4, producto_Paquete.getIdProducto());
+            ps.setString(5, producto_Paquete.getIdPaquete());
 
             int res = ps.executeUpdate();
             if (res > 0) {

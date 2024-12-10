@@ -25,6 +25,7 @@ public class ControladorProducto_Paquete {
         try {
             JsonObject jsonPaquete = gson.fromJson(req.body(), JsonObject.class);
 
+            String idPaquete = jsonPaquete.get("idPaquete").getAsString();
             String nombre = jsonPaquete.get("nombre").getAsString();
             int precio = jsonPaquete.get("precio").getAsInt();
             String descripcion = jsonPaquete.get("descripcion").getAsString();
@@ -34,7 +35,7 @@ public class ControladorProducto_Paquete {
             List<Producto> productos = gson.fromJson(jsonPaquete.get("productos"), tipoListaProductos);
 
             Paquete paquete = new Paquete();
-            paquete.setIdPaquete(UUID.randomUUID().toString());
+            paquete.setIdPaquete(idPaquete);
             paquete.setNombre(nombre);
             paquete.setPrecio(precio);
             paquete.setDescripcion(descripcion);
@@ -46,9 +47,9 @@ public class ControladorProducto_Paquete {
                     productoPaquete.setIdProductoPaquete(UUID.randomUUID().toString());
                     productoPaquete.setIdPaquete(paquete.getIdPaquete());
                     productoPaquete.setIdProducto(producto.getIdProducto());
-
+                    
                     if (!daoProducto_Paquete.agregarProductoPaquete(productoPaquete)) {
-                        return "Error al agregar producto al paquete";
+                        return "Paquete Duplicado";
                     }
                 }
                 return "Paquete y productos agregados exitosamente";

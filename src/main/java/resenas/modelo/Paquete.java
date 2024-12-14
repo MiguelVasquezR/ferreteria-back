@@ -6,11 +6,10 @@ public class Paquete {
 
     private String idPaquete;
     private String nombre;
-    private int precio;
+    private float precio;
     private String descripcion;
     private String estado;
     private List<Producto> productos;
-    
 
     public Paquete() {
     }
@@ -23,11 +22,11 @@ public class Paquete {
         this.idPaquete = idPaquete;
     }
 
-    public int getPrecio() {
+    public float getPrecio() {
         return precio;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecio(float precio) {
         this.precio = precio;
     }
 
@@ -47,11 +46,6 @@ public class Paquete {
         this.estado = estado;
     }
 
-    @Override
-    public String toString() {
-        return "Paquete [idPaquete=" + idPaquete + ", precio=" + precio + ", descripcion=" + descripcion + "]";
-    }
-
     public List<Producto> getProductos() {
         return productos;
     }
@@ -66,6 +60,12 @@ public class Paquete {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public String toString() {
+        return "Paquete [idPaquete=" + idPaquete + ", nombre=" + nombre + ", precio=" + precio + ", descripcion="
+                + descripcion + ", estado=" + estado + ", productos=" + productos + "]";
     }
 
 }

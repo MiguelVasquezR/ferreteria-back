@@ -125,7 +125,7 @@ public class DAOProducto_Paquete {
                     paquete.setIdPaquete(idPaquete);
                     paquete.setNombre(rs.getString("nombrePaquete"));
                     paquete.setDescripcion(rs.getString("descripcion"));
-                    paquete.setPrecio(rs.getInt("precio"));
+                    paquete.setPrecio(rs.getFloat("precio"));
                     paquete.setProductos(new ArrayList<>());
                     mapaPaquetes.put(idPaquete, paquete);
                     listaPaquetes.add(paquete);

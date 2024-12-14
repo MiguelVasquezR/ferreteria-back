@@ -18,13 +18,13 @@ public class DAOPaquete {
             con = sqlConnection.getConnection();
 
             ps = con.prepareStatement("INSERT INTO PAQUETE (idPaquete, nombre, precio, descripcion, estado)" +
-            "SELECT ?, ?, ?, ?, ?" +
-            "WHERE NOT EXISTS (" +
-            "SELECT 1 FROM PAQUETE WHERE idPaquete = ?" +
-            ")");
+                    "SELECT ?, ?, ?, ?, ?" +
+                    "WHERE NOT EXISTS (" +
+                    "SELECT 1 FROM PAQUETE WHERE idPaquete = ?" +
+                    ")");
             ps.setString(1, paquete.getIdPaquete());
             ps.setString(2, paquete.getNombre());
-            ps.setInt(3, paquete.getPrecio());
+            ps.setFloat(3, paquete.getPrecio());
             ps.setString(4, paquete.getDescripcion());
             ps.setString(5, "Disponible");
 
@@ -65,7 +65,7 @@ public class DAOPaquete {
             while (rs.next()) {
                 paquete.setNombre(rs.getString("nombre"));
                 paquete.setIdPaquete(rs.getString("idPaquete"));
-                paquete.setPrecio(rs.getInt("precio"));
+                paquete.setPrecio(rs.getFloat("precio"));
                 paquete.setDescripcion(rs.getString("descripcion"));
                 paquete.setEstado(rs.getString("estado"));
             }
@@ -101,7 +101,7 @@ public class DAOPaquete {
                 Paquete paquete = new Paquete();
                 paquete.setNombre(rs.getString("nombre"));
                 paquete.setIdPaquete(rs.getString("idPaquete"));
-                paquete.setPrecio(rs.getInt("precio"));
+                paquete.setPrecio(rs.getFloat("precio"));
                 paquete.setDescripcion(rs.getString("descripcion"));
                 paquete.setEstado(rs.getString("estado"));
                 paquetes.add(paquete);
@@ -130,9 +130,10 @@ public class DAOPaquete {
 
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("UPDATE PAQUETE SET nombre = ?, precio = ?, descripcion = ?, estado = ? WHERE idPaquete = ?");
+            ps = con.prepareStatement(
+                    "UPDATE PAQUETE SET nombre = ?, precio = ?, descripcion = ?, estado = ? WHERE idPaquete = ?");
             ps.setString(1, paquete.getNombre());
-            ps.setInt(2, paquete.getPrecio());
+            ps.setFloat(2, paquete.getPrecio());
             ps.setString(3, paquete.getDescripcion());
             ps.setString(4, paquete.getEstado());
             ps.setString(5, paquete.getIdPaquete());
@@ -168,6 +169,67 @@ public class DAOPaquete {
             ps.setString(2, idPaquete);
             int res = ps.executeUpdate();
             if (res > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean validarPaquete(Paquete paquete) {
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT * FROM PAQUETE WHERE nombre=? AND ABS(precio - ?) < 0.01;");
+            ps.setString(1, paquete.getNombre());
+            ps.setFloat(2, paquete.getPrecio());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                con.close();
+                if (con.isClosed()) {
+                    sqlConnection.closeConnection();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean validarProductoPaquete(String id) {
+        sqlConnection = new SQLConnection();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT * FROM PRODUCTO_PAQUETE WHERE idProducto = ?;");
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
                 return true;
             } else {
                 return false;

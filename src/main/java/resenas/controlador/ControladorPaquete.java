@@ -14,10 +14,26 @@ import spark.Response;
 public class ControladorPaquete {
     private static DAOPaquete daoPaquete = new DAOPaquete();
     private static Gson gson = new Gson();
+    static boolean existe = true;
 
     public static String agregarPaquete(Request req, Response res) {
         Paquete paquete = gson.fromJson(req.body(), Paquete.class);
         paquete.setIdPaquete(UUID.randomUUID().toString());
+
+        if(daoPaquete.validarPaquete(paquete)){
+            for(Producto producto : paquete.getProductos()){
+                if(!daoPaquete.validarProductoPaquete(producto.getIdProducto())){
+                    existe = false;
+                }
+            }
+        }else{
+            existe = false;
+        }
+
+        if(existe){
+            return "El paquete ya existe, verifica los productos, el nombre y precio de tus paquetes en la lista de paquetes";
+        }
+
         if (daoPaquete.agregarPaquete(paquete)) {
             Producto_Paquete producto_Paquete;
             DAOProducto_Paquete daoProducto_Paquete;

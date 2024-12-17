@@ -116,33 +116,30 @@ public class ControladorUsuario {
 
         JsonObject respuesta = new JsonObject();
 
-        /*
-         * La validación iría aquí antes de que intente agregar la dirección, iria algo
-         * así
-         * if(metodoParaSaberSiExistePersonaUsuario()){
-            * respuesta.addProperty("mensaje", "Ya existe el usuario");
-            * respuesta.addProperty("status", 400);
-         * }
-         */
 
-        if (daoDireccion.agregarDireccion(direccion)) {
 
-            if (daoPersona.agregarPersona(persona)) {
+        if(!daoUsuario.usuarioExiste(usuario.getUsuario(), persona.getNombre(), persona.getCorreo(), persona.getTelefono())){
+            if (daoDireccion.agregarDireccion(direccion)) {
+                if (daoPersona.agregarPersona(persona)) {
 
-                if (daoUsuario.agregarUsuario(usuario)) {
+                    if (daoUsuario.agregarUsuario(usuario)) {
 
-                    respuesta.addProperty("mensaje", "Usuario agregado exitosamente");
-                    respuesta.addProperty("status", 200);
+                        respuesta.addProperty("mensaje", "Usuario agregado exitosamente");
+                        respuesta.addProperty("status", 200);
+                    } else {
+                        respuesta.addProperty("mensaje", "No se pudo agregar el usuario");
+                        respuesta.addProperty("status", 400);
+                    }
                 } else {
-                    respuesta.addProperty("mensaje", "No se pudo agregar el usuario");
+                    respuesta.addProperty("mensaje", "No se pudo agregar la persona");
                     respuesta.addProperty("status", 400);
                 }
             } else {
-                respuesta.addProperty("mensaje", "No se pudo agregar la persona");
+                respuesta.addProperty("mensaje", "No se pudo agregar la dirección");
                 respuesta.addProperty("status", 400);
             }
-        } else {
-            respuesta.addProperty("mensaje", "No se pudo agregar la dirección");
+        }else{
+            respuesta.addProperty("mensaje", "Ya existe el usuario");
             respuesta.addProperty("status", 400);
         }
 

@@ -118,7 +118,7 @@ public class ControladorUsuario {
 
 
 
-        if(!daoUsuario.personaExiste(persona.getNombre(), persona.getCorreo(), persona.getRfc(), persona.getTelefono())){
+        if(!daoUsuario.usuarioExiste(usuario.getUsuario(), persona.getNombre(), persona.getCorreo(), persona.getTelefono())){
             if (daoDireccion.agregarDireccion(direccion)) {
                 if (daoPersona.agregarPersona(persona)) {
 

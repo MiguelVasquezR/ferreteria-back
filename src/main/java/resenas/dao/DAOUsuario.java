@@ -277,6 +277,41 @@ public class DAOUsuario {
         }
     }
 
+    public boolean usuarioExiste(String usuario, String nombre, String correo, String telefono){
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = sqlConnection.getConnection();
+            ps = con.prepareStatement("SELECT * FROM USUARIO u INNER JOIN PERSONA p ON u.idPersona = p.idPersona\n" + //
+            "WHERE u.usuario = ? OR p.nombre = ? OR p.correo = ?, p.telefono = ?");
+            ps.setString(1, usuario);
+            ps.setString(2, nombre);
+            ps.setString(3, correo);
+            ps.setString(4, telefono);
+
+            rs = ps.executeQuery();
+
+        if (rs.next()) {
+            int count = rs.getInt("count");
+            System.out.println("Número de coincidencias encontradas: " + count);
+            return count > 0;
+        }
+        return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (con != null && !con.isClosed()) con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public boolean agregarUsuario(Usuario usuario) {
         sqlConnection = new SQLConnection();
         Connection con = null;

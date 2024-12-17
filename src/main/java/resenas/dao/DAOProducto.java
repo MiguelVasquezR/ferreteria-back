@@ -22,11 +22,12 @@ public class DAOProducto {
         try {
             con = sqlConnection.getConnection();
             ps = con.prepareStatement(
-                    "INSERT INTO PRODUCTO (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo, estado, descripcion, idPersona) " +
-                    "SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
-                    "WHERE NOT EXISTS (" +
-                    "    SELECT 1 FROM PRODUCTO WHERE nombre = ? AND idPersona = ?" +
-                    ")");
+                    "INSERT INTO PRODUCTO (idProducto, urlImage, codigo, nombre, cantidad, stockMinimo, costo, precioMenudeo, precioMayoreo, estado, descripcion, idPersona) "
+                            +
+                            "SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? " +
+                            "WHERE NOT EXISTS (" +
+                            "    SELECT 1 FROM PRODUCTO WHERE nombre = ? AND idPersona = ?" +
+                            ")");
             ps.setString(1, producto.getIdProducto());
             ps.setString(2, producto.getUrlImage());
             ps.setString(3, producto.getCodigo());
@@ -74,15 +75,18 @@ public class DAOProducto {
         ResultSet rs = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("SELECT " +
-                    "    p.idProducto, p.urlImage, p.codigo, p.nombre, p.cantidad, p.stockMinimo, " +
-                    "    p.costo, p.precioMenudeo, p.precioMayoreo, p.estado, p.descripcion, " +
-                    "    per.idPersona, per.nombre AS nombrePersona, per.telefono, per.correo, " +
-                    "    per.rfc, per.estado AS estadoPersona " +
-                    "FROM " +
-                    "    PRODUCTO p " +
-                    "JOIN " +
-                    "    PERSONA per ON p.idPersona = per.idPersona");
+            ps = con.prepareStatement("SELECT\n" + //
+                    "    p.idProducto, p.urlImage, p.codigo, p.nombre, p.cantidad, p.stockMinimo,\n" + //
+                    "    p.costo, p.precioMenudeo, p.precioMayoreo, p.estado, p.descripcion,\n" + //
+                    "    per.idPersona, per.nombre AS nombrePersona, per.telefono, per.correo,\n" + //
+                    "    per.rfc, per.estado AS estadoPersona\n" + //
+                    "FROM\n" + //
+                    "    PRODUCTO p\n" + //
+                    "        LEFT JOIN\n" + //
+                    "    PERSONA per ON p.idPersona = per.idPersona\n" + //
+                    "WHERE p.estado = 'Disponible';\n" + //
+                    ";\n" + //
+                    "");
             rs = ps.executeQuery();
             while (rs.next()) {
                 JsonObject producto = new JsonObject();

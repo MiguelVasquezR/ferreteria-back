@@ -116,7 +116,7 @@ public class ControladorUsuario {
 
         JsonObject respuesta = new JsonObject();
 
-        if (daoUsuario.usuarioExiste(usuario.getUsuario(), persona.getNombre(), persona.getCorreo(),
+        if (!daoUsuario.usuarioExiste(usuario.getUsuario(), persona.getNombre(), persona.getCorreo(),
                 persona.getTelefono())) {
             if (daoDireccion.agregarDireccion(direccion)) {
                 if (daoPersona.agregarPersona(persona)) {

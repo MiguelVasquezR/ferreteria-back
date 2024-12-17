@@ -246,14 +246,15 @@ public class DAOUsuario {
         try {
             con = sqlConnection.getConnection();
             // Consulta SQL para buscar por nombre, correo, RFC y teléfono
-            ps = con.prepareStatement("SELECT COUNT(*) AS count FROM PERSONA WHERE nombre = ? AND correo = ? AND rfc = ? AND telefono = ?");
+            ps = con.prepareStatement(
+                    "SELECT COUNT(*) AS count FROM PERSONA WHERE nombre = ? AND correo = ? AND rfc = ? AND telefono = ?");
             ps.setString(1, nombre);
             ps.setString(2, correo);
             ps.setString(3, rfc);
             ps.setString(4, telefono);
-            
+
             rs = ps.executeQuery();
-    
+
             if (rs.next()) {
                 int count = rs.getInt("count");
                 System.out.println("Cantidad de personas con los mismos datos: " + count);
@@ -277,35 +278,38 @@ public class DAOUsuario {
         }
     }
 
-    public boolean usuarioExiste(String usuario, String nombre, String correo, String telefono){
+    public boolean usuarioExiste(String usuario, String nombre, String correo, String telefono) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             con = sqlConnection.getConnection();
-            ps = con.prepareStatement("SELECT * FROM USUARIO u INNER JOIN PERSONA p ON u.idPersona = p.idPersona\n" + //
-            "WHERE u.usuario = ? OR p.nombre = ? OR p.correo = ?, p.telefono = ?");
+            ps = con.prepareStatement(
+                    "SELECT p.idPersona FROM USUARIO u INNER JOIN PERSONA p ON u.idPersona = p.idPersona\n" + //
+                            "WHERE u.usuario = ? OR p.nombre = ? OR p.correo = ? OR p.telefono = ?");
             ps.setString(1, usuario);
             ps.setString(2, nombre);
             ps.setString(3, correo);
             ps.setString(4, telefono);
-
             rs = ps.executeQuery();
 
-        if (rs.next()) {
-            int count = rs.getInt("count");
-            System.out.println("Número de coincidencias encontradas: " + count);
-            return count > 0;
-        }
-        return false;
+            if (rs.next()) {
+                String id = rs.getString("idPersona");
+                return !id.isEmpty();
+            }
+
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }finally {
+        } finally {
             try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
-                if (con != null && !con.isClosed()) con.close();
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+                if (con != null && !con.isClosed())
+                    con.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -116,9 +116,8 @@ public class ControladorUsuario {
 
         JsonObject respuesta = new JsonObject();
 
-
-
-        if(!daoUsuario.usuarioExiste(usuario.getUsuario(), persona.getNombre(), persona.getCorreo(), persona.getTelefono())){
+        if (daoUsuario.usuarioExiste(usuario.getUsuario(), persona.getNombre(), persona.getCorreo(),
+                persona.getTelefono())) {
             if (daoDireccion.agregarDireccion(direccion)) {
                 if (daoPersona.agregarPersona(persona)) {
 
@@ -138,7 +137,7 @@ public class ControladorUsuario {
                 respuesta.addProperty("mensaje", "No se pudo agregar la dirección");
                 respuesta.addProperty("status", 400);
             }
-        }else{
+        } else {
             respuesta.addProperty("mensaje", "Ya existe el usuario");
             respuesta.addProperty("status", 400);
         }
